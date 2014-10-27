@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:59:15 2014 brendan rius
-** Last update Mon Oct 27 18:29:20 2014 brendan rius
+** Last update Mon Oct 27 18:37:18 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -32,8 +32,9 @@ void		handle_operator(t_token *operator,
   t_token	*t;
 
   t = (t_token *) top(*stack);
-  while  (t != NULL && is_operator(t) &&
-	  t->value.operator.precedence >= operator->value.operator.precedence)
+  while  (t != NULL &&
+	  ((t->type == OPERATOR && t->value.operator.precedence >= operator->value.operator.precedence) ||
+	   (t->type == U_OPERATOR && t->value.operator.precedence > operator->value.operator.precedence)))
     {
       stack_to_queue(queue, stack);
       t = (t_token *) top(*stack);
