@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:53:44 2014 brendan rius
-** Last update Mon Oct 27 15:53:45 2014 brendan rius
+** Last update Mon Oct 27 17:22:10 2014 brendan rius
 */
 
 #ifndef OPERATORS_H_
@@ -19,6 +19,7 @@
 # include "negate.h"
 # include "parenthesis.h"
 # include "number.h"
+# include "unary_plus.h"
 
 /*
 ** Define an operator: it has a precedence (between

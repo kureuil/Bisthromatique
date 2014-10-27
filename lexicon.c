@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:54 2014 brendan rius
-** Last update Mon Oct 27 16:12:13 2014 brendan rius
+** Last update Mon Oct 27 17:18:31 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -67,5 +67,6 @@ t_lexicon	*get_classic_lexicon()
   add(&lexicon, &extract_div);
   add(&lexicon, &extract_sub);
   add(&lexicon, &extract_negate);
+  add(&lexicon, &extract_unary_plus);
   return (lexicon);
 }

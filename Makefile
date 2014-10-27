@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 27 15:58:06 2014 brendan rius
-## Last update Mon Oct 27 17:08:02 2014 brendan rius
+## Last update Mon Oct 27 17:19:02 2014 brendan rius
 ##
 
 CC	= gcc
@@ -26,7 +26,8 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/sub.c \
 	lexicon/parenthesis.c \
 	lexicon/number.c \
-	lexicon/negate.c
+	lexicon/negate.c \
+	lexicon/unary_plus.c
 
 NAME	= calc
 SRCS	= main.c \
