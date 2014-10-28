@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:57:15 2014 brendan rius
-** Last update Mon Oct 27 16:22:12 2014 brendan rius
+** Last update Tue Oct 28 13:24:06 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -15,30 +15,46 @@
 #include "queue.h"
 #include "my.h"
 #include "postfix.h"
+#include "bm_errno.h"
 
-int		eval(char *str)
+int		eval(char *str, int *res)
 {
   t_queue	*rpn;
   t_queue	*tokens;
   t_lexicon	*lexicon;
-  int		nb;
+  int		ret;
 
+  rpn = new_queue();
   lexicon = get_classic_lexicon();
   tokens = get_tokens(lexicon, str);
-  rpn = shuntingyard(tokens);
-  nb = eval_postfix(rpn);
+  if ((ret = shuntingyard(tokens, rpn)) != OK)
+    {
+      free_queue(rpn);
+      free_queue(tokens);
+      free_lexicon(lexicon);
+      return (ret);
+    }
+  *res = eval_postfix(rpn);
   free_queue(rpn);
   free_queue(tokens);
   free_lexicon(lexicon);
-  return (nb);
+  return (OK);
 }
 
 int	main(int ac, char **av)
 {
+  int	res;
+  int	ret;
+
   if (ac > 1)
   {
-    my_put_nbr(eval(av[1]));
+    if ((ret = eval(av[1], &res)) != OK)
+      {
+	my_puterror(bm_get_error(ret));
+	return (OK);
+      }
+    my_put_nbr(res);
     my_putchar('\n');
   }
-  return (0);
+  return (OK);
 }

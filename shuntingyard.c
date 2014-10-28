@@ -5,14 +5,17 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:59:15 2014 brendan rius
-** Last update Mon Oct 27 18:37:18 2014 brendan rius
+** Last update Tue Oct 28 13:39:39 2014 brendan rius
 */
 
 #include <stdlib.h>
+#include "boolean.h"
 #include "queue.h"
 #include "stack.h"
 #include "tokenizer.h"
 #include "my.h"
+#include "bm_errno.h"
+#include "shuntingyard.h"
 
 char	is_operator(t_token *token)
 {
@@ -42,7 +45,7 @@ void		handle_operator(t_token *operator,
   push(stack, operator);
 }
 
-void		handle_rparenthesis(t_queue *queue, t_stack **stack)
+t_rcode		handle_rparenthesis(t_queue *queue, t_stack **stack)
 {
   t_token	*stktop;
 
@@ -53,31 +56,43 @@ void		handle_rparenthesis(t_queue *queue, t_stack **stack)
       stack_to_queue(queue, stack);
       stktop = (t_token *) top(*stack);
     }
+  if (!stktop)
+    return (MISMATCHED_P);
   pop(stack);
+  return (OK);
 }
 
-t_queue		*shuntingyard(t_queue *tokens)
+t_rcode		shuntingyard(t_queue *tokens, t_queue *output)
 {
   t_token	*token;
-  t_queue	*queue;
   t_stack	*stack;
+  int		ret;
 
-  queue = new_queue();
   stack = NULL;
   while ((token = (t_token *) front(tokens)) != NULL)
     {
       if (token->type == NUMBER)
-	enqueue(queue, token);
+	enqueue(output, token);
       else if (is_operator(token))
-	handle_operator(token, queue, &stack);
+	handle_operator(token, output, &stack);
       else if (token->type == LPARENTHESIS)
 	push(&stack, token);
       else if (token->type == RPARENTHESIS)
-	handle_rparenthesis(queue, &stack);
+	{
+	  if ((ret = handle_rparenthesis(output, &stack)) != OK)
+	    return (ret);
+	}
       dequeue(tokens);
     }
-  while ((token = ((t_token *) top(stack))) != NULL && is_operator(token))
-    stack_to_queue(queue, &stack);
+  while ((token = ((t_token *) top(stack))) != NULL)
+    {
+      if (token->type == LPARENTHESIS || token->type == RPARENTHESIS)
+	{
+	  free_stack(&stack);
+	  return (MISMATCHED_P);
+	}
+      stack_to_queue(output, &stack);
+    }
   free_stack(&stack);
-  return (queue);
+  return (OK);
 }
