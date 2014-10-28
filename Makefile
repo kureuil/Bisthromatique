@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 27 15:58:06 2014 brendan rius
-## Last update Mon Oct 27 17:19:02 2014 brendan rius
+## Last update Tue Oct 28 08:57:08 2014 brendan rius
 ##
 
 CC	= gcc
@@ -35,7 +35,8 @@ SRCS	= main.c \
 	stack.c \
 	tokenizer.c \
 	shuntingyard.c \
-	postfix.c
+	postfix.c \
+	bm_errno.c
 SRCS	+= $(SRCS_QUEUE)
 SRCS	+= $(OP_SRCS)
 
@@ -68,6 +69,7 @@ D_SRCS_SHYARD	= shuntingyard.c \
 		tokenizer.c \
 		lexicon.c \
 		postfix.c \
+		bm_errno.c \
 		tests/tests-shyard.c
 D_SRCS_SHYARD	+= $(SRCS_QUEUE)
 D_SRCS_SHYARD	+= $(OP_SRCS)
