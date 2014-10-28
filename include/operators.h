@@ -5,12 +5,13 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:53:44 2014 brendan rius
-** Last update Mon Oct 27 17:22:10 2014 brendan rius
+** Last update Tue Oct 28 14:06:05 2014 brendan rius
 */
 
 #ifndef OPERATORS_H_
 # define OPERATORS_H_
 
+# include "bm_errno.h"
 # include "add.h"
 # include "sub.h"
 # include "mul.h"
@@ -29,7 +30,7 @@
 typedef struct	s_operator
 {
   char		precedence;
-  int		(*action)();
+  t_rcode	(*action)();
 }		t_operator;
 
 #endif /* !OPERATORS_H_ */

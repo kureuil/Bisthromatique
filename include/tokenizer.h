@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:54:51 2014 brendan rius
-** Last update Mon Oct 27 16:18:52 2014 brendan rius
+** Last update Tue Oct 28 14:21:16 2014 brendan rius
 */
 
 #ifndef TOKENIZER_H_
@@ -27,6 +27,12 @@ typedef enum	e_types
     U_OPERATOR
   }		t_ttype;
 
+typedef enum	e_sign
+  {
+    POSITIVE,
+    NEGATIVE
+  }		t_sign;
+
 /*
 ** A token has a type, a value (which is either an operator structure,
 ** or a number. A token also contains the its size in the base string.
@@ -36,11 +42,8 @@ typedef struct	s_token
   t_ttype	type;
   char		*string_value;
   int		size;
-  union
-  {
-    int		int_value;
-    t_operator	operator;
-  }		value;
+  t_operator	operator;
+  t_sign	sign;
 }		t_token;
 
 /*

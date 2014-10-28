@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:58:57 2014 brendan rius
-** Last update Mon Oct 27 16:01:11 2014 brendan rius
+** Last update Tue Oct 28 16:31:02 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -13,66 +13,103 @@
 #include "queue.h"
 #include "stack.h"
 #include "my.h"
+#include "bm_errno.h"
+#include "bm_base.h"
 
-void	binary_op(t_token *token, t_stack **stack)
+/*
+** Can be optimized by not poping the last number, using it as the result.
+** TODO: check errcode (division by zero...)
+*/
+t_rcode		binary_op(t_token *token, t_stack **stack, t_base *base)
 {
-  int	(*fct)();
-  int	n1;
+  t_rcode	(*fct)();
+  t_token	*n1;
+  t_token	*n2;
+  t_token	*res;
 
-  fct = token->value.operator.action;
-  token = (t_token *) top(*stack);
-  n1 = token->value.int_value;
+  res = new_token();
+  fct = token->operator.action;
+  token = top(*stack);
+  if (token == NULL)
+    return (NOT_ENOUGH_VALUES);
+  n1 = token;
   pop(stack);
-  token = (t_token *) top(*stack);
+  token = top(*stack);
+  if (token == NULL)
+    return (NOT_ENOUGH_VALUES);
+  n2 = token;
   pop(stack);
-  token->value.int_value = (*fct)(token->value.int_value, n1);
-  push(stack, token);
+  (*fct)(base, n1, n2, res);
+  free_token(n1);
+  free_token(n2);
+  push(stack, res);
+  return (OK);
 }
 
-void	unary_op(t_token *token, t_stack **stack)
+/*
+** Can be optimized by not poping the last number, but using it as the result.
+** TODO: check errcode
+*/
+t_rcode		unary_op(t_token *token, t_stack **stack, t_base *base)
 {
-  int	(*fct)();
+  t_rcode	(*fct)();
+  t_token	*n;
+  t_token	*res;
 
-  fct = token->value.operator.action;
-  token = (t_token *) top(*stack);
+  res = NULL;
+  fct = token->operator.action;
+  token = top(*stack);
+  if (token == NULL)
+    return (NOT_ENOUGH_VALUES);
+  n = token;
   pop(stack);
-  token->value.int_value = (*fct)(token->value.int_value);
-  push(stack, token);
+  (*fct)(base, n, res);
+  push(stack, res);
+  free(n);
+  return (OK);
 }
 
-int		eval_postfix(t_queue *rpn)
+t_rcode		eval_postfix(t_queue *rpn, t_token **res, t_base *base)
 {
-  void		*data;
   t_token	*token;
   t_stack	*stack;
+  int		ret;
 
   stack = NULL;
-  while ((data = front(rpn)))
+  while ((token = front(rpn)))
     {
       dequeue(rpn);
-      token = (t_token *) data;
       if (token->type == NUMBER)
-	{
-	  token->value.int_value = my_getnbr(token->string_value);
-	  push(&stack, token);
-	}
+	push(&stack, token);
       else if (token->type == OPERATOR)
-	binary_op(token, &stack);
+	{
+	  if ((ret = binary_op(token, &stack, base)) != OK)
+	    return (ret);
+	}
       else if (token->type == U_OPERATOR)
-	unary_op(token, &stack);
+	{
+	  if ((ret = unary_op(token, &stack, base)) != OK)
+	    return (ret);
+	}
     }
-  return (((t_token *) top(stack))->value.int_value);
+  token = top(stack);
+  pop(&stack);
+  if (!token)
+    return (NOT_ENOUGH_VALUES);
+  if (top(stack))
+    return (TOO_MUCH_VALUES);
+  else
+    *res = token;
+  return (OK);
 }
 
 void		display_rpn(t_queue *rpn)
 {
-  void		*data;
   t_token	*token;
 
-  while ((data = front(rpn)))
+  while ((token = front(rpn)))
     {
       dequeue(rpn);
-      token = (t_token *) data;
       my_putstr(token->string_value);
       my_putstr(token->type == U_OPERATOR ? "u" : "b");
       my_putchar(' ');

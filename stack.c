@@ -5,33 +5,30 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:59:25 2014 brendan rius
-** Last update Mon Oct 27 15:59:25 2014 brendan rius
+** Last update Tue Oct 28 14:55:10 2014 brendan rius
 */
 
 #include <stdlib.h>
 #include "stack.h"
 #include "my.h"
+#include "bm_errno.h"
+#include "tokenizer.h"
 
-void		push(t_stack **top, void *data)
+t_rcode		push(t_stack **top, t_token *token)
 {
   t_stack	*new;
 
   if (!top)
-    {
-      my_puterror("Wrong stack pointer. Aborted.\n");
-      return;
-    }
+    return (NULL_REFERENCE);
   if ((new = malloc(sizeof(t_stack))) == NULL)
-    {
-      my_puterror("Malloc failed. Aborted.\n");
-      return;
-    }
-  new->data = data;
+    return (COULD_NOT_MALLOC);
+  new->data = token;
   if (*top)
     new->next = *top;
   else
     new->next = NULL;
   *top = new;
+  return (OK);
 }
 
 void		pop(t_stack **top)
@@ -45,20 +42,18 @@ void		pop(t_stack **top)
   *top = tmp;
 }
 
-void	*top(t_stack *top)
+t_token	*top(t_stack *top)
 {
   if (!top)
     return (NULL);
   return (top->data);
 }
 
-void		free_stack(t_stack **top)
+void	free_stack(t_stack **top)
 {
   if (!top)
     return;
   while (*top)
-    {
-      pop(top);
-    }
+    pop(top);
   free(*top);
 }

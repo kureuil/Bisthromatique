@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:59:15 2014 brendan rius
-** Last update Tue Oct 28 13:39:39 2014 brendan rius
+** Last update Tue Oct 28 14:57:42 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -24,7 +24,7 @@ char	is_operator(t_token *token)
 
 void	stack_to_queue(t_queue *queue, t_stack **stack)
 {
-  enqueue(queue, (t_token *) top(*stack));
+  enqueue(queue, top(*stack));
   pop(stack);
 }
 
@@ -34,10 +34,10 @@ void		handle_operator(t_token *operator,
 {
   t_token	*t;
 
-  t = (t_token *) top(*stack);
+  t = top(*stack);
   while  (t != NULL &&
-	  ((t->type == OPERATOR && t->value.operator.precedence >= operator->value.operator.precedence) ||
-	   (t->type == U_OPERATOR && t->value.operator.precedence > operator->value.operator.precedence)))
+	  ((t->type == OPERATOR && t->operator.precedence >= operator->operator.precedence) ||
+	   (t->type == U_OPERATOR && t->operator.precedence > operator->operator.precedence)))
     {
       stack_to_queue(queue, stack);
       t = (t_token *) top(*stack);
@@ -49,12 +49,12 @@ t_rcode		handle_rparenthesis(t_queue *queue, t_stack **stack)
 {
   t_token	*stktop;
 
-  stktop = (t_token *) top(*stack);
+  stktop = top(*stack);
   while (stktop != NULL &&
 	 stktop->type != LPARENTHESIS)
     {
       stack_to_queue(queue, stack);
-      stktop = (t_token *) top(*stack);
+      stktop = top(*stack);
     }
   if (!stktop)
     return (MISMATCHED_P);
@@ -69,7 +69,7 @@ t_rcode		shuntingyard(t_queue *tokens, t_queue *output)
   int		ret;
 
   stack = NULL;
-  while ((token = (t_token *) front(tokens)) != NULL)
+  while ((token = front(tokens)) != NULL)
     {
       if (token->type == NUMBER)
 	enqueue(output, token);
@@ -84,7 +84,7 @@ t_rcode		shuntingyard(t_queue *tokens, t_queue *output)
 	}
       dequeue(tokens);
     }
-  while ((token = ((t_token *) top(stack))) != NULL)
+  while ((token = top(stack)) != NULL)
     {
       if (token->type == LPARENTHESIS || token->type == RPARENTHESIS)
 	{

@@ -5,14 +5,22 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:54 2014 brendan rius
-** Last update Mon Oct 27 15:55:55 2014 brendan rius
+** Last update Tue Oct 28 15:31:19 2014 brendan rius
 */
 
 #include "tokenizer.h"
+#include "bm_base.h"
 
-int	action_mod(int n1, int n2)
+t_rcode	action_mod(t_base *base,
+		   t_token *n1,
+		   t_token *n2,
+		   t_token *res)
 {
-  return (n1 % n2);
+  base->size++;
+  n1->size++;
+  n2->size++;
+  res->size++;
+  return (OK);
 }
 
 unsigned int	extract_mod(char *c, t_token *token)
@@ -20,8 +28,8 @@ unsigned int	extract_mod(char *c, t_token *token)
   if (!c || c[0] != '%')
     return (0);
   token->type = OPERATOR;
-  token->value.operator.action = &action_mod;
-  token->value.operator.precedence = 10;
+  token->operator.action = &action_mod;
+  token->operator.precedence = 10;
   token->size = 1;
   return (token->size);
 }

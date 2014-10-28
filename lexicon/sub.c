@@ -5,14 +5,24 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Mon Oct 27 15:56:37 2014 brendan rius
+** Last update Tue Oct 28 15:35:45 2014 brendan rius
 */
 
+#include <stdlib.h>
 #include "tokenizer.h"
+#include "bm_base.h"
+#include "bm_errno.h"
 
-int	action_sub(int n1, int n2)
+t_rcode		action_sub(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
 {
-  return (n1 - n2);
+  base->size++;
+  n1->size++;
+  n2->size++;
+  res->size++;
+  return (OK);
 }
 
 unsigned int	extract_sub(char *c, t_token *token, t_token *previous)
@@ -24,9 +34,9 @@ unsigned int	extract_sub(char *c, t_token *token, t_token *previous)
        (previous->type == RPARENTHESIS || previous->type == NUMBER)))
     {
       token->type = OPERATOR;
-      token->value.operator.action = &action_sub;
+      token->operator.action = &action_sub;
+      token->operator.precedence = 5;
       token->size = 1;
-      token->value.operator.precedence = 5;
       return (token->size);
     }
   return (0);

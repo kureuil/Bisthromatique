@@ -5,11 +5,13 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:54:34 2014 brendan rius
-** Last update Mon Oct 27 15:54:35 2014 brendan rius
+** Last update Tue Oct 28 14:48:08 2014 brendan rius
 */
 
 #ifndef STACK_H_
 # define STACK_H_
+
+# include "tokenizer.h"
 
 /*
 ** Represents a singly-linked list, which is a stack
@@ -21,11 +23,11 @@ typedef struct		s_stack
 }			t_stack;
 
 /*
-** Push an element to the top of the stack.
+** Push a token to the top of the stack.
 ** Takes a pointer to a pointer to the first element, so
 ** it can update it
 */
-void	push(t_stack **top, void *data);
+t_rcode	push(t_stack **top, t_token *token);
 
 /*
 ** Pop an element from the stack, without returning it.
@@ -37,7 +39,7 @@ void	pop(t_stack **top);
 /*
 ** Return the top element, without poping it
 */
-void	*top(t_stack *top);
+t_token	*top(t_stack *top);
 
 /*
 ** Free a stack from its top.

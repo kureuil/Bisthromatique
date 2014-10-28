@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 27 15:58:06 2014 brendan rius
-## Last update Tue Oct 28 08:57:08 2014 brendan rius
+## Last update Tue Oct 28 15:45:30 2014 brendan rius
 ##
 
 CC	= gcc
@@ -43,13 +43,15 @@ SRCS	+= $(OP_SRCS)
 OBJS	= $(SRCS:.c=.o)
 
 # Sources, objects and name for queue
-D_SRCS_QUEUE	= tests/tests-queue.c
+D_SRCS_QUEUE	= tests/tests-queue.c \
+		tokenizer.c
 D_SRCS_QUEUE	+= $(SRCS_QUEUE)
 D_OBJS_QUEUE	= $(D_SRCS_QUEUE:.c=.o)
 D_NAME_QUEUE	= tests-queue
 
 # Sources, objects and name for stack
 D_SRCS_STACK	= stack.c \
+		tokenizer.c \
 		tests/tests-stack.c
 D_OBJS_STACK	= $(D_SRCS_STACK:.c=.o)
 D_NAME_STACK	= tests-stack

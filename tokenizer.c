@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 16:00:30 2014 brendan rius
-** Last update Mon Oct 27 16:28:15 2014 brendan rius
+** Last update Tue Oct 28 16:11:03 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -24,7 +24,7 @@ int		extract_from_lexicon(t_lexicon *lexicon,
     return (0);
   while (lexicon != NULL)
     {
-      if ((*(lexicon->extract_token))(s, token, (t_token *) rear(queue)))
+      if ((*(lexicon->extract_token))(s, token, rear(queue)))
 	{
 	  if ((token->string_value = malloc(token->size + 1)) == NULL)
 	    return (free_token(token));
@@ -45,7 +45,8 @@ t_queue		*get_tokens(t_lexicon *lexicon, char *s)
 
   if (!s)
     return (NULL);
-  queue = new_queue();
+  queue = NULL;
+  init_queue(&queue);
   while (*s)
     {
       if (*s != ' ' && *s != '\t')

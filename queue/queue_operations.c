@@ -5,23 +5,22 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 16:55:33 2014 brendan rius
-** Last update Mon Oct 27 16:58:51 2014 brendan rius
+** Last update Tue Oct 28 15:14:49 2014 brendan rius
 */
 
 #include <stdlib.h>
 #include "queue.h"
 #include "my.h"
 
-void		enqueue(t_queue *queue, void *element)
+struct s_token;
+
+t_rcode		enqueue(t_queue *queue, struct s_token *token)
 {
   t_lqueue	*new;
 
   if (!queue || (new = malloc(sizeof(t_queue))) == NULL)
-    {
-      my_puterror("Malloc failed. Aborted.\n");
-      return;
-    }
-  new->data = element;
+    return (COULD_NOT_MALLOC);
+  new->token = token;
   new->next = NULL;
   if (queue->rear)
     {
@@ -33,6 +32,7 @@ void		enqueue(t_queue *queue, void *element)
       queue->rear = new;
       queue->front = new;
     }
+  return (OK);
 }
 
 void		dequeue(t_queue *queue)
@@ -46,18 +46,18 @@ void		dequeue(t_queue *queue)
   queue->front = new_front;
 }
 
-void	*front(t_queue *queue)
+struct s_token	*front(t_queue *queue)
 {
   if (!queue || !(queue->front))
     return (NULL);
   else
-    return (queue->front->data);
+    return (queue->front->token);
 }
 
-void	*rear(t_queue *queue)
+struct s_token	*rear(t_queue *queue)
 {
   if (!queue || !(queue->rear))
     return (NULL);
   else
-    return (queue->rear->data);
+    return (queue->rear->token);
 }

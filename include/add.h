@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:51:46 2014 brendan rius
-** Last update Mon Oct 27 17:23:24 2014 brendan rius
+** Last update Tue Oct 28 15:25:29 2014 brendan rius
 */
 
 #ifndef ADD_H_
@@ -13,7 +13,12 @@
 
 struct s_token;
 
-int	action_add(int n1, int n2);
+struct s_base;
+
+t_rcode	action_add(struct s_base *base,
+		   struct s_token *n1,
+		   struct s_token *n2,
+		   struct s_token *res);
 
 unsigned int	extract_add(char *, struct s_token *, struct s_token *);
 

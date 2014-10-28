@@ -5,14 +5,20 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:14 2014 brendan rius
-** Last update Mon Oct 27 15:56:14 2014 brendan rius
+** Last update Tue Oct 28 15:37:18 2014 brendan rius
 */
 
 #include "tokenizer.h"
+#include "bm_base.h"
 
-int	action_negate(int n)
+t_rcode	action_negate(t_base *base,
+		      t_token *n,
+		      t_token *res)
 {
-  return (-n);
+  base->size++;
+  n->size++;
+  res->size++;
+  return (OK);
 }
 
 unsigned int	extract_negate(char *c, t_token *token)
@@ -22,8 +28,8 @@ unsigned int	extract_negate(char *c, t_token *token)
   if (c[0] == '-')
     {
       token->type = U_OPERATOR;
-      token->value.operator.action = &action_negate;
-      token->value.operator.precedence = 15;
+      token->operator.action = &action_negate;
+      token->operator.precedence = 15;
       token->size = 1;
       return (token->size);
     }
