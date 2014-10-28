@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:59:52 2014 brendan rius
-** Last update Tue Oct 28 15:45:02 2014 brendan rius
+** Last update Tue Oct 28 17:59:04 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -21,7 +21,7 @@ int		main(int argc, char **argv)
 
   i = 0;
   queue = NULL;
-  init_queue(queue);
+  init_queue(&queue);
   while (i < argc)
     {
       token = new_token();
