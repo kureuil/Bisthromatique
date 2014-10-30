@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 27 15:58:06 2014 brendan rius
-## Last update Tue Oct 28 17:58:21 2014 brendan rius
+## Last update Thu Oct 30 13:39:02 2014 brendan rius
 ##
 
 CC	= gcc
@@ -36,7 +36,8 @@ SRCS	= main.c \
 	tokenizer.c \
 	shuntingyard.c \
 	postfix.c \
-	bm_errno.c
+	bm_errno.c \
+	bm_base.c
 SRCS	+= $(SRCS_QUEUE)
 SRCS	+= $(OP_SRCS)
 

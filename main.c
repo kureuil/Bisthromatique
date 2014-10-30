@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:57:15 2014 brendan rius
-** Last update Tue Oct 28 17:52:29 2014 brendan rius
+** Last update Thu Oct 30 13:34:53 2014 brendan rius
 */
 
 #include <unistd.h>
@@ -64,8 +64,7 @@ int		main(int ac, char **argv)
       my_puterror("Wrong number of args\n");
       return (1);
     }
-  base.size = my_strlen(argv[1]);
-  base.string = argv[1];
+  new_base(argv[1], &base);
   size = my_getnbr(argv[3]);
   buffer = malloc(size + 1);
   buflen = 0;

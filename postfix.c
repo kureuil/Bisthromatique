@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:58:57 2014 brendan rius
-** Last update Tue Oct 28 16:31:02 2014 brendan rius
+** Last update Thu Oct 30 13:09:41 2014 brendan rius
 */
 
 #include <stdlib.h>
@@ -18,7 +18,9 @@
 
 /*
 ** Can be optimized by not poping the last number, using it as the result.
-** TODO: check errcode (division by zero...)
+** TODO: check errcode (division by zero...).
+** THIS FUNCTION DOES NOT FREE USED TOKENS, IT IS OPERATIONS' ROLE (in order
+** to increase perfs)
 */
 t_rcode		binary_op(t_token *token, t_stack **stack, t_base *base)
 {
@@ -40,8 +42,6 @@ t_rcode		binary_op(t_token *token, t_stack **stack, t_base *base)
   n2 = token;
   pop(stack);
   (*fct)(base, n1, n2, res);
-  free_token(n1);
-  free_token(n2);
   push(stack, res);
   return (OK);
 }
@@ -65,7 +65,6 @@ t_rcode		unary_op(t_token *token, t_stack **stack, t_base *base)
   pop(stack);
   (*fct)(base, n, res);
   push(stack, res);
-  free(n);
   return (OK);
 }
 
