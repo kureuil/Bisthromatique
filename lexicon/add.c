@@ -5,10 +5,9 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Thu Oct 30 13:42:47 2014 brendan rius
+** Last update Thu Oct 30 13:51:15 2014 brendan rius
 */
 
-#include <stdio.h>
 #include <stdlib.h>
 #include "bm_errno.h"
 #include "tokenizer.h"
@@ -46,10 +45,7 @@ t_rcode	action_add(struct s_base *base,
   int	tmp;
 
   reorder_tokens(&n1, &n2);
-  if (n1->string_value[0] == '0')
-    res->size = n1->size;
-  else
-    res->size = n1->size + 1;
+  res->size = n1->size + 1;
   if (!(res->string_value = malloc(res->size + 1)))
     return (COULD_NOT_MALLOC);
   res->string_value[res->size] = '\0';

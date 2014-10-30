@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Thu Oct 30 13:11:05 2014 brendan rius
-** Last update Thu Oct 30 13:40:20 2014 brendan rius
+** Last update Thu Oct 30 14:12:54 2014 brendan rius
 */
 
 #include "bm_base.h"

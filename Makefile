@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 27 15:58:06 2014 brendan rius
-## Last update Thu Oct 30 13:39:02 2014 brendan rius
+## Last update Thu Oct 30 14:03:16 2014 brendan rius
 ##
 
 CC	= gcc
@@ -16,9 +16,7 @@ CFLAGS	+= -ansi -pedantic
 CFLAGS	+= -g -I ./include/ -L ./lib/ -l my
 LDFLAGS += -g -I ./include/ -L ./lib/ -l my
 
-SRCS_QUEUE	= queue/queue.c \
-		queue/queue_operations.c
-
+# [MODULE] Sources of operations
 OP_SRCS	= lexicon/add.c \
 	lexicon/mul.c \
 	lexicon/div.c \
@@ -29,53 +27,56 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/negate.c \
 	lexicon/unary_plus.c
 
+# [MODULE] Sources needed to use queues
+SRCS_QUEUE	= queue/queue.c \
+		queue/queue_operations.c
+
+# [MODULE] Sources needed to use lexicon
+SRCS_LEXICON	= lexicon.c
+SRCS_LEXICON	+= $(OP_SRCS)
+
+# [MODULE] Sources needed to use the tokenizer
+SRCS_TOKEN	= tokenizer.c
+SRCS_TOKEN	+= $(SRCS_LEXICON)
+SRCS_TOKEN	+= $(SRCS_QUEUE)
+
+# MAIN EXECUTABLE
 NAME	= calc
 SRCS	= main.c \
-	lexicon.c \
 	stack.c \
-	tokenizer.c \
 	shuntingyard.c \
 	postfix.c \
 	bm_errno.c \
 	bm_base.c
-SRCS	+= $(SRCS_QUEUE)
-SRCS	+= $(OP_SRCS)
-
+SRCS	+= $(SRCS_TOKEN)
 OBJS	= $(SRCS:.c=.o)
 
-# Sources, objects and name for queue
-D_SRCS_QUEUE	= tests/tests-queue.c \
-		tokenizer.c
-D_SRCS_QUEUE	+= $(SRCS_QUEUE)
+# [TESTS] Sources, objects and name for queue
+D_SRCS_QUEUE	= tests/tests-queue.c
+D_SRCS_QUEUE	+= $(SRCS_TOKEN)
 D_OBJS_QUEUE	= $(D_SRCS_QUEUE:.c=.o)
 D_NAME_QUEUE	= tests-queue
 
-# Sources, objects and name for stack
+# [TESTS] Sources, objects and name for stack
 D_SRCS_STACK	= stack.c \
-		tokenizer.c \
 		tests/tests-stack.c
+D_SRCS_STACK	+= $(SRCS_TOKEN)
 D_OBJS_STACK	= $(D_SRCS_STACK:.c=.o)
 D_NAME_STACK	= tests-stack
 
-# Sources, objects and name for token
-D_SRCS_TOKEN	= tokenizer.c \
-		tests/tests-tokenizer.c \
-		lexicon.c
-D_SRCS_TOKEN	+= $(SRCS_QUEUE)
-D_SRCS_TOKEN	+= $(OP_SRCS)
+# [TESTS] Sources, objects and name for token
+D_SRCS_TOKEN	= tests/tests-tokenizer.c
+D_SRCS_TOKEN	+= $(SRCS_TOKEN)
 D_OBJS_TOKEN	= $(D_SRCS_TOKEN:.c=.o)
 D_NAME_TOKEN	= tests-tokenizer
 
-# Sources, objects and name for shunting yard
+# [TESTS] Sources, objects and name for shunting yard
 D_SRCS_SHYARD	= shuntingyard.c \
 		stack.c \
-		tokenizer.c \
-		lexicon.c \
 		postfix.c \
 		bm_errno.c \
 		tests/tests-shyard.c
-D_SRCS_SHYARD	+= $(SRCS_QUEUE)
-D_SRCS_SHYARD	+= $(OP_SRCS)
+D_SRCS_SHYARD	+= $(SRCS_TOKEN)
 D_OBJS_SHYARD	= $(D_SRCS_SHYARD:.c=.o)
 D_NAME_SHYARD	= tests-shyard
 

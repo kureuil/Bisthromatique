@@ -5,12 +5,18 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Wed Oct 22 16:22:06 2014 brendan rius
-** Last update Wed Oct 22 16:26:08 2014 brendan rius
+** Last update Thu Oct 30 14:21:00 2014 brendan rius
 */
 
 void	*my_memset(void *s, char c, int n)
 {
-  while (n--)
-    *((char*) s) = c;
+  char	*sc;
+
+  sc = (char *) s;
+  while (n)
+    {
+      *(sc + n) = c;
+      --n;
+    }
   return (s);
 }
