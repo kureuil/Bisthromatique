@@ -8,7 +8,6 @@
 ** Last update Mon Oct 27 15:56:22 2014 brendan rius
 */
 
-#include "my.h"
 #include "tokenizer.h"
 #include "bm_base.h"
 
