@@ -28,9 +28,10 @@ int	main(int argc, char **argv)
       my_puterror("Wrong number of args\n");
       return (0);
     }
+  tokens = NULL;
   rpn = NULL;
   lexicon = get_classic_lexicon();
-  tokens = get_tokens(lexicon, argv[1]);
+  bm_get_tokens(lexicon, argv[1], tokens);
   if ((ret = shuntingyard(tokens, rpn)) != OK)
     {
       my_puterror(bm_get_error(ret));

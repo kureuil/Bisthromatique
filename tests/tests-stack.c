@@ -18,12 +18,18 @@ int		main(int argc, char **argv)
   int		i;
   t_stack	*stack;
   t_token	*token;
+  t_rcode	ret;
 
   stack = NULL;
+  token = NULL;
   i = 0;
   while (i < argc)
     {
-      token = new_token();
+      if ((ret = bm_new_token(&token)) != OK)
+	{
+	  free_stack(&stack);
+	  return (ret);
+	}
       token->string_value = argv[i];
       push(&stack, token);
       ++i;
@@ -34,5 +40,6 @@ int		main(int argc, char **argv)
       my_putchar('\n');
       pop(&stack);
     }
+  free_stack(&stack);
   return (0);
 }

@@ -14,66 +14,68 @@
 #include "queue.h"
 #include "my.h"
 
-int		extract_from_lexicon(t_lexicon *lexicon,
-				     t_queue *queue,
-				     char *s)
+t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
+					t_queue *queue,
+					char *s,
+					int *shift)
 {
   t_token	*token;
+  t_rcode	ret;
 
-  if (!(token = new_token()))
-    return (0);
+  token = NULL;
+  if ((ret = bm_new_token(&token)) != OK)
+    return (ret);
   while (lexicon != NULL)
     {
       if ((*(lexicon->extract_token))(s, token, rear(queue)))
 	{
-	  if ((token->string_value = malloc(token->size + 1)) == NULL)
-	    return (free_token(token));
-	  my_strncpy(token->string_value, s, token->size);
-	  token->string_value[token->size] = '\0';
+	  token->string_value = s;
 	  enqueue(queue, token);
-	  return (token->size);
+	  *shift = token->size;
+	  return (OK);
 	}
       lexicon = lexicon->next;
     }
-  return (0);
+  *shift = 0;
+  return (OK);
 }
 
-t_queue		*get_tokens(t_lexicon *lexicon, char *s)
+t_rcode		bm_get_tokens(t_lexicon *lexicon, char *s, t_queue *tokens)
 {
   int		shift;
-  t_queue	*queue;
+  t_rcode	ret;
 
-  if (!s)
-    return (NULL);
-  queue = NULL;
-  init_queue(&queue);
+  if (!s || !tokens)
+    return (NULL_REFERENCE);
   while (*s)
     {
       if (*s != ' ' && *s != '\t')
-	shift = extract_from_lexicon(lexicon, queue, s);
+	{
+	  if ((ret = bm_extract_from_lexicon(lexicon, tokens, s, &shift)) != OK)
+	    return (ret);
+	}
       else
 	shift = 1;
       s += shift;
     }
-  return (queue);
+  return (OK);
 }
 
-int	free_token(t_token *token)
+int	bm_free_token(t_token *token)
 {
   if (!token)
     return (0);
-  if (token->string_value)
-    free(token->string_value);
   free(token);
   return (0);
 }
 
-t_token		*new_token()
+t_rcode	bm_new_token(t_token **token)
 {
-  t_token	*token;
-
-  if ((token = malloc(sizeof(t_token))) == NULL)
-    return (NULL);
-  token->string_value = NULL;
-  return (token);
+  if ((*token = malloc(sizeof(t_token))) == NULL)
+    return (COULD_NOT_MALLOC);
+  (*token)->string_value = NULL;
+  (*token)->sign = POSITIVE;
+  (*token)->type = UNDEFINED;
+  (*token)->size = 0;
+  return (OK);
 }

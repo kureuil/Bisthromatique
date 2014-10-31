@@ -28,8 +28,11 @@ t_rcode		binary_op(t_token *token, t_stack **stack, t_base *base)
   t_token	*n1;
   t_token	*n2;
   t_token	*res;
+  t_rcode	ret;
 
-  res = new_token();
+  res = NULL;
+  if ((ret = bm_new_token(&res)) != OK)
+    return (ret);
   fct = token->operator.action;
   token = top(*stack);
   if (token == NULL)

@@ -18,13 +18,19 @@ int		main(int argc, char **argv)
   int		i;
   t_queue	*queue;
   t_token	*token;
+  t_rcode	ret;
 
   i = 0;
   queue = NULL;
   init_queue(&queue);
+  token = NULL;
   while (i < argc)
     {
-      token = new_token();
+      if ((ret = bm_new_token(&token)) != OK)
+	{
+	  free_queue(queue);
+	  return (ret);
+	}
       token->string_value = argv[i];
       enqueue(queue, token);
       ++i;

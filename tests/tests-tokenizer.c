@@ -8,6 +8,7 @@
 ** Last update Mon Oct 27 16:46:05 2014 brendan rius
 */
 
+#include <stdlib.h>
 #include "my.h"
 #include "queue.h"
 #include "tokenizer.h"
@@ -38,8 +39,9 @@ int		main(int argc, char **argv)
       my_puterror("Wrong number of args\n");
       return (0);
     }
+  tokens = NULL;
   lexicon = get_classic_lexicon();
-  tokens = get_tokens(lexicon, argv[1]);
+  bm_get_tokens(lexicon, argv[1], tokens);
   while ((token = (t_token *) front(tokens)))
     {
       dequeue(tokens);
@@ -47,7 +49,7 @@ int		main(int argc, char **argv)
       my_putstr("\t\t");
       my_putstr(token->string_value);
       my_putchar('\n');
-      free_token(token);
+      bm_free_token(token);
     }
   free_queue(tokens);
   free_lexicon(lexicon);

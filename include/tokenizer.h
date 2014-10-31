@@ -11,9 +11,11 @@
 #ifndef TOKENIZER_H_
 # define TOKENIZER_H_
 
+# include "bm_errno.h"
 # include "operators.h"
-# include "lexicon.h"
-# include "queue.h"
+
+struct s_queue;
+struct s_lexicon;
 
 /*
 ** Define the different token types
@@ -24,9 +26,14 @@ typedef enum	e_types
     LPARENTHESIS,
     RPARENTHESIS,
     OPERATOR,
-    U_OPERATOR
+    U_OPERATOR,
+    UNDEFINED
   }		t_ttype;
 
+/*
+** Define the two different signs of a token. We assume
+** that zero has a positive sign.
+*/
 typedef enum	e_sign
   {
     POSITIVE,
@@ -37,30 +44,31 @@ typedef enum	e_sign
 ** A token has a type, a value (which is either an operator structure,
 ** or a number. A token also contains the its size in the base string.
 */
-typedef struct	s_token
+typedef struct		s_token
 {
-  t_ttype	type;
-  char		*string_value;
-  int		size;
-  t_operator	operator;
-  t_sign	sign;
-}		t_token;
+  t_ttype		type;
+  char			*string_value;
+  int			size;
+  struct s_operator	operator;
+  t_sign		sign;
+}			t_token;
 
 /*
-** Get the first token of a string and returns it.
-** Return NULL in case of error.
+** Extract all tokens from a string, using a lexicon.
 ** All the tokens should be correctly defined in the lexicon.
 */
-t_queue	*get_tokens(t_lexicon *lexicon, char *s);
+t_rcode	bm_get_tokens(struct s_lexicon *lexicon,
+		      char *s,
+		      struct s_queue *tokens);
 
 /*
 ** Free a token. You should always use this function instead of "free()"
 */
-int	free_token(t_token *token);
+int	bm_free_token(t_token *token);
 
 /*
 ** Create a new empty token
 */
-t_token	*new_token();
+t_rcode	bm_new_token(t_token **token);
 
 #endif /* !TOKENIZER_H_ */
