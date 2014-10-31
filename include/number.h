@@ -13,6 +13,10 @@
 
 struct s_token;
 
-unsigned int	extract_number(char *c, struct s_token *token);
+struct s_base;
+
+unsigned int	extract_number(char *,
+			       struct s_token *,
+			       struct s_base *);
 
 #endif /* !NUMBER_H_ */

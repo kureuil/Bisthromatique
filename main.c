@@ -41,7 +41,7 @@ int		bm_eval(char *str, t_token **res, t_base *base)
   init_queue(&rpn);
   init_queue(&tokens);
   lexicon = get_classic_lexicon();
-  if ((ret = bm_get_tokens(lexicon, str, tokens)) != OK)
+  if ((ret = bm_get_tokens(lexicon, str, tokens, base)) != OK)
     {
       free_all(tokens, rpn, lexicon);
       return (ret);

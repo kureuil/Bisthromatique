@@ -20,6 +20,9 @@ t_rcode	action_add(struct s_base *base,
 		   struct s_token *n2,
 		   struct s_token *res);
 
-unsigned int	extract_add(char *, struct s_token *, struct s_token *);
+unsigned int	extract_add(char *,
+			    struct s_token *,
+			    struct s_base *,
+			    struct s_token *);
 
 #endif /* !ADD_H_ */

@@ -12,12 +12,13 @@
 #include "tokenizer.h"
 #include "lexicon.h"
 #include "queue.h"
+#include "bm_base.h"
 #include "my.h"
 
 t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
 					t_queue *queue,
-					char *s,
-					int *shift)
+					char **s,
+					t_base *base)
 {
   t_token	*token;
   t_rcode	ret;
@@ -27,22 +28,23 @@ t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
     return (ret);
   while (lexicon != NULL)
     {
-      if ((*(lexicon->extract_token))(s, token, rear(queue)))
+      if ((*(lexicon->extract_token))(*s, token, base, rear(queue)))
 	{
-	  token->string_value = s;
+	  token->string_value = *s;
 	  enqueue(queue, token);
-	  *shift = token->size;
+	  *s += token->size;
 	  return (OK);
 	}
       lexicon = lexicon->next;
     }
-  *shift = 0;
   return (OK);
 }
 
-t_rcode		bm_get_tokens(t_lexicon *lexicon, char *s, t_queue *tokens)
+t_rcode		bm_get_tokens(t_lexicon *lexicon,
+			      char *s,
+			      t_queue *tokens,
+			      t_base *base)
 {
-  int		shift;
   t_rcode	ret;
 
   if (!s || !tokens)
@@ -51,12 +53,11 @@ t_rcode		bm_get_tokens(t_lexicon *lexicon, char *s, t_queue *tokens)
     {
       if (*s != ' ' && *s != '\t')
 	{
-	  if ((ret = bm_extract_from_lexicon(lexicon, tokens, s, &shift)) != OK)
+	  if ((ret = bm_extract_from_lexicon(lexicon, tokens, &s, base)) != OK)
 	    return (ret);
 	}
       else
-	shift = 1;
-      s += shift;
+	s++;
     }
   return (OK);
 }

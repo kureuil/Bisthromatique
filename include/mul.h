@@ -18,6 +18,7 @@ t_rcode	action_mul(struct s_base *base,
 		   struct s_token *n2,
 		   struct s_token *res);
 
-unsigned int	extract_mul(char *c, struct s_token *token);
+unsigned int	extract_mul(char *c,
+			    struct s_token *token);
 
 #endif /* !MUL_H_ */

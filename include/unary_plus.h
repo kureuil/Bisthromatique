@@ -19,6 +19,7 @@ t_rcode	action_unary_plus(struct s_base *base,
 			  struct s_token *n,
 			  struct s_token *res);
 
-unsigned int	extract_unary_plus(char *, struct s_token *);
+unsigned int	extract_unary_plus(char *,
+				   struct s_token *);
 
 #endif /* !UNARY_PLUS_H_ */

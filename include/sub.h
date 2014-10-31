@@ -18,6 +18,9 @@ t_rcode	action_sub(struct s_base *base,
 		   struct s_token *n2,
 		   struct s_token *res);
 
-unsigned int	extract_sub(char *c, struct s_token *token, struct s_token *p);
+unsigned int	extract_sub(char *,
+			    struct s_token *,
+			    struct s_base *,
+			    struct s_token *);
 
 #endif /* !SUB_H_ */

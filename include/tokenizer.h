@@ -16,6 +16,7 @@
 
 struct s_queue;
 struct s_lexicon;
+struct s_base;
 
 /*
 ** Define the different token types
@@ -59,7 +60,8 @@ typedef struct		s_token
 */
 t_rcode	bm_get_tokens(struct s_lexicon *lexicon,
 		      char *s,
-		      struct s_queue *tokens);
+		      struct s_queue *tokens,
+		      struct s_base *base);
 
 /*
 ** Free a token. You should always use this function instead of "free()"

@@ -58,8 +58,11 @@ t_rcode		unary_op(t_token *token, t_stack **stack, t_base *base)
   t_rcode	(*fct)();
   t_token	*n;
   t_token	*res;
+  t_rcode	ret;
 
   res = NULL;
+  if ((ret = bm_new_token(&res)) != OK)
+    return (ret);
   fct = token->operator.action;
   token = top(*stack);
   if (token == NULL)

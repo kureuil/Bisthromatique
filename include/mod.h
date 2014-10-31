@@ -20,6 +20,7 @@ t_rcode	action_mod(struct s_base *base,
 		   struct s_token *n2,
 		   struct s_token *res);
 
-unsigned int	extract_mod(char *c, struct s_token *token);
+unsigned int	extract_mod(char *c,
+			    struct s_token *token);
 
 #endif /* !MOD_H_ */

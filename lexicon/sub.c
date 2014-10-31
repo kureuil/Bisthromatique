@@ -25,8 +25,12 @@ t_rcode		action_sub(t_base *base,
   return (OK);
 }
 
-unsigned int	extract_sub(char *c, t_token *token, t_token *previous)
+unsigned int	extract_sub(char *c,
+			    t_token *token,
+			    t_base *base,
+			    t_token *previous)
 {
+  base->size = base->size;
   if (!c)
     return (0);
   if (c[0] == '-' &&
