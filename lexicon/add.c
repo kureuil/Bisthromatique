@@ -34,6 +34,16 @@ int	get_value_at_index(struct s_base *base, char *number, int index)
     return (0);
 }
 
+t_rcode	clean_number_str(t_base *base, t_token token)
+{
+  while (get_value_at_index(base, token->string_value, 0) == -1)
+    {
+      token->size--;
+      token->string_value++;
+    }
+  return (OK);
+}
+
 t_rcode	action_add(struct s_base *base,
 		   struct s_token *n1,
 		   struct s_token *n2,
@@ -65,6 +75,7 @@ t_rcode	action_add(struct s_base *base,
       res->string_value[cursor + shift_res_n1] = base->string[tmp % base->size];
       --cursor;
     }
+  clean_number_str(base, res);
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);
