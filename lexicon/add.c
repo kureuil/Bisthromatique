@@ -34,7 +34,7 @@ int	get_value_at_index(struct s_base *base, char *number, int index)
     return (0);
 }
 
-t_rcode	clean_number_str(t_base *base, t_token token)
+t_rcode	clean_number_str(t_base *base, t_token *token)
 {
   while (get_value_at_index(base, token->string_value, 0) == -1)
     {

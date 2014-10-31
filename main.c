@@ -66,6 +66,14 @@ int	bm_exit(char *s)
   return (1);
 }
 
+void	display_res(t_token *res)
+{
+  if (res->sign == NEGATIVE)
+    my_putchar('-');
+  write(1, res->string_value, res->size);
+  my_putchar('\n');
+}
+
 int		main(int ac, char **argv)
 {
   int		ret;
@@ -88,8 +96,7 @@ int		main(int ac, char **argv)
   buffer[buflen] = '\0';
   if ((ret = bm_eval(buffer, &res, &base)) != OK)
     return (bm_exit(bm_get_error(ret)));
-  write(1, res->string_value, res->size);
-  my_putchar('\n');
+  display_res(res);
   bm_free_token(res);
   free(buffer);
   return (OK);

@@ -11,7 +11,7 @@
 CC	= gcc
 RM	= rm -f
 CP	= cp
-CFLAGS	+= -Wextra -Wall -Werror
+CFLAGS	+= -Wextra -Wall
 CFLAGS	+= -ansi -pedantic
 CFLAGS	+= -g -I ./include/ -L ./lib/ -l my
 LDFLAGS += -g -I ./include/ -L ./lib/ -l my

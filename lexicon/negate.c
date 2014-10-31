@@ -8,16 +8,20 @@
 ** Last update Wed Oct 29 15:49:22 2014 brendan rius
 */
 
+#include <stdlib.h>
 #include "tokenizer.h"
 #include "bm_base.h"
 
+/*
+** We could speed this up by avoiding copying n into res
+*/
 t_rcode	action_negate(t_base *base,
 		      t_token *n,
 		      t_token *res)
 {
-  base->size++;
-  n->size++;
-  res->size++;
+  *res = *n;
+  res->sign = res->sign == POSITIVE ? NEGATIVE : POSITIVE;
+  free(n);
   return (OK);
 }
 
