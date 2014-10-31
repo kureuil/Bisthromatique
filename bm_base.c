@@ -18,6 +18,8 @@ t_rcode	new_base(char *string, t_base *base)
   if (!string)
     return (NULL_REFERENCE);
   base->size = my_strlen(string);
+  if (base->size == 0)
+    return (EMPTY_BASE);
   if (base->size < 2)
     return (WRONG_BASE_LEN);
   i = 0;

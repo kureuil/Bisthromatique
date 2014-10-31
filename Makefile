@@ -25,7 +25,8 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/parenthesis.c \
 	lexicon/number.c \
 	lexicon/negate.c \
-	lexicon/unary_plus.c
+	lexicon/unary_plus.c \
+	lexicon/utils.c
 
 # [MODULE] Sources needed to use queues
 SRCS_QUEUE	= queue/queue.c \

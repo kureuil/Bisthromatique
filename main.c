@@ -62,7 +62,8 @@ int		bm_eval(char *str, t_token **res, t_base *base)
 
 int	bm_exit(char *s)
 {
-  my_putstr(s);
+  my_puterror("error: ");
+  my_puterror(s);
   return (1);
 }
 
@@ -86,7 +87,8 @@ int		main(int ac, char **argv)
 
   if (ac < 4)
     return (bm_exit("Wrong number of args\n"));
-  new_base(argv[1], &base);
+  if ((ret = new_base(argv[1], &base)) != OK)
+    return (bm_exit(bm_get_error(ret)));
   size = my_getnbr(argv[3]);
   if ((buffer = malloc(size + 1)) == NULL)
     return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));

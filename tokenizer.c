@@ -37,6 +37,10 @@ t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
 	}
       lexicon = lexicon->next;
     }
+  if (**s == ' ' || **s == '\t')
+    ++*s;
+  else
+    return (INVALID_CHARACTER);
   return (OK);
 }
 
