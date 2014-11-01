@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Tue Oct 28 15:35:45 2014 brendan rius
+** Last update Sat Nov  1 16:03:23 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -17,8 +17,8 @@
 #include "my.h"
 
 t_rcode		action_sub(t_base *base,
-			   t_token *n1,
 			   t_token *n2,
+			   t_token *n1,
 			   t_token *res)
 {
   int	carry;
