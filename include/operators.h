@@ -12,15 +12,15 @@
 # define OPERATORS_H_
 
 # include "bm_errno.h"
-# include "add.h"
-# include "sub.h"
-# include "mul.h"
-# include "div.h"
-# include "mod.h"
-# include "negate.h"
-# include "parenthesis.h"
-# include "number.h"
-# include "unary_plus.h"
+# include "lexicon/add.h"
+# include "lexicon/sub.h"
+# include "lexicon/mul.h"
+# include "lexicon/div.h"
+# include "lexicon/mod.h"
+# include "lexicon/negate.h"
+# include "lexicon/parenthesis.h"
+# include "lexicon/number.h"
+# include "lexicon/unary_plus.h"
 
 /*
 ** Define an operator: it has a precedence (between
