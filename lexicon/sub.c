@@ -13,6 +13,8 @@
 #include "bm_base.h"
 #include "bm_errno.h"
 #include "bm_lexicon_utils.h"
+#include "operators.h"
+#include "my.h"
 
 t_rcode		action_sub(t_base *base,
 			   t_token *n1,
@@ -24,6 +26,10 @@ t_rcode		action_sub(t_base *base,
   int	shift_n1_n2;
   int	tmp;
 
+  if (n2->sign == NEGATIVE && n1->sign == POSITIVE)
+    return (action_add(base, n1, n2, res));
+  if (n1->sign == NEGATIVE && n2->sign == POSITIVE)
+    reorder_tokens(&n1, &n2);
   res->size = n1->size > n2->size ? n1->size : n2->size;
   if (!(res->string_value = malloc(res->size)))
     return (COULD_NOT_MALLOC);
@@ -33,27 +39,27 @@ t_rcode		action_sub(t_base *base,
   while (cursor >= 0 || carry)
     {
       tmp = (get_value_at_index(base, n1->string_value, cursor) -
-	     (get_value_at_index(base, n2->string_value, cursor - shift_n1_n2) +
-	      carry));
-      if (tmp < 0)
+	     get_value_at_index(base, n2->string_value, cursor - shift_n1_n2) -
+	     carry);
+      if (tmp <= 0 && cursor > 0)
 	{
-	  if (cursor > 0)
-	    {
-	      carry = 1;
-	      tmp = base->size + tmp;
-	      res->string_value[cursor] = base->string[tmp];
-	    }
-	  else
-	    {
-	      carry = 0;
-	      res->sign = NEGATIVE;
-	      res->string_value[cursor] = base->string[tmp < 0 ? -tmp : tmp];
-	    }
+	  res->string_value[cursor] = base->string[base->size + tmp];
+	  carry = 1;
+	}
+      else if (tmp <= 0 && cursor < 0)
+	{
+	  res->string_value[cursor] = base->string[-tmp];
+	  res->sign = NEGATIVE;
+	  carry = 0;
+	}
+      else if (tmp > 0)
+	{
+	  res->string_value[cursor] = base->string[tmp];
+	  carry = 0;
 	}
       else
 	{
-	  carry = 0;
-	  res->string_value[cursor] = base->string[tmp];
+	  my_putstr("fuck\n");
 	}
       --cursor;
     }
