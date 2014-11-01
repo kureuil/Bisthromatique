@@ -8,7 +8,7 @@
 ** Last update Tue Oct 28 15:27:39 2014 brendan rius
 */
 
-#include "tokenizer.h"
+#include "tokens.h"
 #include "bm_base.h"
 
 t_rcode	action_mul(t_base *base,

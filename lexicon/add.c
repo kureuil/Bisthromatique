@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include "bm_errno.h"
 #include "bm_lexicon_utils.h"
-#include "tokenizer.h"
+#include "tokens.h"
 #include "bm_base.h"
 #include "my.h"
 
@@ -29,6 +29,7 @@ t_rcode	action_add(t_base *base,
   res->size = n1->size + 1;
   if (!(res->string_value = malloc(res->size)))
     return (COULD_NOT_MALLOC);
+  res->real_address = res->string_value;
   carry = 0;
   cursor = n1->size - 1;
   shift_n1_n2 = n1->size - n2->size;
@@ -42,8 +43,6 @@ t_rcode	action_add(t_base *base,
       --cursor;
     }
   clean_number_str(base, res);
-  bm_free_token(n1);
-  bm_free_token(n2);
   return (OK);
 }
 
@@ -52,8 +51,7 @@ unsigned int	extract_add(char *c,
 			    t_base *base,
 			    t_token *previous)
 {
-  base->size = base->size;
-  if (!c)
+   if (!c)
     return (0);
   if (c[0] == '+' &&
       (previous &&

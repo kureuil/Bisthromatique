@@ -9,7 +9,6 @@
 */
 
 #include <stdlib.h>
-#include "tokenizer.h"
 #include "operators.h"
 #include "lexicon.h"
 

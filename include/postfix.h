@@ -11,16 +11,15 @@
 #ifndef POSTFIX_H_
 # define POSTFIX_H_
 
-struct s_queue;
-
 struct s_base;
 
 struct s_token;
 
-t_rcode	eval_postfix(struct s_queue *rpn,
-		       struct s_token **res,
-		       struct s_base *base);
+struct s_stack;
 
-void	display_rpn(t_queue *rpn);
+t_rcode	bm_perfom_op(struct s_token *operator,
+		     struct s_stack **op_stack,
+		     struct s_stack **output,
+		     struct s_base *base);
 
 #endif /* !POSTFIX_H_ */

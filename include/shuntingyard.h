@@ -11,9 +11,30 @@
 #ifndef SHUNTINGYARD_H_
 # define SHUNTINGYARD_H_
 
-# include "queue.h"
 # include "bm_errno.h"
 
-t_rcode	shuntingyard(t_queue *tokens, t_queue *output);
+struct s_base;
+
+struct s_token;
+
+struct s_stack;
+
+t_rcode	bm_stack_to_output(struct s_stack **output,
+			   struct s_stack **stack,
+			   struct s_base *base);
+
+void	bm_handle_operator(struct s_token *operator,
+			   struct s_stack **output,
+			   struct s_stack **stack,
+			   struct s_base *base);
+
+t_rcode	bm_handle_rparenthesis(struct s_stack **output,
+			       struct s_stack **stack,
+			       struct s_base *base);
+
+t_rcode	bm_shuntingyard(struct s_stack **output,
+			struct s_stack **op_stack,
+			struct s_token *token,
+			struct s_base *base);
 
 #endif /* !SHUNTINGYARD_H_ */

@@ -10,53 +10,26 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-#include "tokenizer.h"
-#include "shuntingyard.h"
+#include "tokens.h"
 #include "lexicon.h"
-#include "queue.h"
+#include "parser.h"
 #include "my.h"
-#include "postfix.h"
 #include "bm_errno.h"
 #include "bm_base.h"
 
-void	free_all(t_queue *tokens, t_queue *rpn, t_lexicon *lexicon)
-{
-  if (rpn)
-    free_queue(rpn);
-  if (tokens)
-    free_queue(tokens);
-  if (lexicon)
-    free_lexicon(lexicon);
-}
-
 int		bm_eval(char *str, t_token **res, t_base *base)
 {
-  t_queue	*rpn;
-  t_queue	*tokens;
   t_lexicon	*lexicon;
-  int		ret;
+  t_rcode	ret;
 
-  rpn = NULL;
-  tokens = NULL;
-  init_queue(&rpn);
-  init_queue(&tokens);
+
   lexicon = get_classic_lexicon();
-  if ((ret = bm_get_tokens(lexicon, str, tokens, base)) != OK)
+  if ((ret = bm_parse_and_eval(lexicon, str, base, res)) != OK)
     {
-      free_all(tokens, rpn, lexicon);
+      free_lexicon(lexicon);
       return (ret);
     }
-  if ((ret = shuntingyard(tokens, rpn)) != OK)
-    {
-      free_all(tokens, rpn, lexicon);
-      return (ret);
-    }
-  if ((ret = eval_postfix(rpn, res, base)) != OK)
-    {
-      free_all(tokens, rpn, lexicon);
-      return (ret);
-    }
-  free_all(tokens, rpn, lexicon);
+  free_lexicon(lexicon);
   return (OK);
 }
 
@@ -99,7 +72,6 @@ int		main(int ac, char **argv)
   if ((ret = bm_eval(buffer, &res, &base)) != OK)
     return (bm_exit(bm_get_error(ret)));
   display_res(res);
-  bm_free_token(res);
   free(buffer);
   return (OK);
 }

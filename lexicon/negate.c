@@ -9,7 +9,7 @@
 */
 
 #include <stdlib.h>
-#include "tokenizer.h"
+#include "tokens.h"
 #include "bm_base.h"
 
 /*

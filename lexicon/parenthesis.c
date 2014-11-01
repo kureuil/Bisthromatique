@@ -8,7 +8,7 @@
 ** Last update Mon Oct 27 15:56:29 2014 brendan rius
 */
 
-#include "tokenizer.h"
+#include "tokens.h"
 
 unsigned int	extract_rparenthesis(char *c, t_token *token)
 {
