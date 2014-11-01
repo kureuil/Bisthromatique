@@ -17,6 +17,9 @@
 #include "bm_errno.h"
 #include "bm_base.h"
 
+#define STDIN 0
+#define STDOUT 1
+
 int		bm_eval(char *str, t_token **res, t_base *base)
 {
   t_lexicon	*lexicon;
@@ -40,25 +43,26 @@ int	bm_exit(char *s)
   return (1);
 }
 
-void	display_res(t_token *res)
+void		display_res(t_token *res)
 {
   if (res->sign == NEGATIVE)
     my_putchar('-');
-  write(1, res->string_value, res->size);
+  if (write(STDOUT, res->string_value, res->size) == -1)
+    bm_exit("Write failed.\n");
   my_putchar('\n');
 }
 
-int		main(int ac, char **argv)
+int		main(int argc, char **argv)
 {
-  int		ret;
   int		size;
   int		buflen;
   int		readret;
+  char		*buffer;
   t_token	*res;
   t_base	base;
-  char		*buffer;
+  t_rcode	ret;
 
-  if (ac < 4)
+  if (argc < 4)
     return (bm_exit("Wrong number of args\n"));
   if ((ret = new_base(argv[1], &base)) != OK)
     return (bm_exit(bm_get_error(ret)));
@@ -66,8 +70,10 @@ int		main(int ac, char **argv)
   if ((buffer = malloc(size + 1)) == NULL)
     return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));
   buflen = 0;
-  while ((readret = read(0, buffer + buflen, size - buflen)) > 0)
+  while ((readret = read(STDIN, buffer + buflen, size - buflen)) > 0)
     buflen += readret;
+  if (readret == -1)
+    return (bm_exit(bm_get_error(READ_ERROR)));
   buffer[buflen] = '\0';
   if ((ret = bm_eval(buffer, &res, &base)) != OK)
     return (bm_exit(bm_get_error(ret)));

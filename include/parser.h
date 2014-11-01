@@ -12,6 +12,6 @@ struct s_token;
 t_rcode		bm_parse_and_eval(struct s_lexicon *lexicon,
 				  char *s,
 				  struct s_base *base,
-				  struct s_token *res);
+				  struct s_token **res);
 
 #endif /* !PARSER_H_ */

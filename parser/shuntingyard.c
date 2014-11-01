@@ -2,15 +2,13 @@
 #include "stack.h"
 #include "bm_base.h"
 #include "tokens.h"
+#include "postfix.h"
 
 t_rcode		bm_stack_to_output(t_stack **output,
 				   t_stack **stack,
 				   t_base *base)
 {
   t_token	*token;
-  t_token	*n1;
-  t_token	*n2;
-  t_token	*res;
   t_rcode	ret;
 
   token = top(*stack);

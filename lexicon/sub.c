@@ -21,12 +21,6 @@ t_rcode		action_sub(t_base *base,
 			   t_token *n2,
 			   t_token *res)
 {
-  int	carry;
-  int	cursor;
-  int	shift_n1_n2;
-  int	tmp;
-
-  clean_number_str(base, res);
   return (OK);
 }
 

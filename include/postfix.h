@@ -18,7 +18,6 @@ struct s_token;
 struct s_stack;
 
 t_rcode	bm_perfom_op(struct s_token *operator,
-		     struct s_stack **op_stack,
 		     struct s_stack **output,
 		     struct s_base *base);
 

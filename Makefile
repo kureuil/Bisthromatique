@@ -11,10 +11,10 @@
 CC	= gcc
 RM	= rm -f
 CP	= cp
-CFLAGS	+= -Wextra -Wall
+CFLAGS	+= -Wextra -Wall -Werror -Wno-unused-parameter
 CFLAGS	+= -ansi -pedantic
-CFLAGS	+= -O2 -g -I ./include/ -L ./lib/ -l my
-LDFLAGS += -O2 -g -I ./include/ -L ./lib/ -l my
+CFLAGS	+= -g -I ./include/ -L ./lib/ -l my
+LDFLAGS += -g -I ./include/ -L ./lib/ -l my
 
 # [MODULE] Sources of operations
 OP_SRCS	= lexicon/add.c \
