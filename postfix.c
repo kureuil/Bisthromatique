@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:58:57 2014 brendan rius
-** Last update Thu Oct 30 13:09:41 2014 brendan rius
+** Last update Sat Nov  1 16:19:08 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -37,12 +37,12 @@ t_rcode		binary_op(t_token *token, t_stack **stack, t_base *base)
   token = top(*stack);
   if (token == NULL)
     return (NOT_ENOUGH_VALUES);
-  n1 = token;
+  n2 = token;
   pop(stack);
   token = top(*stack);
   if (token == NULL)
     return (NOT_ENOUGH_VALUES);
-  n2 = token;
+  n1 = token;
   pop(stack);
   (*fct)(base, n1, n2, res);
   push(stack, res);
