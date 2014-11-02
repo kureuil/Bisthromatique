@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Thu Oct 30 18:57:36 2014 brendan rius
+** Last update Sun Nov  2 19:14:44 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -25,7 +25,8 @@ t_rcode	action_add(t_base *base,
   int	shift_n1_n2;
   int	tmp;
 
-  reorder_tokens(&n1, &n2);
+  if (n2->size > n1->size)
+    reorder_tokens(&n1, &n2);
   res->size = n1->size + 1;
   if (!(res->string_value = malloc(res->size)))
     return (COULD_NOT_MALLOC);

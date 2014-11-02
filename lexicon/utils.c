@@ -5,9 +5,10 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Sun Nov  2 15:42:40 2014 Louis Person
+** Last update Sun Nov  2 19:17:25 2014 Louis Person
 */
 
+#include <stdlib.h>
 #include "tokens.h"
 #include "bm_base.h"
 
@@ -16,8 +17,6 @@ void			reorder_tokens(t_token **n1,
 {
   struct s_token	*tmp;
 
-  if ((*n2)->size <= (*n1)->size)
-    return;
   tmp = *n1;
   *n1 = *n2;
   *n2 = tmp;
@@ -33,7 +32,8 @@ int	get_value_at_index(t_base *base, char *number, int index)
 
 t_rcode	clean_number_str(t_base *base, t_token *token)
 {
-  while (get_value_at_index(base, token->string_value, 0) == -1)
+  while (get_value_at_index(base, token->string_value, 0) <= 0 &&
+	 token->size > 1)
     {
       token->size--;
       token->string_value++;
@@ -65,15 +65,19 @@ t_rcode	get_complementary_number(struct s_token *nbr,
 				 struct s_token *res)
 {
   int	cursor;
+  int	complementary;
 
   if (!(res->string_value = malloc(nbr->size + 1)))
     return (COULD_NOT_MALLOC);
   res->string_value[nbr->size] = '\0';
   res->size = nbr->size;
-  cursor = nbr->size - 1;
+  cursor = res->size - 1;
   while (cursor >= 0)
     {
-      res->string_value[cursor] = (base->size - 1) - get_value_at_index(base, nbr->string_value, cursor);
+      complementary = ((base->size - 1) -
+		       get_value_at_index(base, nbr->string_value, cursor));
+      res->string_value[cursor] = base->string[complementary];
       cursor--;
     }
+  return (OK);
 }
