@@ -58,9 +58,9 @@ t_lexicon	*get_classic_lexicon()
   t_lexicon	*lexicon;
 
   lexicon = NULL;
+  add(&lexicon, &extract_number);
   add(&lexicon, &extract_lparenthesis);
   add(&lexicon, &extract_rparenthesis);
-  add(&lexicon, &extract_number);
   add(&lexicon, &extract_mod);
   add(&lexicon, &extract_mul);
   add(&lexicon, &extract_add);
