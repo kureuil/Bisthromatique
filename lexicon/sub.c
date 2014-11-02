@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Sun Nov  2 15:42:55 2014 Louis Person
+** Last update Sun Nov  2 19:19:50 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -25,8 +25,6 @@ void		reorder_tokens_sub(t_token *n1, t_token *n2, t_base *base)
     reorder_tokens(&n1, &n2);
 }
 
-#include <stdio.h>
-
 t_rcode		action_sub(t_base *base,
 			   t_token *n1,
 			   t_token *n2,
@@ -39,13 +37,19 @@ t_rcode		action_sub(t_base *base,
     return ((ret = action_add(base, n1, n2, res)) != OK ? ret : OK);
   if (n1->sign == NEGATIVE && n2->sign == POSITIVE)
     reorder_tokens(&n1, &n2);
-  res->size = n1->size > n2->size ? n1->size : n2->size;
-  if (!(res->string_value = malloc(res->size)))
-    return (COULD_NOT_MALLOC);
+  if (n1->size < n2->size || my_strcmp_base(n1, n2, base) < 0)
+    {
+      reorder_tokens(&n1, &n2);
+      res->sign = NEGATIVE;
+    }
   if ((ret = bm_new_token(&tmp)) != OK)
     return (ret);
-  get_complementary_number(n2, base, tmp);
-  action_add(base, n2, tmp, );
+  if ((ret = get_complementary_number(n1, base, tmp)) != OK)
+    return (ret);
+  if ((ret = action_add(base, n2, tmp, n1)) != OK)
+    return (ret);
+  if ((ret = get_complementary_number(n1, base, res)) != OK)
+    return (ret);
   clean_number_str(base, res);
   /*bm_free_token(n1);
     bm_free_token(n2);*/
