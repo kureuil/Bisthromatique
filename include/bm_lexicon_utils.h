@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Sun Nov  2 13:40:15 2014 Louis Person
+** Last update Sun Nov  2 17:04:17 2014 Louis Person
 */
 
 #ifndef BM_LEXICON_UTILS_H_
@@ -34,5 +34,10 @@ t_rcode	clean_number_str(struct s_base *base, struct s_token *token);
 ** Compare the value of two numbers
 */
 int	my_strcmp_base(struct s_token *, struct s_token *, struct s_base *);
+
+/*
+** Returns the complementary of a given number
+*/
+t_rcode	get_complementary_number(struct s_token *, struct s_base *, struct s_token *);
 
 #endif
