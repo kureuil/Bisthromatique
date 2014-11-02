@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Sat Nov  1 16:19:20 2014 Louis Person
+** Last update Sat Nov  1 20:11:15 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -16,61 +16,55 @@
 #include "operators.h"
 #include "my.h"
 
+void		reorder_tokens_sub(t_token n1, t_token n2, t_base base)
+{
+  reorder_tokens(&n2, &n1);
+  if (n1->size != n2->size)
+    return;
+  if (my_strcmp_base(n1, n2, base))
+    {
+      
+    }
+}
+
 t_rcode		action_sub(t_base *base,
 			   t_token *n1,
 			   t_token *n2,
 			   t_token *res)
 {
-  int	carry;
-  int	cursor;
-  int	shift_n1_n2;
-  int	tmp;
+  int		carry;
+  int		cursor;
+  int		shift_n1_n2;
+  int		tmp;
+  t_rcode	ret;
 
-<<<<<<< HEAD
+  reorder_tokens_sub(n1, n2, base);
   if (n2->sign == NEGATIVE && n1->sign == POSITIVE)
-    return (action_add(base, n1, n2, res));
+    return ((ret = action_add(base, n1, n2, res)) != OK ? ret : OK);
   if (n1->sign == NEGATIVE && n2->sign == POSITIVE)
     reorder_tokens(&n1, &n2);
-=======
-  printf("n1->sign: %d | n2->sign: %d", n1->sign, n2->sign);
-  if (n2->sign == NEGATIVE && n1->sign == POSITIVE)
-    {
-      action_add(base, n1, n2, res);
-      res->sign = NEGATIVE;
-      return (OK);
-    }
->>>>>>> fb129b25ff072a3de71911bf7f9037e4b38817f8
   res->size = n1->size > n2->size ? n1->size : n2->size;
   if (!(res->string_value = malloc(res->size)))
     return (COULD_NOT_MALLOC);
   carry = 0;
   cursor = n1->size > n2->size ? n1->size - 1 : n2->size - 1;
   shift_n1_n2 = n1->size - n2->size;
+  printf("n1->size: %d | n2->size: %d | shift: %d\n", n1->size, n2->size, shift_n1_n2);
   while (cursor >= 0 || carry)
     {
       tmp = (get_value_at_index(base, n1->string_value, cursor) -
 	     get_value_at_index(base, n2->string_value, cursor - shift_n1_n2) -
 	     carry);
-      if (tmp <= 0 && cursor > 0)
+      carry = 0;
+      if (tmp < 0)
 	{
-	  res->string_value[cursor] = base->string[base->size + tmp];
+	  tmp = base->size + tmp;
 	  carry = 1;
+	  if (cursor < 0)
+	    res->sign = NEGATIVE;
 	}
-      else if (tmp <= 0 && cursor < 0)
-	{
-	  res->string_value[cursor] = base->string[-tmp];
-	  res->sign = NEGATIVE;
-	  carry = 0;
-	}
-      else if (tmp > 0)
-	{
-	  res->string_value[cursor] = base->string[tmp];
-	  carry = 0;
-	}
-      else
-	{
-	  my_putstr("fuck\n");
-	}
+      printf("tmp: %d | n1: %d | n2: %d | carry: %d | cursor: %d\n", tmp, get_value_at_index(base, n1->string_value, cursor), get_value_at_index(base, n2->string_value, cursor -shift_n1_n2), carry, cursor);
+      res->string_value[cursor] = base->string[tmp];
       --cursor;
     }
   clean_number_str(base, res);
