@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Thu Oct 30 18:57:36 2014 brendan rius
+** Last update Sat Nov  1 21:22:55 2014 Louis Person
 */
 
 #include "tokenizer.h"
@@ -39,4 +39,23 @@ t_rcode	clean_number_str(t_base *base, t_token *token)
       token->string_value++;
     }
   return (OK);
+}
+
+int	my_strcmp_base(struct s_token n1, struct s_token n2, t_base base)
+{
+  int	i;
+
+  i = 0;
+  if (!s1 || !s2)
+    return (0);
+  while (get_value_at_index(*(s1 + i)) == get_value_at_index(*(s2 + i)))
+    {
+      if (*(s1 + i) == '\0')
+	return (0);
+      ++i;
+    }
+  if (get_value_at_index(*(s1 + i)) < get_value_at_index(*(s2 + i)))
+    return (-1);
+  else
+    return (1);
 }
