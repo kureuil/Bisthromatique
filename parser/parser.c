@@ -73,5 +73,8 @@ t_rcode		bm_parse_and_eval(t_lexicon *lexicon,
 	return (ret);
     }
   *res = top(output);
+  pop(&output);
+  if (top(output) != NULL)
+    return (TOO_MUCH_VALUES);
   return (OK);
 }

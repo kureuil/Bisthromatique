@@ -48,7 +48,9 @@ int	my_strcmp_base(struct s_token *n1, struct s_token *n2, t_base *base)
   i = 0;
   if (!n1->string_value || !n2->string_value)
     return (0);
-  while (i < n1->size && i < n2->size && get_value_at_index(base, n1->string_value, i) == get_value_at_index(base, n2->string_value, i))
+  while (i < n1->size &&
+	 i < n2->size &&
+	 get_value_at_index(base, n1->string_value, i) == get_value_at_index(base, n2->string_value, i))
     {
       if (i == n1->size && i == n2->size)
 	return (0);

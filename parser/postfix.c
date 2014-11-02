@@ -60,9 +60,15 @@ t_rcode		bm_perfom_op(t_token *operator,
     return (ret);
   res->type = NUMBER;
   if (operator->type == OPERATOR)
-    binary_op(operator, output, base, res);
+    {
+      if ((ret = binary_op(operator, output, base, res)) != OK)
+	return (ret);
+    }
   else if (operator->type == U_OPERATOR)
-    unary_op(operator, output, base, res);
+    {
+      if ((ret = unary_op(operator, output, base, res)) != OK)
+	return (ret);
+    }
   push(output, res);
   return (OK);
 }

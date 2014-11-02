@@ -64,7 +64,7 @@ typedef struct		s_token
 /*
 ** Free a token. You should always use this function instead of "free()"
 */
-int	bm_free_token(t_token *token);
+t_rcode	bm_free_token(t_token *token);
 
 /*
 ** Create a new empty token

@@ -27,3 +27,13 @@ t_rcode	bm_new_token(t_token **token)
   (*token)->size = 0;
   return (OK);
 }
+
+t_rcode	bm_free_token(t_token *token)
+{
+  if (!token)
+    return (NULL_REFERENCE);
+  if (token->dynamic && token->real_address)
+    free(token->real_address);
+  free(token);
+  return (OK);
+}

@@ -43,7 +43,7 @@ int	bm_exit(char *s)
   return (1);
 }
 
-void		display_res(t_token *res)
+void	display_res(t_token *res)
 {
   if (res->sign == NEGATIVE)
     my_putchar('-');
