@@ -1,3 +1,13 @@
+/*
+** tokens.c for Bistromathique in /home/person_l
+** 
+** Made by Louis Person
+** Login   <person_l@epitech.net>
+** 
+** Started on  Sun Nov  2 14:39:32 2014 Louis Person
+** Last update Sun Nov  2 14:39:33 2014 Louis Person
+*/
+
 #include <stdlib.h>
 #include "boolean.h"
 #include "tokens.h"

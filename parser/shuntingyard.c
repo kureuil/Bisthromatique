@@ -1,3 +1,13 @@
+/*
+** shuntingyard.c for Bistromathique in /home/person_l
+** 
+** Made by Louis Person
+** Login   <person_l@epitech.net>
+** 
+** Started on  Sun Nov  2 14:11:39 2014 Louis Person
+** Last update Sun Nov  2 14:22:53 2014 Louis Person
+*/
+
 #include <stdlib.h>
 #include "stack.h"
 #include "bm_base.h"

@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Thu Oct 30 18:57:36 2014 brendan rius
+** Last update Sun Nov  2 13:40:15 2014 Louis Person
 */
 
 #ifndef BM_LEXICON_UTILS_H_
@@ -29,5 +29,10 @@ int	get_value_at_index(struct s_base *base, char *number, int index);
 ** Change size and "shift" a token so that it does not include zeros
 */
 t_rcode	clean_number_str(struct s_base *base, struct s_token *token);
+
+/*
+** Compare the value of two numbers
+*/
+int	my_strcmp_base(struct s_token *, struct s_token *, struct s_base *);
 
 #endif
