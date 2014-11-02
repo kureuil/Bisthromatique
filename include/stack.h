@@ -11,14 +11,16 @@
 #ifndef STACK_H_
 # define STACK_H_
 
-# include "tokenizer.h"
+# include "bm_errno.h"
+
+struct s_token;
 
 /*
 ** Represents a singly-linked list, which is a stack
 */
 typedef struct		s_stack
 {
-  void			*data;
+  struct s_token	*data;
   struct s_stack	*next;
 }			t_stack;
 
@@ -27,7 +29,7 @@ typedef struct		s_stack
 ** Takes a pointer to a pointer to the first element, so
 ** it can update it
 */
-t_rcode	push(t_stack **top, t_token *token);
+t_rcode	push(t_stack **top, struct s_token *token);
 
 /*
 ** Pop an element from the stack, without returning it.
@@ -39,11 +41,6 @@ void	pop(t_stack **top);
 /*
 ** Return the top element, without poping it
 */
-t_token	*top(t_stack *top);
-
-/*
-** Free a stack from its top.
-*/
-void	free_stack(t_stack **top);
+struct s_token	*top(t_stack *top);
 
 #endif /* !STACK_H_ */

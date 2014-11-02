@@ -8,7 +8,7 @@
 ** Last update Sat Nov  1 21:22:55 2014 Louis Person
 */
 
-#include "tokenizer.h"
+#include "tokens.h"
 #include "bm_base.h"
 
 void			reorder_tokens(t_token **n1,

@@ -8,21 +8,25 @@
 ** Last update Mon Oct 27 15:56:22 2014 brendan rius
 */
 
-#include "tokenizer.h"
+#include "tokens.h"
 #include "bm_base.h"
 
 unsigned int	extract_number(char *s,
 			       t_token *token,
 			       t_base *base)
 {
+  int		size;
+
   if (!s || !*s)
     return (0);
-  token->size = 0;
+  size = 0;
   while (*s && base->array[(unsigned char) *s] != -1)
     {
       token->type = NUMBER;
-      ++token->size;
+      ++size;
       ++s;
     }
-  return (token->size);
+  if (size != 0)
+    token->size = size;
+  return (size);
 }

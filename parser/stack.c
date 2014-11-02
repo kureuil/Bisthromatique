@@ -12,9 +12,10 @@
 #include "stack.h"
 #include "my.h"
 #include "bm_errno.h"
-#include "tokenizer.h"
 
-t_rcode		push(t_stack **top, t_token *token)
+struct s_token;
+
+t_rcode		push(t_stack **top, struct s_token *token)
 {
   t_stack	*new;
 
@@ -38,22 +39,12 @@ void		pop(t_stack **top)
   if (!top || !*top)
     return;
   tmp = (*top)->next;
-  free(*top);
   *top = tmp;
 }
 
-t_token	*top(t_stack *top)
+struct s_token	*top(t_stack *top)
 {
   if (!top)
     return (NULL);
   return (top->data);
-}
-
-void	free_stack(t_stack **top)
-{
-  if (!top)
-    return;
-  while (*top)
-    pop(top);
-  free(*top);
 }

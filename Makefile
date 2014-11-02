@@ -11,7 +11,7 @@
 CC	= gcc
 RM	= rm -f
 CP	= cp
-CFLAGS	+= -Wextra -Wall
+CFLAGS	+= -Wextra -Wall -Werror -Wno-unused-parameter
 CFLAGS	+= -ansi -pedantic
 CFLAGS	+= -g -I ./include/ -L ./lib/ -l my
 LDFLAGS += -g -I ./include/ -L ./lib/ -l my
@@ -28,90 +28,35 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/unary_plus.c \
 	lexicon/utils.c
 
-# [MODULE] Sources needed to use queues
-SRCS_QUEUE	= queue/queue.c \
-		queue/queue_operations.c
-
 # [MODULE] Sources needed to use lexicon
-SRCS_LEXICON	= lexicon.c
+SRCS_LEXICON	= lexicon/lexicon.c
 SRCS_LEXICON	+= $(OP_SRCS)
 
-# [MODULE] Sources needed to use the tokenizer
-SRCS_TOKEN	= tokenizer.c
-SRCS_TOKEN	+= $(SRCS_LEXICON)
-SRCS_TOKEN	+= $(SRCS_QUEUE)
+# [MODULE] Sources needed to user parser
+SRCS_PARSER	= parser/parser.c \
+		parser/shuntingyard.c \
+		parser/tokens.c \
+		parser/stack.c \
+		parser/postfix.c
+SRCS_PARSER	+= $(SRCS_LEXICON)
 
 # MAIN EXECUTABLE
 NAME	= calc
 SRCS	= main.c \
-	stack.c \
-	shuntingyard.c \
-	postfix.c \
 	bm_errno.c \
 	bm_base.c
-SRCS	+= $(SRCS_TOKEN)
+SRCS	+= $(SRCS_PARSER)
 OBJS	= $(SRCS:.c=.o)
 
-# [TESTS] Sources, objects and name for queue
-D_SRCS_QUEUE	= tests/tests-queue.c
-D_SRCS_QUEUE	+= $(SRCS_TOKEN)
-D_OBJS_QUEUE	= $(D_SRCS_QUEUE:.c=.o)
-D_NAME_QUEUE	= tests-queue
-
-# [TESTS] Sources, objects and name for stack
-D_SRCS_STACK	= stack.c \
-		tests/tests-stack.c
-D_SRCS_STACK	+= $(SRCS_TOKEN)
-D_OBJS_STACK	= $(D_SRCS_STACK:.c=.o)
-D_NAME_STACK	= tests-stack
-
-# [TESTS] Sources, objects and name for token
-D_SRCS_TOKEN	= tests/tests-tokenizer.c
-D_SRCS_TOKEN	+= $(SRCS_TOKEN)
-D_OBJS_TOKEN	= $(D_SRCS_TOKEN:.c=.o)
-D_NAME_TOKEN	= tests-tokenizer
-
-# [TESTS] Sources, objects and name for shunting yard
-D_SRCS_SHYARD	= shuntingyard.c \
-		stack.c \
-		postfix.c \
-		bm_errno.c \
-		tests/tests-shyard.c
-D_SRCS_SHYARD	+= $(SRCS_TOKEN)
-D_OBJS_SHYARD	= $(D_SRCS_SHYARD:.c=.o)
-D_NAME_SHYARD	= tests-shyard
-
-all: $(NAME) tests
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-tests-queue: $(D_OBJS_QUEUE)
-	$(CC) -o $(D_NAME_QUEUE) $(D_OBJS_QUEUE) $(LDFLAGS)
-
-tests-stack: $(D_OBJS_STACK)
-	$(CC) -o $(D_NAME_STACK) $(D_OBJS_STACK) $(LDFLAGS)
-
-tests-token: $(D_OBJS_TOKEN)
-	$(CC) -o $(D_NAME_TOKEN) $(D_OBJS_TOKEN) $(LDFLAGS)
-
-tests-shyard: $(D_OBJS_SHYARD)
-	$(CC) -o $(D_NAME_SHYARD) $(D_OBJS_SHYARD) $(LDFLAGS)
-
-tests: tests-queue tests-stack tests-token tests-shyard
-
 clean:
 	$(RM) $(OBJS)
-	$(RM) $(D_OBJS_STACK)
-	$(RM) $(D_OBJS_QUEUE)
-	$(RM) $(D_OBJS_TOKEN)
-	$(RM) $(D_OBJS_SHYARD)
 
 fclean: clean
 	$(RM) $(NAME)
-	$(RM) $(D_NAME_STACK)
-	$(RM) $(D_NAME_QUEUE)
-	$(RM) $(D_NAME_TOKEN)
-	$(RM) $(D_NAME_SHYARD)
 
 re: fclean all

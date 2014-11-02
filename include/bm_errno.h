@@ -23,7 +23,8 @@ typedef enum	e_rcode
     WRONG_BASE_LEN,
     DUPLICATE_VALUE_IN_BASE,
     INVALID_CHARACTER,
-    EMPTY_BASE
+    EMPTY_BASE,
+    READ_ERROR
   }		t_rcode;
 
 char	*bm_get_error(t_rcode code);

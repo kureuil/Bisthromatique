@@ -32,6 +32,8 @@ char	*bm_get_error(t_rcode code)
     return ("invalid character in string\n");
   else if (code == EMPTY_BASE)
     return ("empty base\n");
+  else if (code == READ_ERROR)
+    return ("read error");
   else
     return ("unknown error\n");
 }

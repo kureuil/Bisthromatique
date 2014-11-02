@@ -1,5 +1,5 @@
 /*
-** tokenizer.h for Bistromathique in /home/rius_b/rendu/Bistromathique
+** tokens.h for Bistromathique in /home/rius_b/rendu/Bistromathique
 ** 
 ** Made by brendan rius
 ** Login   <rius_b@epitech.net>
@@ -8,14 +8,17 @@
 ** Last update Tue Oct 28 14:21:16 2014 brendan rius
 */
 
-#ifndef TOKENIZER_H_
-# define TOKENIZER_H_
+#ifndef TOKENS_H_
+# define TOKENS_H_
 
 # include "bm_errno.h"
 # include "operators.h"
+# include "boolean.h"
 
 struct s_queue;
+
 struct s_lexicon;
+
 struct s_base;
 
 /*
@@ -42,26 +45,21 @@ typedef enum	e_sign
   }		t_sign;
 
 /*
-** A token has a type, a value (which is either an operator structure,
-** or a number. A token also contains the its size in the base string.
+** A token has a type, a value (string), a size, a sign if it is a number,
+** an operator structure if it is an operator, an pointer to the address to free
+** (used to improve perfs). The dynamic flag is set to true if the value has
+** been dynamically allocated, so we won't free what the GC will
 */
 typedef struct		s_token
 {
   t_ttype		type;
+  BOOL			dynamic;
+  char			*real_address;
   char			*string_value;
   int			size;
   struct s_operator	operator;
   t_sign		sign;
 }			t_token;
-
-/*
-** Extract all tokens from a string, using a lexicon.
-** All the tokens should be correctly defined in the lexicon.
-*/
-t_rcode	bm_get_tokens(struct s_lexicon *lexicon,
-		      char *s,
-		      struct s_queue *tokens,
-		      struct s_base *base);
 
 /*
 ** Free a token. You should always use this function instead of "free()"
@@ -73,4 +71,10 @@ int	bm_free_token(t_token *token);
 */
 t_rcode	bm_new_token(t_token **token);
 
-#endif /* !TOKENIZER_H_ */
+/*
+** Returns true if the token is an operator (binary or unary), false
+** otherwise.
+*/
+BOOL	bm_token_is_operator(t_token *token);
+
+#endif /* !TOKENS_H_ */

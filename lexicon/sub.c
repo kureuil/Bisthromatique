@@ -5,11 +5,11 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Sat Nov  1 20:11:15 2014 Louis Person
+** Last update Sun Nov  2 13:36:03 2014 Louis Person
 */
 
 #include <stdlib.h>
-#include "tokenizer.h"
+#include "tokens.h"
 #include "bm_base.h"
 #include "bm_errno.h"
 #include "bm_lexicon_utils.h"
