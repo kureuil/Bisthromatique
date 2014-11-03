@@ -5,12 +5,49 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Thu Oct  2 08:58:43 2014 brendan rius
-** Last update Sun Oct 26 23:39:05 2014 brendan rius
+** Last update Mon Nov  3 09:32:19 2014 Louis Person
 */
 
-#include "my.h"
-
-int	my_getnbr(char *s)
+int	my_getnbr(char *str)
 {
-  return (my_getnbr_base(s, "0123456789"));
+  int	sign;
+  int	nb;
+
+  sign = 1;
+  nb = 0;
+  while (*str == '+' || *str == '-')
+    sign *= (*str++  == '-' ? -1 : 1);
+  while (*str >= '0' && *str <= '9')
+  {
+    if (nb < (-2147483648 / 10) || nb > (2147483647 / 10))
+      return (0);
+    nb *= 10;
+    if (nb < -2147483648 + (*str - '0') || nb > 2147483647 - (*str - '0'))
+      return (0);
+    nb += ((*str - '0') * sign);
+    str++;
+  }
+  return (nb);
+}
+
+long	my_getlnbr(char *str)
+{
+  int	sign;
+  long	nb;
+
+  sign = 1;
+  nb = 0;
+  while (*str == '+' || *str == '-')
+    sign *= (*str++  == '-' ? -1 : 1);
+  while (*str >= '0' && *str <= '9')
+  {
+    if (nb < (-9223372036854775808 / 10) || nb > (9223372036854775807 / 10))
+      return (0);
+    nb *= 10;
+    if (nb < -9223372036854775808 + (*str - '0') || nb > 9223372036854775807 - (*str - '0'))
+      return (0);
+    nb += ((*str - '0') * sign);
+    str++;
+  }
+  return (nb);
 }

@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Fri Oct 10 11:18:26 2014 brendan rius
-** Last update Thu Oct 23 20:06:27 2014 brendan rius
+** Last update Mon Nov  3 09:37:04 2014 Louis Person
 */
 
 #ifndef MY_H_
@@ -14,6 +14,7 @@
 int	my_find_prime_sup(int nb);
 int	my_getnbr_base(char *str, char *base);
 int	my_getnbr(char *str);
+long	my_getlnbr(char *str);
 int	my_isneg(int n);
 int	my_is_prime(int nb);
 int	my_power_rec(int nb, int power);
