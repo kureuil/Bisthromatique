@@ -10,26 +10,23 @@
 
 #include "tokens.h"
 #include "bm_base.h"
+#include "bm_errno.h"
 
 t_rcode	action_div(t_base *base,
 		   t_token *n1,
 		   t_token *n2,
 		   t_token *res)
 {
-  base->size++;
-  n1->size++;
-  n2->size++;
-  res->size++;
   return (OK);
 }
 
-unsigned int	extract_div(char *c, t_token *token)
+t_rcode	extract_div(char *c, t_token *token)
 {
-  if (!c || c[0] != '/')
-    return (0);
+  if (!c)
+    return (NULL_REFERENCE);
   token->type = OPERATOR;
   token->operator.action = &action_div;
   token->operator.precedence = 10;
   token->size = 1;
-  return (token->size);
+  return (OK);
 }

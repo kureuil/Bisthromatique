@@ -17,10 +17,8 @@
 # include "lexicon/mul.h"
 # include "lexicon/div.h"
 # include "lexicon/mod.h"
-# include "lexicon/negate.h"
 # include "lexicon/parenthesis.h"
 # include "lexicon/number.h"
-# include "lexicon/unary_plus.h"
 
 /*
 ** Define an operator: it has a precedence (between

@@ -21,18 +21,20 @@ t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
 					t_base *base,
 					t_token_cursor *crsr)
 {
-  while (lexicon != NULL)
+  t_rcode	ret;
+
+  if (lexicon->extractors[(unsigned char) **s] == NULL)
+    return (INVALID_CHARACTER);
+  ret = (*(lexicon->extractors[(unsigned char) **s]))(*s, crsr->actual, base, crsr->previous);
+  if (ret == OK)
     {
-      if ((*(lexicon->extract_token))(*s, crsr->actual, base, crsr->previous))
-	{
-	  crsr->actual->string_value = *s;
-	  crsr->actual->dynamic = FALSE;
-	  *s += crsr->actual->size;
-	  return (OK);
-	}
-      lexicon = lexicon->next;
+      crsr->actual->string_value = *s;
+      crsr->actual->dynamic = FALSE;
+      *s += crsr->actual->size;
+      return (OK);
     }
-  return (INVALID_CHARACTER);
+  else
+    return (ret);
 }
 
 t_rcode		pop_last_ops(t_token_cursor *cursors,
@@ -54,7 +56,8 @@ t_rcode		pop_last_ops(t_token_cursor *cursors,
 
 t_rcode	set_res(t_token	**res, t_stack **output, t_stack **op_stack)
 {
-  *res = top(*output);
+  if ((*res = top(*output)) == NULL)
+    return (NOT_ENOUGH_VALUES);
   pop(output);
   if (top(*output) != NULL)
     {

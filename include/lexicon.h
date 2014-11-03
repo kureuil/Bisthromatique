@@ -11,7 +11,17 @@
 #ifndef LEXICON_H_
 # define LEXICON_H_
 
+# include "bm_errno.h"
+
+# define MAX_EXTRACTORS 256
+
+# define NB_EXTRACTORS 7
+
 struct s_token;
+
+struct s_base;
+
+typedef t_rcode (*t_extract_fct)();
 
 /*
 ** Note: cannot handle string that contains more than 2^(32) chars.
@@ -20,14 +30,11 @@ struct s_token;
 */
 typedef struct		s_lexicon
 {
-  unsigned int		(*extract_token)();
-  struct s_lexicon	*next;
+  t_extract_fct		extractors[MAX_EXTRACTORS];
 }			t_lexicon;
 
-void	add(t_lexicon **, unsigned int (*)());
-
-void	free_lexicon(t_lexicon *lexicon);
-
-t_lexicon	*get_classic_lexicon();
+t_rcode	get_classic_lexicon(t_lexicon *lexicon,
+			    char *operators,
+			    struct s_base *base);
 
 #endif /* !LEXICON_H_ */

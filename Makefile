@@ -13,8 +13,8 @@ RM	= rm -f
 CP	= cp
 CFLAGS	+= -Wextra -Wall -Werror -Wno-unused-parameter
 CFLAGS	+= -ansi -pedantic
-CFLAGS	+= -g -I ./include/ -L ./lib/ -l my
-LDFLAGS += -g -I ./include/ -L ./lib/ -l my
+CFLAGS	+= -O3 -g -I ./include/ -L ./lib/ -l my
+LDFLAGS += -O3 -g -I ./include/ -L ./lib/ -l my
 
 # [MODULE] Sources of operations
 OP_SRCS	= lexicon/add.c \
@@ -24,8 +24,6 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/sub.c \
 	lexicon/parenthesis.c \
 	lexicon/number.c \
-	lexicon/negate.c \
-	lexicon/unary_plus.c \
 	lexicon/utils.c
 
 # [MODULE] Sources needed to use lexicon

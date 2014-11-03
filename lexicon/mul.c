@@ -10,6 +10,7 @@
 
 #include "tokens.h"
 #include "bm_base.h"
+#include "bm_errno.h"
 
 t_rcode	action_mul(t_base *base,
 		   t_token *n1,
@@ -19,13 +20,13 @@ t_rcode	action_mul(t_base *base,
   return (OK);
 }
 
-unsigned int	extract_mul(char *c, t_token *token)
+t_rcode	extract_mul(char *c, t_token *token)
 {
-  if (!c || c[0] != '*')
-    return (0);
+  if (!c)
+    return (NULL_REFERENCE);
   token->type = OPERATOR;
   token->operator.action = &action_mul;
   token->operator.precedence = 10;
   token->size = 1;
-  return (token->size);
+  return (OK);
 }

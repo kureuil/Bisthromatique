@@ -72,23 +72,41 @@ t_rcode		action_sub(t_base *base,
   return (OK);
 }
 
-unsigned int	extract_sub(char *c,
-			    t_token *token,
-			    t_base *base,
-			    t_token *previous)
+/*
+** We could speed this up by avoiding copying n into res
+*/
+t_rcode	action_negate(t_base *base,
+		      t_token *n,
+		      t_token *res)
 {
-  base->size = base->size;
+  *res = *n;
+  res->sign = res->sign == POSITIVE ? NEGATIVE : POSITIVE;
+  free(n);
+  return (OK);
+}
+
+t_rcode	extract_sub(char *c,
+		    t_token *token,
+		    t_base *base,
+		    t_token *previous)
+{
   if (!c)
-    return (0);
-  if (c[0] == '-' &&
-      (previous &&
-       (previous->type == RPARENTHESIS || previous->type == NUMBER)))
+    return (NULL_REFERENCE);
+  if (previous &&
+      (previous->type == RPARENTHESIS || previous->type == NUMBER))
     {
       token->type = OPERATOR;
       token->operator.action = &action_sub;
       token->operator.precedence = 5;
       token->size = 1;
-      return (token->size);
+      return (OK);
     }
-  return (0);
+  else
+    {
+      token->type = U_OPERATOR;
+      token->operator.action = &action_negate;
+      token->operator.precedence = 15;
+      token->size = 1;
+      return (OK);
+    }
 }

@@ -11,12 +11,14 @@
 #ifndef NUMBER_H_
 # define NUMBER_H_
 
+# include "bm_errno.h"
+
 struct s_token;
 
 struct s_base;
 
-unsigned int	extract_number(char *,
-			       struct s_token *,
-			       struct s_base *);
+t_rcode	extract_number(char *,
+		       struct s_token *,
+		       struct s_base *);
 
 #endif /* !NUMBER_H_ */

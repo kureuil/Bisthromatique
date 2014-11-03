@@ -11,10 +11,14 @@
 #ifndef PARENTHESIS_H_
 # define PARENTHESIS_H_
 
+# include "bm_errno.h"
+
 struct s_token;
 
-unsigned int	extract_rparenthesis(char *c, struct s_token *token);
+t_rcode	extract_rparenthesis(char *c,
+			     struct s_token *token);
 
-unsigned int	extract_lparenthesis(char *c, struct s_token *token);
+t_rcode	extract_lparenthesis(char *c,
+			     struct s_token *token);
 
 #endif /* !PARENTHESIS_H_ */

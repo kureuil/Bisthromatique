@@ -18,18 +18,15 @@
 #include "bm_base.h"
 #include "main.h"
 
-int		bm_eval(char *str, t_token **res, t_base *base)
+int		bm_eval(char *str, t_token **res, t_base *base, char *ops)
 {
-  t_lexicon	*lexicon;
+  t_lexicon	lexicon;
   t_rcode	ret;
 
-  lexicon = get_classic_lexicon();
-  if ((ret = bm_parse_and_eval(lexicon, str, base, res)) != OK)
-    {
-      free_lexicon(lexicon);
-      return (ret);
-    }
-  free_lexicon(lexicon);
+  if ((ret = get_classic_lexicon(&lexicon, ops, base)) != OK)
+    return (ret);
+  if ((ret = bm_parse_and_eval(&lexicon, str, base, res)) != OK)
+    return (ret);
   return (OK);
 }
 
@@ -85,7 +82,7 @@ int		main(int argc, char **argv)
   if ((buffer = malloc(size + 1)) == NULL)
     return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));
   if ((ret = read_stdin_to_buffer(buffer, size)) != OK ||
-      (ret = bm_eval(buffer, &res, &base)) != OK)
+      (ret = bm_eval(buffer, &res, &base, argv[2])) != OK)
     {
       free(buffer);
       return (bm_exit(bm_get_error(ret)));

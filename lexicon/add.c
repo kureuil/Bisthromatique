@@ -16,6 +16,14 @@
 #include "bm_base.h"
 #include "my.h"
 
+t_rcode	action_unary_plus(t_base *base,
+			  t_token *n,
+			  t_token *res)
+{
+  *res = *n;
+  return (OK);
+}
+
 t_rcode		action_add_compute(t_base *base,
 				   t_token *n1,
 				   t_token *n2,
@@ -77,22 +85,28 @@ t_rcode		action_add(t_base *base,
   return (OK);
 }
 
-unsigned int	extract_add(char *c,
-			    t_token *token,
-			    t_base *base,
-			    t_token *previous)
+t_rcode	extract_add(char *c,
+		    t_token *token,
+		    t_base *base,
+		    t_token *previous)
 {
-   if (!c)
-    return (0);
-  if (c[0] == '+' &&
-      (previous &&
-       (previous->type == RPARENTHESIS || previous->type == NUMBER)))
+  if (!c)
+    return (NULL_REFERENCE);
+  if (previous &&
+      (previous->type == RPARENTHESIS || previous->type == NUMBER))
     {
       token->type = OPERATOR;
       token->operator.action = &action_add;
       token->operator.precedence = 5;
       token->size = 1;
-      return (token->size);
+      return (OK);
     }
-  return (0);
+  else
+    {
+      token->type = U_OPERATOR;
+      token->operator.action = &action_unary_plus;
+      token->operator.precedence = 15;
+      token->size = 1;
+      return (OK);
+    }
 }

@@ -11,7 +11,7 @@
 #ifndef BM_ERRNO_H_
 # define BM_ERRNO_H_
 
-# define NB_ERRORS 15
+# define NB_ERRORS 18
 
 typedef enum	e_rcode
   {
@@ -29,7 +29,10 @@ typedef enum	e_rcode
     READ_ERROR,
     NOTHING_TO_READ,
     WRITE_FAILED,
-    WRONG_NB_ARGS
+    WRONG_NB_ARGS,
+    DUPLICATE_VALUE_IN_OPERATORS_OR_BASE,
+    EMPTY_OPERATORS,
+    WRONG_OPS_LEN
   }		t_rcode;
 
 char	*bm_get_error(t_rcode code);

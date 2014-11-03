@@ -10,15 +10,16 @@
 
 #include "tokens.h"
 #include "bm_base.h"
+#include "bm_errno.h"
 
-unsigned int	extract_number(char *s,
-			       t_token *token,
-			       t_base *base)
+t_rcode	extract_number(char *s,
+		       t_token *token,
+		       t_base *base)
 {
-  int		size;
+  int	size;
 
   if (!s || !*s)
-    return (0);
+    return (NULL_REFERENCE);
   size = 0;
   while (*s && base->array[(unsigned char) *s] != -1)
     {
@@ -26,7 +27,6 @@ unsigned int	extract_number(char *s,
       ++size;
       ++s;
     }
-  if (size != 0)
-    token->size = size;
-  return (size);
+  token->size = size;
+  return (OK);
 }

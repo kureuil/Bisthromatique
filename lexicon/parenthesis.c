@@ -9,21 +9,22 @@
 */
 
 #include "tokens.h"
+#include "bm_errno.h"
 
-unsigned int	extract_rparenthesis(char *c, t_token *token)
+t_rcode	extract_rparenthesis(char *c, t_token *token)
 {
-  if (!c || c[0] != ')')
-    return (0);
+  if (!c)
+    return (NULL_REFERENCE);
   token->type = RPARENTHESIS;
   token->size = 1;
-  return (token->size);
+  return (OK);
 }
 
-unsigned int	extract_lparenthesis(char *c, t_token *token)
+t_rcode	extract_lparenthesis(char *c, t_token *token)
 {
-  if (!c || c[0] != '(')
-    return (0);
+  if (!c)
+    return (NULL_REFERENCE);
   token->type = LPARENTHESIS;
   token->size = 1;
-  return (token->size);
+  return (OK);
 }

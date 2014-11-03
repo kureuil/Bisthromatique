@@ -11,62 +11,62 @@
 #include <stdlib.h>
 #include "operators.h"
 #include "lexicon.h"
+#include "bm_base.h"
+#include "my.h"
 
-void	add(t_lexicon **head,
-	    unsigned int (*extract)())
+t_rcode		get_ordered_extractors(t_extract_fct **array)
 {
-  t_lexicon	*lexicon;
-  t_lexicon	*copy;
-
-  if (!head)
-    return;
-  if ((lexicon = malloc(sizeof(t_lexicon))) == NULL)
-    return;
-  copy = *head;
-  lexicon->extract_token = extract;
-  lexicon->next = NULL;
-  if (!*head)
-    {
-      *head = lexicon;
-      return;
-    }
-  while (copy)
-    {
-      if (copy->next == NULL)
-	{
-	  copy->next = lexicon;
-	  return;
-	}
-      copy = copy->next;
-    }
+  if ((*array = malloc(sizeof(t_extract_fct) * NB_EXTRACTORS)) == NULL)
+    return (COULD_NOT_MALLOC);
+  (*array)[0] = &extract_lparenthesis;
+  (*array)[1] = &extract_rparenthesis;
+  (*array)[2] = &extract_add;
+  (*array)[3] = &extract_sub;
+  (*array)[4] = &extract_mul;
+  (*array)[5] = &extract_div;
+  (*array)[6] = &extract_mod;
+  return (OK);
 }
 
-void		free_lexicon(t_lexicon *lexicon)
+t_rcode		get_classic_lexicon(t_lexicon *lexicon,
+				    char *operators,
+				    t_base *base)
 {
-  t_lexicon	*next;
+  int		len;
+  int		i;
+  t_rcode	ret;
+  t_extract_fct	*ordered_fcts;
 
-  while (lexicon)
+  if (!lexicon)
+    return (NULL_REFERENCE);
+  if ((ret = get_ordered_extractors(&ordered_fcts)) != OK)
+    return (ret);
+  len = my_strlen(operators);
+  if (len == 0)
+    return (EMPTY_OPERATORS);
+  if (len != 7)
+    return (WRONG_OPS_LEN);
+  i = 0;
+  while (i < MAX_EXTRACTORS)
     {
-      next = lexicon->next;
-      free(lexicon);
-      lexicon = next;
+      lexicon->extractors[i] = NULL;
+      ++i;
     }
-}
-
-t_lexicon	*get_classic_lexicon()
-{
-  t_lexicon	*lexicon;
-
-  lexicon = NULL;
-  add(&lexicon, &extract_number);
-  add(&lexicon, &extract_lparenthesis);
-  add(&lexicon, &extract_rparenthesis);
-  add(&lexicon, &extract_mod);
-  add(&lexicon, &extract_mul);
-  add(&lexicon, &extract_add);
-  add(&lexicon, &extract_div);
-  add(&lexicon, &extract_sub);
-  add(&lexicon, &extract_negate);
-  add(&lexicon, &extract_unary_plus);
-  return (lexicon);
+  i = 0;
+  while (i < MAX_EXTRACTORS)
+    {
+      if (base->array[i] != -1)
+	lexicon->extractors[i] = &extract_number;
+      ++i;
+    }
+  i = 0;
+  while (i < len)
+    {
+      if (lexicon->extractors[(unsigned char) operators[i]] != NULL)
+	return (DUPLICATE_VALUE_IN_OPERATORS_OR_BASE);
+      lexicon->extractors[(unsigned char) operators[i]] = ordered_fcts[i];
+      ++i;
+    }
+  free(ordered_fcts);
+  return (OK);
 }
