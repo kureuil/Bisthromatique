@@ -16,9 +16,7 @@
 #include "my.h"
 #include "bm_errno.h"
 #include "bm_base.h"
-
-#define STDIN 0
-#define STDOUT 1
+#include "main.h"
 
 int		bm_eval(char *str, t_token **res, t_base *base)
 {
@@ -47,37 +45,54 @@ int	display_res(t_token *res)
   if (res->sign == NEGATIVE)
     my_putchar('-');
   if (write(STDOUT, res->string_value, res->size) == -1)
-    bm_exit("Write failed.\n");
+    bm_exit(bm_get_error(WRITE_FAILED));
   my_putchar('\n');
   bm_free_token(res);
   return (0);
 }
 
+t_rcode	read_stdin_to_buffer(char *buffer,
+			     unsigned int size)
+{
+  int	readret;
+  int	buflen;
+
+  buflen = 0;
+  while ((readret = read(STDIN, buffer + buflen, size - buflen)) > 0)
+    buflen += readret;
+  if (readret == -1)
+    return (READ_ERROR);
+  if (buflen == 0)
+    return (NOTHING_TO_READ);
+  buffer[buflen] = '\0';
+  return (OK);
+}
+
 int		main(int argc, char **argv)
 {
   int		size;
-  int		buflen;
-  int		readret;
   char		*buffer;
   t_token	*res;
   t_base	base;
   t_rcode	ret;
 
   if (argc < 4)
-    return (bm_exit("Wrong number of args\n"));
+    return (bm_exit(bm_get_error(WRONG_NB_ARGS)));
   if ((ret = new_base(argv[1], &base)) != OK)
     return (bm_exit(bm_get_error(ret)));
-  size = my_getnbr(argv[3]);
+  size = my_getnbr(argv[3]); /* ================ to change ================== */
   if ((buffer = malloc(size + 1)) == NULL)
     return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));
-  buflen = 0;
-  while ((readret = read(STDIN, buffer + buflen, size - buflen)) > 0)
-    buflen += readret;
-  if (readret == -1)
-    return (bm_exit(bm_get_error(READ_ERROR)));
-  buffer[buflen] = '\0';
+  if ((ret = read_stdin_to_buffer(buffer, size)) != OK)
+    {
+      free(buffer);
+      return (bm_exit(bm_get_error(ret)));
+    }
   if ((ret = bm_eval(buffer, &res, &base)) != OK)
-    return (bm_exit(bm_get_error(ret)));
+    {
+      free(buffer);
+      return (bm_exit(bm_get_error(ret)));
+    }
   free(buffer);
   return (display_res(res));
 }

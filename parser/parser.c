@@ -90,6 +90,8 @@ t_rcode			bm_parse_and_eval(t_lexicon *lexicon,
       cursors.previous = cursors.actual;
       bm_shuntingyard(&output, &op_stack, cursors.actual, base);
     }
+  if (!cursors.previous)
+    return (NOTHING_TO_READ);
   if ((ret = pop_last_ops(&cursors, base, &output, &op_stack)) != OK)
     return (ret);
   return (set_res(res, &output, &op_stack));

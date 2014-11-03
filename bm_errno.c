@@ -12,11 +12,12 @@
 
 char	*bm_get_error(t_rcode code)
 {
-  char	*errors[11];
+  char	*errors[NB_ERRORS];
 
+  errors[OK] = "internal error\n";
   errors[MISMATCHED_P] = "mismatched parenthesis\n";
-  errors[TOO_MUCH_VALUES] = "too much values\n";
   errors[NOT_ENOUGH_VALUES] = "not enough values\n";
+  errors[TOO_MUCH_VALUES] = "too much values\n";
   errors[COULD_NOT_MALLOC] = "could not malloc\n";
   errors[NULL_REFERENCE] = "null reference\n";
   errors[NOT_IN_BASE] = "character not in base\n";
@@ -25,7 +26,10 @@ char	*bm_get_error(t_rcode code)
   errors[INVALID_CHARACTER] = "invalid character in string\n";
   errors[EMPTY_BASE] = "empty base\n";
   errors[READ_ERROR] = "read error\n";
-  if (code < 11)
+  errors[NOTHING_TO_READ] = "nothing to read\n";
+  errors[WRITE_FAILED] = "write failed\n";
+  errors[WRONG_NB_ARGS] = "wrong number of args\n";
+  if (code < NB_ERRORS)
     return errors[code];
   else
     return ("unknown error\n");
