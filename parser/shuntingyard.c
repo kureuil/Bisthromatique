@@ -28,12 +28,13 @@ t_rcode		bm_stack_to_output(t_stack **output,
   return (OK);
 }
 
-void		bm_handle_operator(t_token *operator,
+t_rcode		bm_handle_operator(t_token *operator,
 				   t_stack **output,
 				   t_stack **stack,
 				   t_base *base)
 {
   t_token	*t;
+  t_rcode	ret;
 
   t = top(*stack);
   while  (t != NULL &&
@@ -42,10 +43,12 @@ void		bm_handle_operator(t_token *operator,
 	   (t->type == U_OPERATOR &&
 	    t->operator.precedence > operator->operator.precedence)))
     {
-      bm_stack_to_output(output, stack, base);
+      if ((ret = bm_stack_to_output(output, stack, base)) != OK)
+	return (ret);
       t = top(*stack);
     }
   push(stack, operator);
+  return (OK);
 }
 
 t_rcode		bm_handle_rparenthesis(t_stack **output,
@@ -79,7 +82,10 @@ t_rcode		bm_shuntingyard(t_stack **output,
   if (token->type == NUMBER)
     push(output, token);
   else if (bm_token_is_operator(token))
-    bm_handle_operator(token, output, op_stack, base);
+    {
+      if ((ret = bm_handle_operator(token, output, op_stack, base)) != OK)
+	return (ret);
+    }
   else if (token->type == LPARENTHESIS)
     push(op_stack, token);
   else if (token->type == RPARENTHESIS)

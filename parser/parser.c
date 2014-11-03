@@ -57,7 +57,11 @@ t_rcode	set_res(t_token	**res, t_stack **output, t_stack **op_stack)
   *res = top(*output);
   pop(output);
   if (top(*output) != NULL)
-    return (TOO_MUCH_VALUES);
+    {
+      free(*output);
+      free(*op_stack);
+      return (TOO_MUCH_VALUES);
+    }
   free(*output);
   free(*op_stack);
   return (OK);
@@ -71,11 +75,11 @@ t_rcode			bm_parse_and_eval(t_lexicon *lexicon,
   t_stack		*output;
   t_stack		*op_stack;
   t_rcode		ret;
-  t_token_cursor	cursors;
+  t_token_cursor	crsrs;
 
   if (!s || !lexicon || !base || !res)
     return (NULL_REFERENCE);
-  cursors.previous = cursors.actual = NULL;
+  crsrs.previous = crsrs.actual = NULL;
   output = op_stack = NULL;
   while (*s)
     {
@@ -84,15 +88,16 @@ t_rcode			bm_parse_and_eval(t_lexicon *lexicon,
 	  ++s;
 	  continue;
 	}
-      if ((ret = bm_new_token(&(cursors.actual))) != OK ||
-	  (ret = bm_extract_from_lexicon(lexicon, &s, base, &cursors)) != OK)
+      if ((ret = bm_new_token(&(crsrs.actual))) != OK ||
+	  (ret = bm_extract_from_lexicon(lexicon, &s, base, &crsrs)) != OK)
 	return (ret);
-      cursors.previous = cursors.actual;
-      bm_shuntingyard(&output, &op_stack, cursors.actual, base);
+      crsrs.previous = crsrs.actual;
+      if ((ret = bm_shuntingyard(&output, &op_stack, crsrs.actual, base)) != OK)
+	return (ret);
     }
-  if (!cursors.previous)
+  if (!crsrs.previous)
     return (NOTHING_TO_READ);
-  if ((ret = pop_last_ops(&cursors, base, &output, &op_stack)) != OK)
+  if ((ret = pop_last_ops(&crsrs, base, &output, &op_stack)) != OK)
     return (ret);
   return (set_res(res, &output, &op_stack));
 }
