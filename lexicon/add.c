@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Sun Nov  2 19:14:44 2014 Louis Person
+** Last update Mon Nov  3 14:49:43 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -16,16 +16,36 @@
 #include "bm_base.h"
 #include "my.h"
 
-t_rcode	action_add(t_base *base,
-		   t_token *n1,
-		   t_token *n2,
-		   t_token *res)
+t_rcode		action_add(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
 {
-  int	carry;
-  int	cursor;
-  int	shift_n1_n2;
-  int	tmp;
+  int		carry;
+  int		cursor;
+  int		shift_n1_n2;
+  int		tmp;
+  t_rcode	ret;
 
+  if (n1->sign == NEGATIVE && n2->sign == POSITIVE)
+    {
+      n1->sign = POSITIVE;
+      if ((ret = action_sub(base, n1, n2, res)) != OK)
+	return (ret);
+      res->sign = res->sign == NEGATIVE ? POSITIVE : NEGATIVE;
+      return (OK);
+    }
+  if (n1->sign == POSITIVE && n2->sign == NEGATIVE)
+    {
+      n2->sign = POSITIVE;
+      if ((ret = action_sub(base, n1, n2, res)) != OK)
+	return (ret);
+      return (OK);
+    }
+  if (n1->sign == NEGATIVE && n2->sign == NEGATIVE)
+    {
+      res->sign = NEGATIVE;
+    }
   if (n2->size > n1->size)
     reorder_tokens(&n1, &n2);
   res->size = n1->size + 1;
