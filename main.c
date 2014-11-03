@@ -40,9 +40,10 @@ int	bm_exit(char *s)
   return (1);
 }
 
-int	display_res(t_token *res)
+int	display_res(t_token *res, t_base *base)
 {
-  if (res->sign == NEGATIVE)
+  if (res->sign == NEGATIVE &&
+      !(res->size == 1 && res->string_value[0] == base->string[0]))
     my_putchar('-');
   if (write(STDOUT, res->string_value, res->size) == -1)
     bm_exit(bm_get_error(WRITE_FAILED));
@@ -93,7 +94,7 @@ int		main(int argc, char **argv)
       free(buffer);
       return (bm_exit(bm_get_error(ret)));
     }
-  display_res(res);
+  display_res(res, &base);
   free(buffer);
   return (0);
 }
