@@ -77,4 +77,10 @@ t_rcode	bm_new_token(t_token **token);
 */
 BOOL	bm_token_is_operator(t_token *token);
 
+/*
+** Returns true is the token is either a left parenthesis or a right
+** parenthesis, false otherwise.
+*/
+BOOL	bm_token_is_parenthesis(t_token *token);
+
 #endif /* !TOKENS_H_ */

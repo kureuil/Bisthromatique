@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include "tokens.h"
 #include "bm_base.h"
+#include "boolean.h"
 
 void			reorder_tokens(t_token **n1,
 				       t_token **n2)
@@ -50,13 +51,15 @@ int	my_strcmp_base(struct s_token *n1, struct s_token *n2, t_base *base)
     return (0);
   while (i < n1->size &&
 	 i < n2->size &&
-	 get_value_at_index(base, n1->string_value, i) == get_value_at_index(base, n2->string_value, i))
+	 get_value_at_index(base, n1->string_value, i) ==
+	 get_value_at_index(base, n2->string_value, i))
     {
       if (i == n1->size && i == n2->size)
 	return (0);
       ++i;
     }
-  if (get_value_at_index(base, n1->string_value, i) < get_value_at_index(base, n2->string_value, i))
+  if (get_value_at_index(base, n1->string_value, i) <
+      get_value_at_index(base, n2->string_value, i))
     return (-1);
   else
     return (1);
@@ -71,6 +74,7 @@ t_rcode	get_complementary_number(struct s_token *nbr,
 
   if (!(res->string_value = malloc(nbr->size + 1)))
     return (COULD_NOT_MALLOC);
+  res->real_address = res->string_value;
   res->string_value[nbr->size] = '\0';
   res->size = nbr->size;
   cursor = res->size - 1;

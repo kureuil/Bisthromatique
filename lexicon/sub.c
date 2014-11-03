@@ -51,8 +51,8 @@ t_rcode		action_sub(t_base *base,
   if ((ret = get_complementary_number(n1, base, res)) != OK)
     return (ret);
   clean_number_str(base, res);
-  /*bm_free_token(n1);
-    bm_free_token(n2);*/
+  bm_free_token(n1);
+  bm_free_token(n2);
   return (OK);
 }
 

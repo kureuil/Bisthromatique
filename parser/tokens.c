@@ -12,6 +12,11 @@
 #include "boolean.h"
 #include "tokens.h"
 
+BOOL	bm_token_is_parenthesis(t_token *token)
+{
+  return (token->type == LPARENTHESIS || token->type == RPARENTHESIS);
+}
+
 BOOL	bm_token_is_operator(t_token *token)
 {
   return (token->type == OPERATOR || token->type == U_OPERATOR);
@@ -24,6 +29,7 @@ t_rcode	bm_new_token(t_token **token)
   (*token)->string_value = NULL;
   (*token)->sign = POSITIVE;
   (*token)->type = UNDEFINED;
+  (*token)->dynamic = TRUE;
   (*token)->size = 0;
   return (OK);
 }

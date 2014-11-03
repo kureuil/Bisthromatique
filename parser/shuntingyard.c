@@ -23,13 +23,8 @@ t_rcode		bm_stack_to_output(t_stack **output,
 
   token = top(*stack);
   pop(stack);
-  if (bm_token_is_operator(token))
-    {
-      if ((ret = bm_perfom_op(token, output, base)) != OK)
-	return (ret);
-    }
-  else
-    push(output, token);
+  if ((ret = bm_perfom_op(token, output, base)) != OK)
+    return (ret);
   return (OK);
 }
 
@@ -42,8 +37,10 @@ void		bm_handle_operator(t_token *operator,
 
   t = top(*stack);
   while  (t != NULL &&
-	  ((t->type == OPERATOR && t->operator.precedence >= operator->operator.precedence) ||
-	   (t->type == U_OPERATOR && t->operator.precedence > operator->operator.precedence)))
+	  ((t->type == OPERATOR &&
+	    t->operator.precedence >= operator->operator.precedence) ||
+	   (t->type == U_OPERATOR &&
+	    t->operator.precedence > operator->operator.precedence)))
     {
       bm_stack_to_output(output, stack, base);
       t = top(*stack);

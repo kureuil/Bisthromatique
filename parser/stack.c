@@ -39,6 +39,7 @@ void		pop(t_stack **top)
   if (!top || !*top)
     return;
   tmp = (*top)->next;
+  free(*top);
   *top = tmp;
 }
 

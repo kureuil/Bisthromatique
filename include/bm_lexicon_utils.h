@@ -18,26 +18,34 @@ struct s_token;
 /*
 ** Reorder tokens so that the bigger one is the firt
 */
-void	reorder_tokens(struct s_token **n1, struct s_token **n2);
+void	reorder_tokens(struct s_token **n1,
+		       struct s_token **n2);
 
 /*
 ** Get the value corresponding to a digit in the base
 */
-int	get_value_at_index(struct s_base *base, char *number, int index);
+int	get_value_at_index(struct s_base *base,
+			   char *number,
+			   int index);
 
 /*
 ** Change size and "shift" a token so that it does not include zeros
 */
-t_rcode	clean_number_str(struct s_base *base, struct s_token *token);
+t_rcode	clean_number_str(struct s_base *base,
+			 struct s_token *token);
 
 /*
 ** Compare the value of two numbers
 */
-int	my_strcmp_base(struct s_token *, struct s_token *, struct s_base *);
+int	my_strcmp_base(struct s_token *,
+		       struct s_token *,
+		       struct s_base *);
 
 /*
 ** Returns the complementary of a given number
 */
-t_rcode	get_complementary_number(struct s_token *, struct s_base *, struct s_token *);
+t_rcode	get_complementary_number(struct s_token *,
+				 struct s_base *,
+				 struct s_token *);
 
 #endif

@@ -16,10 +16,6 @@ t_rcode	action_mul(t_base *base,
 		   t_token *n2,
 		   t_token *res)
 {
-  base->size++;
-  n1->size++;
-  n2->size++;
-  res->size++;
   return (OK);
 }
 

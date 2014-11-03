@@ -70,5 +70,6 @@ t_rcode		bm_perfom_op(t_token *operator,
 	return (ret);
     }
   push(output, res);
+  bm_free_token(operator);
   return (OK);
 }

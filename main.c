@@ -25,7 +25,6 @@ int		bm_eval(char *str, t_token **res, t_base *base)
   t_lexicon	*lexicon;
   t_rcode	ret;
 
-
   lexicon = get_classic_lexicon();
   if ((ret = bm_parse_and_eval(lexicon, str, base, res)) != OK)
     {
@@ -43,13 +42,15 @@ int	bm_exit(char *s)
   return (1);
 }
 
-void	display_res(t_token *res)
+int	display_res(t_token *res)
 {
   if (res->sign == NEGATIVE)
     my_putchar('-');
   if (write(STDOUT, res->string_value, res->size) == -1)
     bm_exit("Write failed.\n");
   my_putchar('\n');
+  bm_free_token(res);
+  return (0);
 }
 
 int		main(int argc, char **argv)
@@ -77,7 +78,6 @@ int		main(int argc, char **argv)
   buffer[buflen] = '\0';
   if ((ret = bm_eval(buffer, &res, &base)) != OK)
     return (bm_exit(bm_get_error(ret)));
-  display_res(res);
   free(buffer);
-  return (OK);
+  return (display_res(res));
 }

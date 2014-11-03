@@ -14,20 +14,20 @@
 #include "bm_base.h"
 #include "stack.h"
 #include "shuntingyard.h"
+#include "parser.h"
 
 t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
-					t_token **token,
 					char **s,
 					t_base *base,
-					t_token *previous)
+					t_token_cursor *crsr)
 {
   while (lexicon != NULL)
     {
-      if ((*(lexicon->extract_token))(*s, *token, base, previous))
+      if ((*(lexicon->extract_token))(*s, crsr->actual, base, crsr->previous))
 	{
-	  (*token)->string_value = *s;
-	  (*token)->dynamic = FALSE;
-	  *s += (*token)->size;
+	  crsr->actual->string_value = *s;
+	  crsr->actual->dynamic = FALSE;
+	  *s += crsr->actual->size;
 	  return (OK);
 	}
       lexicon = lexicon->next;
@@ -35,46 +35,62 @@ t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
   return (INVALID_CHARACTER);
 }
 
-t_rcode		bm_parse_and_eval(t_lexicon *lexicon,
-				  char *s,
-				  t_base *base,
-				  t_token **res)
+t_rcode		pop_last_ops(t_token_cursor *cursors,
+			     t_base *base,
+			     t_stack **output,
+			     t_stack **op_stack)
 {
-  t_stack	*output;
-  t_stack	*op_stack;
-  t_token	*token;
   t_rcode	ret;
-  t_token	*previous;
+
+  while ((cursors->actual = top(*op_stack)) != NULL)
+    {
+      if (bm_token_is_parenthesis(cursors->actual))
+	return (MISMATCHED_P);
+      if ((ret = bm_stack_to_output(output, op_stack, base)) != OK)
+	return (ret);
+    }
+  return (OK);
+}
+
+t_rcode	set_res(t_token	**res, t_stack **output, t_stack **op_stack)
+{
+  *res = top(*output);
+  pop(output);
+  if (top(*output) != NULL)
+    return (TOO_MUCH_VALUES);
+  free(*output);
+  free(*op_stack);
+  return (OK);
+}
+
+t_rcode			bm_parse_and_eval(t_lexicon *lexicon,
+					  char *s,
+					  t_base *base,
+					  t_token **res)
+{
+  t_stack		*output;
+  t_stack		*op_stack;
+  t_rcode		ret;
+  t_token_cursor	cursors;
 
   if (!s || !lexicon || !base || !res)
     return (NULL_REFERENCE);
-  previous = NULL;
-  output = NULL;
-  op_stack = NULL;
+  cursors.previous = cursors.actual = NULL;
+  output = op_stack = NULL;
   while (*s)
     {
       if (!(*s != ' ' && *s != '\t' && *s != '\n'))
 	{
-	  s++;
+	  ++s;
 	  continue;
 	}
-      if ((ret = bm_new_token(&token)) != OK)
+      if ((ret = bm_new_token(&(cursors.actual))) != OK ||
+	  (ret = bm_extract_from_lexicon(lexicon, &s, base, &cursors)) != OK)
 	return (ret);
-      if ((ret = bm_extract_from_lexicon(lexicon, &token, &s, base, previous)) != OK)
-	return (ret);
-      previous = token;
-      bm_shuntingyard(&output, &op_stack, token, base);
+      cursors.previous = cursors.actual;
+      bm_shuntingyard(&output, &op_stack, cursors.actual, base);
     }
-  while ((token = top(op_stack)) != NULL)
-    {
-      if (token->type == LPARENTHESIS || token->type == RPARENTHESIS)
-	return (MISMATCHED_P);
-      if ((ret = bm_stack_to_output(&output, &op_stack, base)) != OK)
-	return (ret);
-    }
-  *res = top(output);
-  pop(&output);
-  if (top(output) != NULL)
-    return (TOO_MUCH_VALUES);
-  return (OK);
+  if ((ret = pop_last_ops(&cursors, base, &output, &op_stack)) != OK)
+    return (ret);
+  return (set_res(res, &output, &op_stack));
 }

@@ -12,28 +12,21 @@
 
 char	*bm_get_error(t_rcode code)
 {
-  if (code == MISMATCHED_P)
-    return ("mismatched parenthesis\n");
-  else if (code == TOO_MUCH_VALUES)
-    return ("too much values\n");
-  else if (code == NOT_ENOUGH_VALUES)
-    return ("not enough values\n");
-  else if (code == COULD_NOT_MALLOC)
-    return ("could not malloc\n");
-  else if (code == NULL_REFERENCE)
-    return ("null reference\n");
-  else if (code == NOT_IN_BASE)
-    return ("character not in base\n");
-  else if (code == WRONG_BASE_LEN)
-    return ("the base has an invalid length\n");
-  else if (code == DUPLICATE_VALUE_IN_BASE)
-    return ("the base contains duplicate characters\n");
-  else if (code == INVALID_CHARACTER)
-    return ("invalid character in string\n");
-  else if (code == EMPTY_BASE)
-    return ("empty base\n");
-  else if (code == READ_ERROR)
-    return ("read error");
+  char	*errors[11];
+
+  errors[MISMATCHED_P] = "mismatched parenthesis\n";
+  errors[TOO_MUCH_VALUES] = "too much values\n";
+  errors[NOT_ENOUGH_VALUES] = "not enough values\n";
+  errors[COULD_NOT_MALLOC] = "could not malloc\n";
+  errors[NULL_REFERENCE] = "null reference\n";
+  errors[NOT_IN_BASE] = "character not in base\n";
+  errors[WRONG_BASE_LEN] = "the base has an invalid length\n";
+  errors[DUPLICATE_VALUE_IN_BASE] = "the base contains duplicate characters\n";
+  errors[INVALID_CHARACTER] = "invalid character in string\n";
+  errors[EMPTY_BASE] = "empty base\n";
+  errors[READ_ERROR] = "read error\n";
+  if (code < 11)
+    return errors[code];
   else
     return ("unknown error\n");
 }
