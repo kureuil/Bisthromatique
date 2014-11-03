@@ -15,9 +15,7 @@ t_rcode	action_unary_plus(t_base *base,
 			  t_token *n,
 			  t_token *res)
 {
-  base->size++;
-  n->size++;
-  res->size++;
+  *res = *n;
   return (OK);
 }
 

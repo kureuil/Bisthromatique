@@ -25,4 +25,8 @@ unsigned int	extract_add(char *,
 			    struct s_base *,
 			    struct s_token *);
 
+t_rcode		action_add_compute(struct s_base *base,
+				   struct s_token *n1,
+				   struct s_token *n2,
+				   struct s_token *res);
 #endif /* !ADD_H_ */

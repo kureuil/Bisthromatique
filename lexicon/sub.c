@@ -23,7 +23,7 @@ t_rcode		action_sub_compute(t_base *base,
 {
   t_token	*tmp;
   t_rcode	ret;
-  
+
   if (n1->size < n2->size || my_strcmp_base(n1, n2, base) < 0)
     {
       reorder_tokens(&n1, &n2);
@@ -33,8 +33,9 @@ t_rcode		action_sub_compute(t_base *base,
     return (ret);
   if ((ret = get_complementary_number(n1, base, tmp)) != OK)
     return (ret);
-  if ((ret = action_add(base, n2, tmp, n1)) != OK)
+  if ((ret = action_add_compute(base, n2, tmp, n1)) != OK)
     return (ret);
+  bm_free_token(tmp);
   if ((ret = get_complementary_number(n1, base, res)) != OK)
     return (ret);
   clean_number_str(base, res);

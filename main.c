@@ -80,7 +80,7 @@ int		main(int argc, char **argv)
     return (bm_exit(bm_get_error(WRONG_NB_ARGS)));
   if ((ret = new_base(argv[1], &base)) != OK)
     return (bm_exit(bm_get_error(ret)));
-  size = my_getnbr(argv[3]); /* ================ to change ================== */
+  size = my_getnbr(argv[3]);
   if ((buffer = malloc(size + 1)) == NULL)
     return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));
   if ((ret = read_stdin_to_buffer(buffer, size)) != OK)
@@ -93,6 +93,7 @@ int		main(int argc, char **argv)
       free(buffer);
       return (bm_exit(bm_get_error(ret)));
     }
+  display_res(res);
   free(buffer);
-  return (display_res(res));
+  return (0);
 }
