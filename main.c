@@ -84,12 +84,8 @@ int		main(int argc, char **argv)
   size = my_getnbr(argv[3]);
   if ((buffer = malloc(size + 1)) == NULL)
     return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));
-  if ((ret = read_stdin_to_buffer(buffer, size)) != OK)
-    {
-      free(buffer);
-      return (bm_exit(bm_get_error(ret)));
-    }
-  if ((ret = bm_eval(buffer, &res, &base)) != OK)
+  if ((ret = read_stdin_to_buffer(buffer, size)) != OK ||
+      (ret = bm_eval(buffer, &res, &base)) != OK)
     {
       free(buffer);
       return (bm_exit(bm_get_error(ret)));
