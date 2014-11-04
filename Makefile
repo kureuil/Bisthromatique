@@ -13,8 +13,8 @@ RM	= rm -f
 CP	= cp
 CFLAGS	+= -Wextra -Wall -Werror -Wno-unused-parameter
 CFLAGS	+= -ansi -pedantic
-CFLAGS	+= -O3 -g -I ./include/ -L ./lib/ -l my
-LDFLAGS += -O3 -g -I ./include/ -L ./lib/ -l my
+CFLAGS	+= -I ./include/ -L ./lib/ -l my
+LDFLAGS += -I ./include/ -L ./lib/ -l my
 
 # [MODULE] Sources of operations
 OP_SRCS	= lexicon/add.c \
@@ -46,7 +46,7 @@ SRCS	= main.c \
 SRCS	+= $(SRCS_PARSER)
 OBJS	= $(SRCS:.c=.o)
 
-all: $(NAME)
+all: $(NAME) test
 
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
@@ -56,5 +56,10 @@ clean:
 
 fclean: clean
 	$(RM) $(NAME)
+
+test: $(NAME)
+	./test/gen.py 10
+	./test/engine.sh
+	$(RM) ./test/testscases/*
 
 re: fclean all
