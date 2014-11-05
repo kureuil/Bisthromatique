@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Sun Nov  2 19:17:25 2014 Louis Person
+** Last update Tue Nov  4 12:22:26 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -67,11 +67,11 @@ t_rcode	get_complementary_number(struct s_token *nbr,
   int	cursor;
   int	complementary;
 
-  if (!(res->string_value = malloc(nbr->size)))
+  res->size = res->size == 0 ? nbr->size : res->size;
+  if (!(res->string_value = malloc(res->size)))
     return (COULD_NOT_MALLOC);
   res->real_address = res->string_value;
-  res->size = nbr->size;
-  cursor = res->size - 1;
+  cursor = nbr->size - 1;
   while (cursor >= 0)
     {
       complementary = ((base->size - 1) -

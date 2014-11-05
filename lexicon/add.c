@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:31 2014 brendan rius
-** Last update Mon Nov  3 14:58:46 2014 Louis Person
+** Last update Tue Nov  4 13:33:29 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -50,7 +50,6 @@ t_rcode		action_add_compute(t_base *base,
       carry = tmp >= base->size ? 1 : 0;
       res->string_value[cursor-- + 1] = base->string[tmp % base->size];
     }
-  clean_number_str(base, res);
   return (OK);
 }
 
@@ -80,6 +79,7 @@ t_rcode		action_add(t_base *base,
       res->sign = NEGATIVE;
   if ((ret = action_add_compute(base, n1, n2, res)) != OK)
     return (ret);
+  clean_number_str(base, res);
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);

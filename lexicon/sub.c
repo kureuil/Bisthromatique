@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Mon Nov  3 15:06:47 2014 Louis Person
+** Last update Wed Nov  5 18:22:56 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -21,24 +21,30 @@ t_rcode		action_sub_compute(t_base *base,
 				   t_token *n2,
 				   t_token *res)
 {
-  t_token	*tmp;
-  t_rcode	ret;
+  int           carry;
+  int           cursor;
+  int           tmp;
+  int           shift;
 
-  if (n1->size < n2->size || my_strcmp_base(n1, n2, base) < 0)
+  if (my_strcmp_base(n1, n2, base) < 0)
     {
-      reorder_tokens(&n1, &n2);
-      res->sign = NEGATIVE;
+        reorder_tokens(&n1, &n2);
+        res->sign = NEGATIVE;
     }
-  if ((ret = bm_new_token(&tmp)) != OK)
-    return (ret);
-  if ((ret = get_complementary_number(n1, base, tmp)) != OK)
-    return (ret);
-  if ((ret = action_add_compute(base, n2, tmp, n1)) != OK)
-    return (ret);
-  bm_free_token(tmp);
-  if ((ret = get_complementary_number(n1, base, res)) != OK)
-    return (ret);
-  clean_number_str(base, res);
+  res->size = n1->size + 1;
+  if (!(res->string_value = res->real_address = malloc(res->size)))
+    return (COULD_NOT_MALLOC);
+  carry = 0;
+  cursor = n1->size - 1;
+  shift = n1->size - n2->size;
+  while (cursor >= 0 || carry)
+  {
+    tmp = (get_value_at_index(base, n1->string_value, cursor) -
+        (get_value_at_index(base, n2->string_value, cursor - shift) + carry));
+    carry = tmp < 0 ? 1 : 0;
+    tmp = tmp < 0 ? base->size + tmp : tmp;
+    res->string_value[cursor-- + 1] = base->string[tmp % base->size];
+  }
   return (OK);
 }
 
@@ -67,6 +73,7 @@ t_rcode		action_sub(t_base *base,
     }
   if ((ret = action_sub_compute(base, n1, n2, res)) != OK)
     return (ret);
+  clean_number_str(base, res);
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);
