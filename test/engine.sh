@@ -1,8 +1,6 @@
 #!/bin/bash
 
-cmds="$( cd $(dirname ${BASH_SOURCE[0]}) && pwd)/testscases/*.cmd"
-
-if [ ! -f $(pwd)/calc ]
+if [ ! -f $1 ]
 then
     echo "Binary not found. Aborted."
     exit 42
@@ -14,7 +12,7 @@ then
     exit 42
 fi
 
-for i in $cmds; do
+for i in $(ls $2/*.cmd); do
     res=${i/.cmd/.res}
     if [ ! -f $res ]
     then
@@ -26,7 +24,7 @@ for i in $cmds; do
     ops=$(sed '3q;d' $i)
     calc=$(sed -n '4,$ p' $i)
     tmp=$(mktemp --suffix '_bistro')
-    echo $calc | $(pwd)/calc $base $ops $size > $tmp
+    echo $calc | $1 $base $ops $size > $tmp
     diff=$(diff -y $res $tmp)
     if [ $? -ne 0 ]
     then
