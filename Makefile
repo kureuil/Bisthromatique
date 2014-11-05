@@ -46,7 +46,7 @@ SRCS	= main.c \
 SRCS	+= $(SRCS_PARSER)
 OBJS	= $(SRCS:.c=.o)
 
-all: $(NAME) test
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)

@@ -32,6 +32,8 @@ char	*bm_get_error(t_rcode code)
   errors[DUPLICATE_VALUE_IN_OPERATORS_OR_BASE] = "duplicate value in operator or base\n";
   errors[EMPTY_OPERATORS] = "empty operators string\n";
   errors[WRONG_OPS_LEN] = "you did not enter enough operators, or you entered too much\n";
+  errors[DIVISION_BY_ZERO] = "division by zero\n";
+  errors[MODULO_BY_ZERO] = "modulo by zero\n";
   if (code < NB_ERRORS)
     return errors[code];
   else

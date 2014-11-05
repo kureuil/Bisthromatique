@@ -11,12 +11,17 @@
 #include "tokens.h"
 #include "bm_base.h"
 #include "bm_errno.h"
+#include "bm_lexicon_utils.h"
+#include "my.h"
 
 t_rcode	action_div(t_base *base,
 		   t_token *n1,
 		   t_token *n2,
 		   t_token *res)
 {
+  clean_number_str(base, n2);
+  if (n2->size == 1 && get_value_at_index(base, n2->string_value, 0) == 0)
+    return (DIVISION_BY_ZERO);
   return (OK);
 }
 
