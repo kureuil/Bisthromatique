@@ -60,24 +60,11 @@ int	my_strcmp_base(struct s_token *n1, struct s_token *n2, t_base *base)
   return (n1->string_value[i] - n2->string_value[i]);
 }
 
-t_rcode	get_complementary_number(struct s_token *nbr,
-				 struct s_base *base,
-				 struct s_token *res)
+t_rcode	malloc_token_dynamically(t_token *token, int size)
 {
-  int	cursor;
-  int	complementary;
-
-  res->size = res->size == 0 ? nbr->size : res->size;
-  if (!(res->string_value = malloc(res->size)))
+  if ((token->string_value = malloc(size)) == NULL)
     return (COULD_NOT_MALLOC);
-  res->real_address = res->string_value;
-  cursor = nbr->size - 1;
-  while (cursor >= 0)
-    {
-      complementary = ((base->size - 1) -
-		       get_value_at_index(base, nbr->string_value, cursor));
-      res->string_value[cursor] = base->string[complementary];
-      cursor--;
-    }
+  token->dynamic = TRUE;
+  token->real_address = token->string_value;
   return (OK);
 }
