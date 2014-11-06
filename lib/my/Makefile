@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 20 08:51:07 2014 brendan rius
-## Last update Thu Oct 23 20:09:40 2014 brendan rius
+## Last update Thu Nov  6 11:41:23 2014 Louis Person
 ##
 
 CC	= gcc
@@ -59,7 +59,8 @@ SRCS	= 	my_char_isalphanum.c \
 		my_puterror.c \
 		sopalin.c \
 		my_memset.c \
-		my_char_isdigit.c
+		my_char_isdigit.c \
+		my_max.c
 
 OBJS	= $(SRCS:.c=.o)
 

@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:03 2014 brendan rius
-** Last update Tue Oct 28 15:27:39 2014 brendan rius
+** Last update Thu Nov  6 15:16:19 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -13,6 +13,8 @@
 #include "bm_base.h"
 #include "bm_errno.h"
 #include "bm_lexicon_utils.h"
+#include "my.h"
+#include "boolean.h"
 
 t_rcode	simple_mul(t_base *base,
 		   t_token *n1,
@@ -46,13 +48,52 @@ t_rcode	simple_mul(t_base *base,
   return (OK);
 }
 
+t_rcode		split_token(t_token *src,
+			    int sep,
+			    t_token *first,
+			    t_token *second)
+{
+  t_rcode	ret;
+
+  if ((ret = bm_new_token(&first)) != OK ||
+      (ret = bm_new_token(&second)) != OK)
+    return (ret);
+  first->type = second->type = NUMBER;
+  first->dynamic = second->dynamic = FALSE;
+  first->string_value = src->string_value;
+  first->size = sep;
+  second->string_value = src->string_value + sep;
+  second->size = src->size - sep;
+  return (OK);
+}
+
 t_rcode		action_mul(t_base *base,
 			   t_token *n1,
 			   t_token *n2,
 			   t_token *res)
 {
+  int		m2;
+  t_token	*high1;
+  t_token	*low1;
+  t_token	*high2;
+  t_token	*low2;
+  t_token	*z0;
+  t_token	*z1;
+  t_token	*z2;
+  t_token	*a;
+  t_token	*b;
+
   if (n1->size == 1 || n2->size == 1)
     return (simple_mul(base, n1, n2, res));
+  m2 = my_max(n1->size, n2->size) / 2;
+  high1 = low1 = high2 = low2 = a = b = z0 = z1 = z2 = NULL;
+  split_token(n1, m2, high1, low1);
+  split_token(n2, m2, high2, low2);
+  action_add(base, low1, high1, a);
+  action_add(base, low2, high2, b);
+  action_mul(base, low1, low2, z0);
+  action_mul(base, a, b, z1);
+  action_mul(base, high1, high2, z2);
   return (OK);
 }
 

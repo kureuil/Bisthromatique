@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Fri Oct 10 11:18:26 2014 brendan rius
-** Last update Mon Nov  3 09:37:04 2014 Louis Person
+** Last update Thu Nov  6 11:40:48 2014 Louis Person
 */
 
 #ifndef MY_H_
@@ -55,5 +55,6 @@ char	**my_str_to_wordtab(char *str);
 char	*my_strdup(char *str);
 void	*my_memset(void *s, char c, int n);
 char	my_char_isdigit(char c);
+int	my_max(int ein, int zwei);
 
 #endif /* !MY_H_ */

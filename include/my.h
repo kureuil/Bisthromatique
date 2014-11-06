@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Fri Oct 10 11:18:26 2014 brendan rius
-** Last update Thu Oct 23 20:06:27 2014 brendan rius
+** Last update Thu Nov  6 11:40:48 2014 Louis Person
 */
 
 #ifndef MY_H_
@@ -14,6 +14,7 @@
 int	my_find_prime_sup(int nb);
 int	my_getnbr_base(char *str, char *base);
 int	my_getnbr(char *str);
+long	my_getlnbr(char *str);
 int	my_isneg(int n);
 int	my_is_prime(int nb);
 int	my_power_rec(int nb, int power);
@@ -54,5 +55,6 @@ char	**my_str_to_wordtab(char *str);
 char	*my_strdup(char *str);
 void	*my_memset(void *s, char c, int n);
 char	my_char_isdigit(char c);
+int	my_max(int ein, int zwei);
 
 #endif /* !MY_H_ */
