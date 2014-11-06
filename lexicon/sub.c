@@ -32,18 +32,19 @@ t_rcode		action_sub_compute(t_base *base,
         reorder_tokens(&n1, &n2);
         res->sign = NEGATIVE;
     }
-  if ((ret = malloc_token_dynamically(res, n1->size + 1)) != OK)
+  if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
     return (ret);
+  res->string_value[0] = base->array[0];
   carry = 0;
   cursor = n1->size - 1;
   shift = n1->size - n2->size;
   while (cursor >= 0 || carry)
   {
     tmp = (get_value_at_index(base, n1->string_value, cursor) -
-        (get_value_at_index(base, n2->string_value, cursor - shift) + carry));
+	   (get_value_at_index(base, n2->string_value, cursor - shift) + carry));
     carry = tmp < 0 ? 1 : 0;
     tmp = tmp < 0 ? base->size + tmp : tmp;
-    res->string_value[cursor-- + 1] = base->string[tmp % base->size];
+    res->string_value[cursor--] = base->string[tmp % base->size];
   }
   return (OK);
 }

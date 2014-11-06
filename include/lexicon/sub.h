@@ -15,6 +15,11 @@
 
 struct s_token;
 
+t_rcode	action_sub_compute(struct s_base *base,
+			   struct s_token *n1,
+			   struct s_token *n2,
+			   struct s_token *res);
+
 t_rcode	action_sub(struct s_base *base,
 		   struct s_token *n1,
 		   struct s_token *n2,

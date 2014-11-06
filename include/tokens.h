@@ -83,4 +83,9 @@ BOOL	bm_token_is_operator(t_token *token);
 */
 BOOL	bm_token_is_parenthesis(t_token *token);
 
+/*
+** Display a token
+*/
+void	bm_print_token(t_token *token);
+
 #endif /* !TOKENS_H_ */

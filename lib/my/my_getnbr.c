@@ -29,25 +29,3 @@ int	my_getnbr(char *str)
   }
   return (nb);
 }
-
-long	my_getlnbr(char *str)
-{
-  int	sign;
-  long	nb;
-
-  sign = 1;
-  nb = 0;
-  while (*str == '+' || *str == '-')
-    sign *= (*str++  == '-' ? -1 : 1);
-  while (*str >= '0' && *str <= '9')
-  {
-    if (nb < (-9223372036854775808 / 10) || nb > (9223372036854775807 / 10))
-      return (0);
-    nb *= 10;
-    if (nb < -9223372036854775808 + (*str - '0') || nb > 9223372036854775807 - (*str - '0'))
-      return (0);
-    nb += ((*str - '0') * sign);
-    str++;
-  }
-  return (nb);
-}

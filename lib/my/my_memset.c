@@ -15,7 +15,7 @@ void	*my_memset(void *s, char c, int n)
   sc = (char *) s;
   while (n)
     {
-      *(sc + n) = c;
+      *(sc + n - 1) = c;
       --n;
     }
   return (s);

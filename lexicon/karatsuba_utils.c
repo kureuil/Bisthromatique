@@ -37,13 +37,10 @@ t_rcode		split_token(t_token *src,
 			    t_token *first,
 			    t_token *second)
 {
-  t_rcode	ret;
-
-  if ((ret = bm_new_token(&first)) != OK ||
-      (ret = bm_new_token(&second)) != OK)
-    return (ret);
-  first->type = second->type = NUMBER;
-  first->dynamic = second->dynamic = FALSE;
+  first->dynamic = FALSE;
+  second->dynamic = FALSE;
+  first->type = NUMBER;
+  second->type = NUMBER;
   first->string_value = src->string_value;
   first->size = sep;
   second->string_value = src->string_value + sep;

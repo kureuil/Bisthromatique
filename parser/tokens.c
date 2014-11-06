@@ -8,9 +8,11 @@
 ** Last update Sun Nov  2 14:39:33 2014 Louis Person
 */
 
+#include <unistd.h>
 #include <stdlib.h>
 #include "boolean.h"
 #include "tokens.h"
+#include "my.h"
 
 BOOL	bm_token_is_parenthesis(t_token *token)
 {
@@ -42,4 +44,14 @@ t_rcode	bm_free_token(t_token *token)
     free(token->real_address);
   free(token);
   return (OK);
+}
+
+void	bm_print_token(t_token *token)
+{
+  my_putstr("----- TOKEN -----\n");
+  my_putstr("size:\t");
+  my_put_nbr(token->size);
+  my_putstr("\nvalue:\t");
+  write(1, token->string_value, token->size);
+  my_putstr("\n------ END -------\n");
 }

@@ -33,7 +33,7 @@ int	get_value_at_index(t_base *base, char *number, int index)
 
 t_rcode	clean_number_str(t_base *base, t_token *token)
 {
-  while (get_value_at_index(base, token->string_value, 0) <= 0 &&
+  while (token->string_value[0] == base->array[0] &&
 	 token->size > 1)
     {
       token->size--;
