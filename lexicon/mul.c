@@ -15,6 +15,7 @@
 #include "bm_lexicon_utils.h"
 #include "my.h"
 #include "boolean.h"
+#include "karatsuba_utils.h"
 
 t_rcode	simple_mul(t_base *base,
 		   t_token *n1,
@@ -45,25 +46,6 @@ t_rcode	simple_mul(t_base *base,
   clean_number_str(base, res);
   bm_free_token(n1);
   bm_free_token(n2);
-  return (OK);
-}
-
-t_rcode		split_token(t_token *src,
-			    int sep,
-			    t_token *first,
-			    t_token *second)
-{
-  t_rcode	ret;
-
-  if ((ret = bm_new_token(&first)) != OK ||
-      (ret = bm_new_token(&second)) != OK)
-    return (ret);
-  first->type = second->type = NUMBER;
-  first->dynamic = second->dynamic = FALSE;
-  first->string_value = src->string_value;
-  first->size = sep;
-  second->string_value = src->string_value + sep;
-  second->size = src->size - sep;
   return (OK);
 }
 

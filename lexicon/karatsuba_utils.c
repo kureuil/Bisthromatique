@@ -10,17 +10,18 @@
 
 #include <stdlib.h>
 #include "bm_errno.h"
-#include "bm_tokens.h"
+#include "tokens.h"
 #include "boolean.h"
+#include "bm_lexicon_utils.h"
+#include "bm_base.h"
 
-t_rcode	pow_base(t_base *base, int multiplier, t_token *res)
+t_rcode		pow_base(t_base *base, int multiplier, t_token *res)
 {
-  int	i;
+  int		i;
+  t_rcode	ret;
 
-  res->dynamic = TRUE;
-  res->size = multiplier + 1
-  if ((res->string_value = res->real_address = malloc(res->size)) == NULL)
-    return (COULD_NOT_MALLOC);
+  if ((ret = malloc_token_dynamically(res, multiplier + 1)) != OK)
+    return (ret);
   res->string_value[0] = base->string[1];
   i = 1;
   while (i < res->size)

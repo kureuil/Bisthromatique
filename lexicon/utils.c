@@ -66,5 +66,6 @@ t_rcode	malloc_token_dynamically(t_token *token, int size)
     return (COULD_NOT_MALLOC);
   token->dynamic = TRUE;
   token->real_address = token->string_value;
+  token->size = size;
   return (OK);
 }

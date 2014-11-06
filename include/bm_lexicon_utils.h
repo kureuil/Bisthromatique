@@ -42,10 +42,8 @@ int	my_strcmp_base(struct s_token *,
 		       struct s_base *);
 
 /*
-** Returns the complementary of a given number
+** Allocate a token dynamically and sets its size.
 */
-t_rcode	get_complementary_number(struct s_token *,
-				 struct s_base *,
-				 struct s_token *);
+t_rcode	malloc_token_dynamically(struct s_token *token, int size);
 
 #endif

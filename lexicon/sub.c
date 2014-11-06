@@ -25,15 +25,15 @@ t_rcode		action_sub_compute(t_base *base,
   int           cursor;
   int           tmp;
   int           shift;
+  t_rcode	ret;
 
   if (my_strcmp_base(n1, n2, base) < 0)
     {
         reorder_tokens(&n1, &n2);
         res->sign = NEGATIVE;
     }
-  res->size = n1->size + 1;
-  if (!(res->string_value = res->real_address = malloc(res->size)))
-    return (COULD_NOT_MALLOC);
+  if ((ret = malloc_token_dynamically(res, n1->size + 1)) != OK)
+    return (ret);
   carry = 0;
   cursor = n1->size - 1;
   shift = n1->size - n2->size;
