@@ -12,7 +12,7 @@ then
     exit 42
 fi
 
-for i in $(ls $2/*.cmd); do
+for i in `ls $2/*.cmd`; do
     res=${i/.cmd/.res}
     if [ ! -f $res ]
     then
