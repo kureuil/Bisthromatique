@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Thu Nov  6 15:06:35 2014 Brendan Rius
-** Last update Thu Nov  6 15:06:35 2014 Brendan Rius
+** Last update Thu Nov  6 15:17:34 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -28,5 +28,24 @@ t_rcode	pow_base(t_base *base, int multiplier, t_token *res)
       res->string_value[i] = base->string[0];
       ++i;
     }
+  return (OK);
+}
+
+t_rcode		split_token(t_token *src,
+			    int sep,
+			    t_token *first,
+			    t_token *second)
+{
+  t_rcode	ret;
+
+  if ((ret = bm_new_token(&first)) != OK ||
+      (ret = bm_new_token(&second)) != OK)
+    return (ret);
+  first->type = second->type = NUMBER;
+  first->dynamic = second->dynamic = FALSE;
+  first->string_value = src->string_value;
+  first->size = sep;
+  second->string_value = src->string_value + sep;
+  second->size = src->size - sep;
   return (OK);
 }
