@@ -24,7 +24,8 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/sub.c \
 	lexicon/parenthesis.c \
 	lexicon/number.c \
-	lexicon/utils.c
+	lexicon/utils.c \
+	lexicon/karatsuba_utils.c
 
 # [MODULE] Sources needed to use lexicon
 SRCS_LEXICON	= lexicon/lexicon.c
