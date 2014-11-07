@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:39 2014 brendan rius
-** Last update Fri Nov  7 16:41:38 2014 Louis Person
+** Last update Fri Nov  7 22:45:26 2014 Louis Person
 */
 
 #include "tokens.h"
@@ -42,6 +42,36 @@ t_rcode action_div_by_two(t_base *base, t_token *n1, t_token *res)
   return (OK);
 }
 
+t_rcode	action_div_compute(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
+{
+  t_token	*min;
+  t_token	*tmp;
+  t_token	*max;
+  t_token	*cursor;
+
+  if ((malloc_token_dynamically(min, 1)) != OK ||
+      (malloc_token_dynamically(max, n1->size)) != OK)
+    return (COULD_NOT_MALLOC);
+  while (my_strcmp(tmp->string_value, min->string_value))
+    {
+      action_add_compute(base, min, max, tmp);
+      action_div_by_two(base, tmp, cursor);
+      action_mul(base, cursor, n2, tmp);
+      if (my_strcmp(tmp->string_value, n1->string_value) > 0)
+	max = tmp;
+      else
+	min = tmp;
+    }
+  bm_free_token(min);
+  bm_free_token(max);
+  bm_free_token(tmp);
+  bm_free_token(cursor);
+  return (OK);
+}
+
 t_rcode	action_div(t_base *base,
 		   t_token *n1,
 		   t_token *n2,
@@ -51,6 +81,7 @@ t_rcode	action_div(t_base *base,
 
   if ((ret = malloc_token_dynamically(res, n1->size + n2->size)) != OK)
     return (ret);
+  action_div_compute(base, n1, n2, res);
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);
