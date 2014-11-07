@@ -32,6 +32,7 @@ t_rcode	bm_new_token(t_token **token)
   (*token)->sign = POSITIVE;
   (*token)->type = UNDEFINED;
   (*token)->dynamic = TRUE;
+  (*token)->real_address = NULL;
   (*token)->size = 0;
   return (OK);
 }
