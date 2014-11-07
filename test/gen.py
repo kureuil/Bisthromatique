@@ -21,7 +21,7 @@ for i in range (0, size):
     s = ""
     l = random.randint(1, 100)
     for i in range(0, l):
-        s += str(int(random.getrandbits(random.randint(0, 200)))) + random.sample(ops, 1)[0]
+        s += str(int(random.getrandbits(random.randint(1, 200)))) + random.sample(ops, 1)[0]
     s += str(int(random.getrandbits(random.randint(1, 200))))
     res_bc = check_output("echo \"{0}\" | bc".format(s), shell = True)
     fcmd.write("0123456789" + '\n')
