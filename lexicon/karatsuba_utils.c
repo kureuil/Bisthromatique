@@ -14,36 +14,49 @@
 #include "boolean.h"
 #include "bm_lexicon_utils.h"
 #include "bm_base.h"
+#include "karatsuba_utils.h"
 
-t_rcode		pow_base(t_base *base, int multiplier, t_token *res)
+t_rcode	split_token(t_token *n1,
+		    t_token *n2,
+		    t_delimiters *delimiters)
 {
-  int		i;
-  t_rcode	ret;
+  int	size;
 
-  if ((ret = malloc_token_dynamically(res, multiplier + 1)) != OK)
-    return (ret);
-  res->string_value[0] = base->string[1];
-  i = 1;
-  while (i < res->size)
+  if (n1->size == n2->size)
     {
-      res->string_value[i] = base->string[0];
-      ++i;
+      size = n1->size % 2 ? n1->size / 2 + 1 : n1->size / 2;
+      delimiters->a->string_value = n1->string_value;
+      delimiters->a->size = size;
+      delimiters->a->dynamic = FALSE;
+      delimiters->b->string_value = n1->string_value + size;
+      delimiters->b->size = n1->size - size;
+      delimiters->b->dynamic = FALSE;
+      delimiters->c->string_value = n2->string_value;
+      delimiters->c->size = size;
+      delimiters->c->dynamic = FALSE;
+      delimiters->d->string_value = n2->string_value + size;
+      delimiters->d->size = n2->size - size;
+      delimiters->d->dynamic = FALSE;
     }
   return (OK);
 }
 
-t_rcode		split_token(t_token *src,
-			    int sep,
-			    t_token *first,
-			    t_token *second)
+t_rcode		pad(t_token *t, t_base *base, int nb, t_token *res)
 {
-  first->dynamic = FALSE;
-  second->dynamic = FALSE;
-  first->type = NUMBER;
-  second->type = NUMBER;
-  first->string_value = src->string_value;
-  first->size = sep;
-  second->string_value = src->string_value + sep;
-  second->size = src->size - sep;
+  t_rcode	ret;
+  int		i;
+
+  if ((ret = malloc_token_dynamically(res, t->size + nb)) != OK)
+    return (ret);
+  res->type = NUMBER;
+  i = 0;
+  while (i < t->size + nb)
+    {
+      if (i < t->size)
+	res->string_value[i] = t->string_value[i];
+      else
+	res->string_value[i] = base->string[0];
+      ++i;
+    }
   return (OK);
 }

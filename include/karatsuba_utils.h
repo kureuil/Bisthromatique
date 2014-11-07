@@ -17,13 +17,20 @@ struct s_base;
 
 struct s_token;
 
-t_rcode	pow_base(struct s_base *base,
-		 int multiplier,
-		 struct s_token *res);
+typedef struct		s_delimiters
+{
+  struct s_token	*a;
+  struct s_token	*b;
+  struct s_token	*c;
+  struct s_token	*d;
+}			t_delimiters;
 
-t_rcode	split_token(struct s_token *src,
-		    int sep,
-		    struct s_token *first,
-		    struct s_token *second);
+t_rcode	pad(struct s_token *t,
+	    struct s_base *base,
+	    int nb,
+	    struct s_token *res);
 
+t_rcode	split_token(struct s_token *n1,
+		    struct s_token *n2,
+		    t_delimiters *delimiters);
 #endif /* !KARATSUBA_UTILS_H_ */
