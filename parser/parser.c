@@ -22,10 +22,12 @@ t_rcode		bm_extract_from_lexicon(t_lexicon *lexicon,
 					t_token_cursor *crsr)
 {
   t_rcode	ret;
+  t_extract_fct	fct;
 
-  if (lexicon->extractors[(unsigned char) **s] == NULL)
+  fct = lexicon->extractors[(unsigned char) **s];
+  if (fct == NULL)
     return (INVALID_CHARACTER);
-  ret = (*(lexicon->extractors[(unsigned char) **s]))(*s, crsr->actual, base, crsr->previous);
+  ret = (*fct)(*s, crsr->actual, base, crsr->previous);
   if (ret == OK)
     {
       crsr->actual->string_value = *s;
@@ -76,31 +78,26 @@ t_rcode			bm_parse_and_eval(t_lexicon *lexicon,
 					  t_token **res)
 {
   t_stack		*output;
-  t_stack		*op_stack;
+  t_stack		*ops;
   t_rcode		ret;
   t_token_cursor	crsrs;
 
   if (!s || !lexicon || !base || !res)
     return (NULL_REFERENCE);
   crsrs.previous = crsrs.actual = NULL;
-  output = op_stack = NULL;
+  output = ops = NULL;
   while (*s)
     {
-      if (!(*s != ' ' && *s != '\t' && *s != '\n'))
-	{
-	  ++s;
-	  continue;
-	}
       if ((ret = bm_new_token(&(crsrs.actual))) != OK ||
 	  (ret = bm_extract_from_lexicon(lexicon, &s, base, &crsrs)) != OK)
 	return (ret);
       crsrs.previous = crsrs.actual;
-      if ((ret = bm_shuntingyard(&output, &op_stack, crsrs.actual, base)) != OK)
+      if ((ret = bm_shuntingyard(&output, &ops, crsrs.actual, base)) != OK)
 	return (ret);
     }
   if (!crsrs.previous)
     return (NOTHING_TO_READ);
-  if ((ret = pop_last_ops(&crsrs, base, &output, &op_stack)) != OK)
+  if ((ret = pop_last_ops(&crsrs, base, &output, &ops)) != OK)
     return (ret);
-  return (set_res(res, &output, &op_stack));
+  return (set_res(res, &output, &ops));
 }
