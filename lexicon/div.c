@@ -8,13 +8,14 @@
 ** Last update Fri Nov  7 22:45:26 2014 Louis Person
 */
 
+#include <stdlib.h>
 #include "tokens.h"
 #include "bm_base.h"
 #include "bm_errno.h"
 #include "bm_lexicon_utils.h"
 #include "my.h"
 
-t_rcode action_div_by_two(t_base *base, t_token *n1, t_token *res)
+t_rcode		action_div_by_two(t_base *base, t_token *n1, t_token *res)
 {
   int		cursor;
   int		tmp;
@@ -42,16 +43,17 @@ t_rcode action_div_by_two(t_base *base, t_token *n1, t_token *res)
   return (OK);
 }
 
-t_rcode	action_div_compute(t_base *base,
-			   t_token *n1,
-			   t_token *n2,
-			   t_token *res)
+t_rcode		action_div_compute(t_base *base,
+				   t_token *n1,
+				   t_token *n2,
+				   t_token *res)
 {
   t_token	*min;
   t_token	*tmp;
   t_token	*max;
   t_token	*cursor;
 
+  min = max = tmp = cursor = NULL;
   if ((malloc_token_dynamically(min, 1)) != OK ||
       (malloc_token_dynamically(max, n1->size)) != OK)
     return (COULD_NOT_MALLOC);
@@ -72,10 +74,10 @@ t_rcode	action_div_compute(t_base *base,
   return (OK);
 }
 
-t_rcode	action_div(t_base *base,
-		   t_token *n1,
-		   t_token *n2,
-		   t_token *res)
+t_rcode		action_div(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
 {
   t_rcode	ret;
 

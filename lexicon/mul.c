@@ -156,6 +156,10 @@ t_rcode		action_mul(t_base *base,
   m = my_max(n1->size, n2->size);
   m2 = m / 2;
   split_tokens(n1, n2, &delimiters, base);
+  /*bm_print_token(delimiters.a);
+  bm_print_token(delimiters.b);
+  bm_print_token(delimiters.c);
+  bm_print_token(delimiters.d);*/
   compute_z0(base, &delimiters, &z0);
   compute_z1(base, &delimiters, &z1);
   compute_z2(base, &delimiters, z0, z1, &z2);
