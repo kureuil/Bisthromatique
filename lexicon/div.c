@@ -5,16 +5,17 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:39 2014 brendan rius
-** Last update Sat Nov  8 18:40:14 2014 Louis Person
+** Last update Sat Nov  8 23:42:10 2014 Louis Person
 */
 
+#include <stdlib.h>
 #include "tokens.h"
 #include "bm_base.h"
 #include "bm_errno.h"
 #include "bm_lexicon_utils.h"
 #include "my.h"
 
-t_rcode action_div_by_two(t_base *base, t_token *n1, t_token *res)
+t_rcode		action_div_by_two(t_base *base, t_token *n1, t_token *res)
 {
   int	cursor;
   int	tmp;
@@ -43,29 +44,29 @@ t_rcode action_div_by_two(t_base *base, t_token *n1, t_token *res)
   return (OK);
 }
 
-t_rcode	action_div_compute(t_base *base,
-			   t_token *n1,
-			   t_token *n2,
-			   t_token *res)
+t_rcode		action_div_compute(t_base *base,
+				   t_token *n1,
+				   t_token *n2,
+				   t_token *res)
 {
   t_token	*min;
   t_token	*tmp;
   t_token	*max;
   t_token	*cursor;
+  t_rcode	ret;
 
-  bm_new_token(&min);
-  bm_new_token(&max);
-  bm_new_token(&tmp);
-  bm_new_token(&cursor);
+  if ((ret = bm_new_token(&min)) != OK ||
+      (ret = bm_new_token(&tmp)) != OK ||
+      (ret = bm_new_token(&max)) != OK ||
+      (ret = bm_new_token(&cursor)) != OK)
+    return (ret);
   if ((malloc_token_dynamically(min, 1)) != OK ||
       (malloc_token_dynamically(max, n1->size)) != OK ||
       (malloc_token_dynamically(tmp, n1->size)) != OK)
     return (COULD_NOT_MALLOC);
   min->string_value[0] = base->string[0];
   my_strncpy(max->string_value, n1->string_value, n1->size);
-  while (!tmp->string_value ||
-	 !min->string_value ||
-	 my_strcmp_base(tmp->string_value, min->string_value, base))
+  while (my_strcmp_base(tmp->string_value, min->string_value, base))
     {
       bm_print_token(min);
       bm_print_token(max);
@@ -95,10 +96,10 @@ t_rcode	action_div_compute(t_base *base,
   return (OK);
 }
 
-t_rcode	action_div(t_base *base,
-		   t_token *n1,
-		   t_token *n2,
-		   t_token *res)
+t_rcode		action_div(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
 {
   t_rcode	ret;
 

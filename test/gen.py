@@ -12,7 +12,7 @@ if len(sys.argv) < 2:
 else:
     size = int(sys.argv[1])
 
-ops = ["*"]
+ops = ["*", "+", "-"]
 rops = ["(", ")", "+", "-", "*", "/", "%"]
 for i in range (0, size):
     name = str(uuid.uuid4())
@@ -21,7 +21,7 @@ for i in range (0, size):
     s = ""
     l = random.randint(1, 10)
     for i in range(0, l):
-        s += str(int(random.getrandbits(random.randint(1, 20)))) + random.sample(ops, 1)[0]
+        s += str(int(random.getrandbits(random.randint(1, 50)))) + random.sample(ops, 1)[0]
     s += str(int(random.getrandbits(random.randint(1, 20))))
     res_bc = check_output("echo \"{0}\" | bc".format(s), shell = True)
     fcmd.write("0123456789" + '\n')

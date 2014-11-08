@@ -22,22 +22,32 @@ t_rcode	split_token(t_token *n1,
 {
   int	size;
 
-  if (n1->size == n2->size)
+  if (n2->size > n1->size)
+    reorder_tokens(&n1, &n2);
+  size = (n1->size + 1) / 2;
+  delimiters->a->string_value = n1->string_value;
+  delimiters->a->size = size;
+  delimiters->b->string_value = n1->string_value + size;
+  delimiters->b->size = n1->size - size;
+  if (size >= n2->size / 2)
     {
-      size = n1->size % 2 ? n1->size / 2 + 1 : n1->size / 2;
-      delimiters->a->string_value = n1->string_value;
-      delimiters->a->size = size;
-      delimiters->a->dynamic = FALSE;
-      delimiters->b->string_value = n1->string_value + size;
-      delimiters->b->size = n1->size - size;
-      delimiters->b->dynamic = FALSE;
+      delimiters->c->string_value = "0";
+      delimiters->c->size = 1;
+      delimiters->d->string_value = n2->string_value;
+      delimiters->d->size = n2->size;
+    }
+  else
+    {
       delimiters->c->string_value = n2->string_value;
       delimiters->c->size = size;
-      delimiters->c->dynamic = FALSE;
       delimiters->d->string_value = n2->string_value + size;
       delimiters->d->size = n2->size - size;
-      delimiters->d->dynamic = FALSE;
     }
+
+  delimiters->a->dynamic = FALSE;
+  delimiters->b->dynamic = FALSE;
+  delimiters->c->dynamic = FALSE;
+  delimiters->d->dynamic = FALSE;
   return (OK);
 }
 
