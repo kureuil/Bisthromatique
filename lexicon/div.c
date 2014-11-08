@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:55:39 2014 brendan rius
-** Last update Fri Nov  7 22:45:26 2014 Louis Person
+** Last update Sat Nov  8 18:40:14 2014 Louis Person
 */
 
 #include "tokens.h"
@@ -16,28 +16,29 @@
 
 t_rcode action_div_by_two(t_base *base, t_token *n1, t_token *res)
 {
-  int		cursor;
-  int		tmp;
-  t_rcode	ret;
+  int	cursor;
+  int	tmp;
+  int	rest;
 
-  cursor = n1->size - 1;
-  if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
-    return (ret);
-  while (cursor >= 0)
+  cursor = 0;
+  if (malloc_token_dynamically(res, n1->size) != OK)
+    return (COULD_NOT_MALLOC);
+  my_putstr("\tcccc\n");
+  while (cursor < n1->size)
     {
-      if (n1->string_value[cursor] == base->string[0] &&
-	  cursor - 1 >= 0 &&
-	  n1->string_value[cursor - 1] != base->string[0])
-	  res->string_value[cursor] = base->string[base->size / 2] +
-	    get_value_at_index(base, n1->string_value, cursor) / 2;
-      else
+      tmp = get_value_at_index(base, n1->string_value, cursor) / 2;
+      rest = get_value_at_index(base, n1->string_value, cursor) - 2 * tmp;
+      if (cursor > 0 && n1->string_value[cursor - 1] == base->string[1])
 	{
-	  tmp = get_value_at_index(base, n1->string_value, cursor);
-	  res->string_value[cursor] = base->string[tmp / 2];
+	  res->string_value[cursor] = base->string[tmp + base->size / 2];
+	  n1->string_value[cursor - 1] = base->string[0];
 	}
-      cursor--;
+      else
+	res->string_value[cursor] = base->string[tmp];
+      n1->string_value[cursor] = base->string[rest];
+      cursor++;
     }
-  bm_free_token(n1);
+  clean_number_str(base, n1);
   clean_number_str(base, res);
   return (OK);
 }
@@ -52,19 +53,41 @@ t_rcode	action_div_compute(t_base *base,
   t_token	*max;
   t_token	*cursor;
 
+  bm_new_token(&min);
+  bm_new_token(&max);
+  bm_new_token(&tmp);
+  bm_new_token(&cursor);
   if ((malloc_token_dynamically(min, 1)) != OK ||
-      (malloc_token_dynamically(max, n1->size)) != OK)
+      (malloc_token_dynamically(max, n1->size)) != OK ||
+      (malloc_token_dynamically(tmp, n1->size)) != OK)
     return (COULD_NOT_MALLOC);
-  while (my_strcmp(tmp->string_value, min->string_value))
+  min->string_value[0] = base->string[0];
+  my_strncpy(max->string_value, n1->string_value, n1->size);
+  while (!tmp->string_value ||
+	 !min->string_value ||
+	 my_strcmp_base(tmp->string_value, min->string_value, base))
     {
+      bm_print_token(min);
+      bm_print_token(max);
       action_add_compute(base, min, max, tmp);
-      action_div_by_two(base, tmp, cursor);
+      clean_number_str(base, tmp);
+      if ((malloc_token_dynamically(cursor, max->size)) != OK)
+	return (COULD_NOT_MALLOC);
+      bm_print_token(tmp);
+      my_putstr("\taaaa\n");
+      if (action_div_by_two(base, tmp, cursor) != OK)
+	return (COULD_NOT_MALLOC);
+      my_putstr("\tbbbb\n");
+      bm_print_token(cursor);
+      if ((malloc_token_dynamically(tmp, cursor->size + n2->size)) != OK)
+	return (COULD_NOT_MALLOC);
       action_mul(base, cursor, n2, tmp);
       if (my_strcmp(tmp->string_value, n1->string_value) > 0)
 	max = tmp;
       else
 	min = tmp;
     }
+  *res = *min;
   bm_free_token(min);
   bm_free_token(max);
   bm_free_token(tmp);
