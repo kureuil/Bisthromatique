@@ -52,11 +52,19 @@ t_rcode		action_div_compute(t_base *base,
   t_token	*tmp;
   t_token	*max;
   t_token	*cursor;
+  t_rcode	ret;
 
-  min = max = tmp = cursor = NULL;
+  if ((ret = bm_new_token(&min)) != OK ||
+      (ret = bm_new_token(&tmp)) != OK ||
+      (ret = bm_new_token(&max)) != OK ||
+      (ret = bm_new_token(&cursor)) != OK)
+    return (ret);
   if ((malloc_token_dynamically(min, 1)) != OK ||
-      (malloc_token_dynamically(max, n1->size)) != OK)
+      (malloc_token_dynamically(max, n1->size)) != OK ||
+      (malloc_token_dynamically(res, n1->size)) != OK)
     return (COULD_NOT_MALLOC);
+  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
+    res->sign = NEGATIVE;
   while (my_strcmp(tmp->string_value, min->string_value))
     {
       action_add_compute(base, min, max, tmp);

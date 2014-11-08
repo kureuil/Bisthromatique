@@ -44,7 +44,6 @@ int	display_res(t_token *res, t_base *base)
     my_putchar('-');
   if (write(STDOUT, res->string_value, res->size) == -1)
     bm_exit(bm_get_error(WRITE_FAILED));
-  my_putchar('\n');
   bm_free_token(res);
   return (0);
 }

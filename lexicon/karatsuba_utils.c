@@ -15,7 +15,6 @@
 #include "bm_lexicon_utils.h"
 #include "bm_base.h"
 #include "karatsuba_utils.h"
-#include "my.h"
 
 t_rcode	split_token(t_token *n1,
 		    t_token *n2,
