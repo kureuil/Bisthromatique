@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:03 2014 brendan rius
-** Last update Sat Nov  8 12:38:58 2014 Louis Person
+** Last update Fri Nov  7 17:08:14 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -130,7 +130,7 @@ t_rcode		compute_z2(t_base *base,
   return (OK);
 }
 
-t_rcode		action_karatsuba(t_base *base,
+t_rcode		action_mul(t_base *base,
 			   t_token *n1,
 			   t_token *n2,
 			   t_token *res)
@@ -168,74 +168,6 @@ t_rcode		action_karatsuba(t_base *base,
   bm_new_token(&tmp);
   action_add(base, z0_padded, z1, tmp);
   action_add(base, tmp, z2_padded, res);
-  return (OK);
-}
-
-#include <stdint.h>
-#include <stdio.h>
-
-t_rcode		action_mul_compute(t_base *base,
-				   t_token *n1,
-				   t_token *n2,
-				   t_token **res)
-{
-  t_token	*tmp;
-  t_token	*minus;
-  t_rcode	ret;
-  
-  bm_new_token(&tmp);
-  bm_new_token(&minus);
-  if ((ret = malloc_token_dynamically(*res, 1)) != OK ||
-      (ret = malloc_token_dynamically(minus, 1)) != OK)
-    return (ret);
-  (*(res))->string_value[0] = base->string[0];
-  minus->string_value[0] = base->string[1];
-  while (n2->size >= 1 && n2->string_value[0] != base->string[0])
-    {
-      bm_free_token(tmp);
-      bm_new_token(&tmp);
-      if ((ret = malloc_token_dynamically(tmp, 1)) != OK)
-	return (ret);
-      tmp->string_value[0] = base->string[0];
-      reorder_tokens(&tmp, res);
-      printf("action_mul_compute: %lu\n", (uintptr_t) *res);
-      action_add_compute(base, n1, tmp, *res);
-      clean_number_str(base, *res);
-      action_sub_compute(base, n2, minus, tmp);
-      clean_number_str(base, tmp);
-      reorder_tokens(&tmp, &n2);
-    }
-  bm_free_token(tmp);
-  bm_free_token(minus);
-  printf("action_mul_compute: %lu\n", (uintptr_t) *res);
-  bm_print_token(*res);
-  return (OK);
-}
-
-t_rcode		action_mul(t_base *base,
-			   t_token *n1,
-			   t_token *n2,
-			   t_token *res)
-{
-  t_rcode	ret;
-  t_token	*tmp;
-
-  bm_new_token(&tmp);
-  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
-    res->sign = NEGATIVE;
-  if (my_strcmp(n1->string_value, n2->string_value) > 0)
-    reorder_tokens(&n1, &n2);
-  printf("action_mul1: %lu\n", (uintptr_t) res->string_value);
-  if ((ret = action_mul_compute(base, n1, n2, &tmp)) != OK)
-    return (ret);
-  res->string_value = tmp->string_value;
-  res->real_address = tmp->real_address;
-  res->size = tmp->size;
-  tmp->dynamic = FALSE;
-  bm_free_token(tmp);
-  printf("action_mul2: %lu\n", (uintptr_t) res->string_value);
-  printf("action_mul2: %s\n", res->string_value);
-  bm_print_token(res);
   return (OK);
 }
 
