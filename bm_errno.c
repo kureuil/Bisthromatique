@@ -29,7 +29,7 @@ char	*bm_get_error(t_rcode code)
   errors[NOTHING_TO_READ] = "Bad expr len\n";
   errors[WRITE_FAILED] = "write failed\n";
   errors[WRONG_NB_ARGS] = "wrong number of args\n";
-  errors[DUPLICATE_VALUE_IN_OPERATORS_OR_BASE] = "duplicate value in operator or base\n";
+  errors[DUPLICATE_VALUE_IN_OPERATORS_OR_BASE] = "Bad ops\n";
   errors[EMPTY_OPERATORS] = "Bad ops\n";
   errors[WRONG_OPS_LEN] = "Bad base\n";
   errors[DIVISION_BY_ZERO] = "division by zero\n";

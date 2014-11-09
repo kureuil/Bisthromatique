@@ -41,7 +41,7 @@ t_rcode		compute_z0(t_base *base,
 {
   t_rcode	ret;
   t_token	*z0;
-  
+
   if ((ret = bm_new_token(&coefficients->z0)) != OK ||
       (ret = bm_new_token(&z0)) != OK)
     return (ret);

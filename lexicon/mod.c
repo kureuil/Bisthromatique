@@ -14,25 +14,16 @@
 #include "bm_lexicon_utils.h"
 #include "operators.h"
 
-t_rcode		action_mod(t_base *base,
-			   t_token *n1,
-			   t_token *n2,
-			   t_token *res)
+t_rcode		action_mod_compute(t_base *base,
+				   t_token *n1,
+				   t_token *n2,
+				   t_token *res)
 {
   t_rcode	ret;
   t_token	*res_div;
   t_token	*res_mul;
   t_token	save_n1;
 
-  if (n2->size == 1 && n2->string_value[0] == base->string[0])
-    return (MODULO_BY_ZERO);
-  if (n2->size == 1 && n2->string_value[0] == base->string[1])
-    {
-      res->string_value = &base->string[0];
-      res->dynamic = FALSE;
-      res->size = 1;
-      return (OK);
-    }
   if ((ret = bm_new_token(&res_div)) != OK ||
       (ret = bm_new_token(&res_mul)) != OK)
     return (ret);
@@ -46,6 +37,27 @@ t_rcode		action_mod(t_base *base,
   else
     res->sign = POSITIVE;
   bm_free_token(res_mul);
+  return (OK);
+}
+
+t_rcode		action_mod(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
+{
+  t_rcode	ret;
+
+  if (n2->size == 1 && n2->string_value[0] == base->string[0])
+    return (MODULO_BY_ZERO);
+  if (n2->size == 1 && n2->string_value[0] == base->string[1])
+    {
+      res->string_value = &base->string[0];
+      res->dynamic = FALSE;
+      res->size = 1;
+      return (OK);
+    }
+  if ((ret = action_mod_compute(base, n1, n2, res)) != OK)
+    return (ret);
   bm_free_token(n1);
   bm_free_token(n2);
   clean_number_str(base, res);
