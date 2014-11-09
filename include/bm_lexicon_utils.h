@@ -46,4 +46,4 @@ int	my_strcmp_base(struct s_token *,
 */
 t_rcode	malloc_token_dynamically(struct s_token *token, int size);
 
-#endif
+#endif /* !BM_LEXICON_UTILS_H_ */

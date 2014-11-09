@@ -12,7 +12,9 @@
 # define KARATSUBA_SPLIT_H_
 
 struct s_delimiters;
+
 struct s_token;
+
 struct s_base;
 
 void	make_delimiters_static(struct s_delimiters);

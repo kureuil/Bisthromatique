@@ -26,12 +26,12 @@ struct s_base;
 */
 typedef enum	e_types
   {
-    NUMBER,
-    LPARENTHESIS,
-    RPARENTHESIS,
-    OPERATOR,
-    U_OPERATOR,
-    UNDEFINED
+		NUMBER,
+		LPARENTHESIS,
+		RPARENTHESIS,
+		OPERATOR,
+		U_OPERATOR,
+		UNDEFINED
   }		t_ttype;
 
 /*
@@ -40,8 +40,8 @@ typedef enum	e_types
 */
 typedef enum	e_sign
   {
-    POSITIVE,
-    NEGATIVE
+		POSITIVE,
+		NEGATIVE
   }		t_sign;
 
 /*

@@ -12,7 +12,9 @@
 # define BOOLEAN_H_
 
 # define BOOL char
+
 # define TRUE 1
+
 # define FALSE 0
 
 #endif /* !BOOLEAN_H_ */
