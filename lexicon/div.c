@@ -37,7 +37,10 @@ t_rcode		action_div(t_base *base,
 	{
 	  res->string_value = n1->string_value;
 	  res->size = n1->size;
-	  res->sign = n1->sign;
+	  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
+	    res->sign = NEGATIVE;
+	  else
+	    res->sign = POSITIVE;
 	  bm_free_token(n2);
 	  return (OK);
 	}
