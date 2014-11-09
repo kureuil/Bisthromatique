@@ -69,7 +69,7 @@ t_rcode		split_tokens(t_token *n1,
   delimiters->b = b;
   delimiters->c = c;
   delimiters->d = d;
-  if ((ret = split_token(n1, n2, delimiters)) != OK)
+  if ((ret = split_token(n1, n2, delimiters, base)) != OK)
     return (ret);
   clean_number_str(base, delimiters->a);
   clean_number_str(base, delimiters->b);

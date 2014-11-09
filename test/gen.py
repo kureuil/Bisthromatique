@@ -12,8 +12,9 @@ if len(sys.argv) < 2:
 else:
     size = int(sys.argv[1])
 
-ops = ["*", "+", "-"]
+ops = ["*", "+"]
 rops = ["(", ")", "+", "-", "*", "/", "%"]
+complexity = 20
 for i in range (0, size):
     name = str(uuid.uuid4())
     fcmd = open(os.path.dirname(os.path.realpath(__file__)) + "/testscases/" + name + ".cmd", "w")
@@ -21,8 +22,8 @@ for i in range (0, size):
     s = ""
     l = random.randint(1, 100)
     for i in range(0, l):
-        s += str(int(random.getrandbits(random.randint(1, 200)))) + random.sample(ops, 1)[0]
-    s += str(int(random.getrandbits(random.randint(1, 200))))
+        s += str(random.randint(-10 * complexity, 10 * complexity)) + random.sample(ops, 1)[0]
+    s += str(random.randint(1, 10 * complexity))
     res_bc = check_output("echo \"{0}\" | bc | tr -d '\n' | tr -d '\\\\'".format(s), shell = True)
     fcmd.write("0123456789" + '\n')
     fcmd.write(str(len(s)) + '\n')

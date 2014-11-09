@@ -15,82 +15,68 @@
 #include "bm_lexicon_utils.h"
 #include "my.h"
 
-t_rcode		action_div_by_two(t_base *base, t_token *n1, t_token *res)
-{
-  int		cursor;
-  int		tmp;
-  t_rcode	ret;
-
-  cursor = n1->size - 1;
-  if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
-    return (ret);
-  while (cursor >= 0)
-    {
-      if (n1->string_value[cursor] == base->string[0] &&
-	  cursor - 1 >= 0 &&
-	  n1->string_value[cursor - 1] != base->string[0])
-	  res->string_value[cursor] = base->string[base->size / 2] +
-	    get_value_at_index(base, n1->string_value, cursor) / 2;
-      else
-	{
-	  tmp = get_value_at_index(base, n1->string_value, cursor);
-	  res->string_value[cursor] = base->string[tmp / 2];
-	}
-      cursor--;
-    }
-  bm_free_token(n1);
-  clean_number_str(base, res);
-  return (OK);
-}
-
-t_rcode		action_div_compute(t_base *base,
-				   t_token *n1,
-				   t_token *n2,
-				   t_token *res)
-{
-  t_token	*min;
-  t_token	*tmp;
-  t_token	*max;
-  t_token	*cursor;
-  t_rcode	ret;
-
-  if ((ret = bm_new_token(&min)) != OK ||
-      (ret = bm_new_token(&tmp)) != OK ||
-      (ret = bm_new_token(&max)) != OK ||
-      (ret = bm_new_token(&cursor)) != OK)
-    return (ret);
-  if ((malloc_token_dynamically(min, 1)) != OK ||
-      (malloc_token_dynamically(max, n1->size)) != OK ||
-      (malloc_token_dynamically(res, n1->size)) != OK)
-    return (COULD_NOT_MALLOC);
-  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
-    res->sign = NEGATIVE;
-  while (my_strcmp(tmp->string_value, min->string_value))
-    {
-      action_add_compute(base, min, max, tmp);
-      action_div_by_two(base, tmp, cursor);
-      action_mul(base, cursor, n2, tmp);
-      if (my_strcmp(tmp->string_value, n1->string_value) > 0)
-	max = tmp;
-      else
-	min = tmp;
-    }
-  bm_free_token(min);
-  bm_free_token(max);
-  bm_free_token(cursor);
-  return (OK);
-}
-
 t_rcode		action_div(t_base *base,
 			   t_token *n1,
 			   t_token *n2,
 			   t_token *res)
 {
   t_rcode	ret;
+  t_token	*previous;
+  t_token	res_tmp;
+  t_token	one;
 
-  if ((ret = malloc_token_dynamically(res, n1->size + n2->size)) != OK)
+  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
+    res->sign = NEGATIVE;
+  n1->sign = n2->sign = POSITIVE;
+  if (n2->size == 1)
+    {
+      if (n2->string_value[0] == base->string[0])
+	{
+	  bm_free_token(n1);
+	  bm_free_token(n2);
+	  return (DIVISION_BY_ZERO);
+	}
+      else if (n2->string_value[0] == base->string[1])
+	{
+	  *res = *n1;
+	  bm_free_token(n2);
+	  return (OK);
+	}
+    }
+  if ((ret = bm_new_token(&previous)) != OK)
     return (ret);
-  action_div_compute(base, n1, n2, res);
+  if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
+    return (ret);
+  res_tmp.string_value = &base->string[0];
+  res_tmp.dynamic = FALSE;
+  res_tmp.size = 1;
+  one.string_value = &base->string[1];
+  one.size = 1;
+  one.dynamic = FALSE;
+  if (n2->size > n1->size)
+    {
+      *res = res_tmp;
+      return (OK);
+    }
+  while (n1->sign == POSITIVE && n1->string_value[0] != base->string[0])
+    {
+      action_sub_compute(base, n1, n2, previous);
+      clean_number_str(base, previous);
+      *n1 = *previous;
+      action_add_compute(base, &res_tmp, &one, res);
+      clean_number_str(base, res);
+      res_tmp = *res;
+    }
+  if (n1->sign == NEGATIVE)
+    {
+      action_sub_compute(base, &res_tmp, &one, res);
+      clean_number_str(base, res);
+    }
+  else
+    {
+      res->string_value = res_tmp.string_value;
+      res->size = res_tmp.size;
+    }
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);

@@ -39,5 +39,6 @@ t_rcode	pad(struct s_token *t,
 
 t_rcode	split_token(struct s_token *n1,
 		    struct s_token *n2,
-		    t_delimiters *delimiters);
+		    t_delimiters *delimiters,
+		    struct s_base *base);
 #endif /* !KARATSUBA_UTILS_H_ */

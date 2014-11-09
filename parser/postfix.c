@@ -12,6 +12,7 @@
 #include "stack.h"
 #include "bm_base.h"
 #include "tokens.h"
+#include "bm_lexicon_utils.h"
 
 t_rcode		unary_op(t_token *token,
 			 t_stack **stack,
@@ -44,6 +45,8 @@ t_rcode		binary_op(t_token *token,
   if ((n1 = top(*stack)) == NULL)
     return (NOT_ENOUGH_VALUES);
   pop(stack);
+  clean_number_str(base, n1);
+  clean_number_str(base, n2);
   if ((ret = (*(token->operator.action))(base, n1, n2, res)) != OK)
     return (ret);
   return (OK);
