@@ -17,21 +17,21 @@ typedef enum	e_rcode
   {
     OK,
     MISMATCHED_P,
-    NOT_ENOUGH_VALUES,
-    TOO_MUCH_VALUES,
+    NOTHING_TO_READ,
     COULD_NOT_MALLOC,
+    READ_ERROR,
+    NOT_ENOUGH_VALUES,
+    EMPTY_OPERATORS,
+    TOO_MUCH_VALUES,
     NULL_REFERENCE,
     NOT_IN_BASE,
     WRONG_BASE_LEN,
     DUPLICATE_VALUE_IN_BASE,
     INVALID_CHARACTER,
     EMPTY_BASE,
-    READ_ERROR,
-    NOTHING_TO_READ,
     WRITE_FAILED,
     WRONG_NB_ARGS,
     DUPLICATE_VALUE_IN_OPERATORS_OR_BASE,
-    EMPTY_OPERATORS,
     WRONG_OPS_LEN,
     DIVISION_BY_ZERO,
     MODULO_BY_ZERO,
@@ -39,5 +39,7 @@ typedef enum	e_rcode
   }		t_rcode;
 
 char	*bm_get_error(t_rcode code);
+
+int	usage(char *cmd);
 
 #endif /* !BM_ERRNO_H_ */

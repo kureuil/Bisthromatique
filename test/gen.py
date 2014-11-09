@@ -35,7 +35,7 @@ for i in range (0, size):
     while brackets_count > 0:
         s += rops[1]
         brackets_count -= 1
-    res_bc = check_output("echo \"{0}\" | bc | tr -d '\n' | tr -d '\\\\'".format(s), shell = True)
+    res_bc = check_output("echo \"{0}\" | bc 2> /dev/null | tr -d '\n' | tr -d '\\\\'".format(s), shell = True)
     fcmd.write("0123456789" + '\n')
     fcmd.write(str(len(s)) + '\n')
     fcmd.write(''.join(rops) + '\n')

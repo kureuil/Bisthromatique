@@ -15,10 +15,10 @@
 #include "bm_lexicon_utils.h"
 #include "my.h"
 
-t_rcode		action_div_prepare(t_base *base,
-				   t_token *n1,
-				   t_token *n2,
-				   t_token *res)
+t_rcode	action_div_prepare(t_base *base,
+			   t_token *n1,
+			   t_token *n2,
+			   t_token *res)
 {
   if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
     res->sign = NEGATIVE;
@@ -48,7 +48,7 @@ t_rcode		action_div_prepare(t_base *base,
 }
 
 void	action_div_get_tmp_tokens(t_base *base, t_token *res_tmp, t_token *one)
-{  
+{
   res_tmp->string_value = &base->string[0];
   res_tmp->dynamic = FALSE;
   res_tmp->size = 1;

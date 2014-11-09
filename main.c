@@ -30,11 +30,10 @@ int		bm_eval(char *str, t_token **res, t_base *base, char *ops)
   return (OK);
 }
 
-int	bm_exit(char *s)
+int	bm_exit(t_rcode code)
 {
-  my_puterror("error: ");
-  my_puterror(s);
-  return (1);
+  my_puterror(bm_get_error(code));
+  return (code);
 }
 
 int	display_res(t_token *res, t_base *base)
@@ -43,7 +42,7 @@ int	display_res(t_token *res, t_base *base)
       !(res->size == 1 && res->string_value[0] == base->string[0]))
     my_putchar('-');
   if (write(STDOUT, res->string_value, res->size) == -1)
-    bm_exit(bm_get_error(WRITE_FAILED));
+    bm_exit(WRITE_FAILED);
   bm_free_token(res);
   return (0);
 }
@@ -74,17 +73,17 @@ int		main(int argc, char **argv)
   t_rcode	ret;
 
   if (argc < 4)
-    return (bm_exit(bm_get_error(WRONG_NB_ARGS)));
+    return (usage(argv[0]));
   if ((ret = new_base(argv[1], &base)) != OK)
-    return (bm_exit(bm_get_error(ret)));
+    return (bm_exit(ret));
   size = my_getnbr(argv[3]);
   if ((buffer = malloc(size + 1)) == NULL)
-    return (bm_exit(bm_get_error(COULD_NOT_MALLOC)));
+    return (bm_exit(COULD_NOT_MALLOC));
   if ((ret = read_stdin_to_buffer(buffer, size)) != OK ||
       (ret = bm_eval(buffer, &res, &base, argv[2])) != OK)
     {
       free(buffer);
-      return (bm_exit(bm_get_error(ret)));
+      return (bm_exit(ret));
     }
   display_res(res, &base);
   free(buffer);
