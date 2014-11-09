@@ -31,6 +31,14 @@ t_rcode		simple_mul(t_base *base,
 
   if (n2->size > n1->size)
     reorder_tokens(&n1, &n2);
+  if (n2->size == 1 && n2->string_value[0] == base->string[0])
+    {
+      res->string_value = &base->string[0];
+      res->dynamic = FALSE;
+      res->size = 1;
+      res->sign = POSITIVE;
+      return (OK);
+    }
   if ((ret = malloc_token_dynamically(res, n1->size + 1)) != OK)
     return (ret);
   res->string_value[0] = base->string[0];

@@ -33,6 +33,7 @@ t_rcode	split_token(t_token *n1,
   if (size >= n2->size / 2)
     {
       delimiters->c->string_value = &base->string[0];
+      delimiters->c->sign = POSITIVE;
       delimiters->c->size = 1;
       delimiters->d->string_value = n2->string_value;
       delimiters->d->size = n2->size;

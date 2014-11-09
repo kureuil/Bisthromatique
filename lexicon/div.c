@@ -38,7 +38,8 @@ t_rcode		action_div(t_base *base,
 	}
       else if (n2->string_value[0] == base->string[1])
 	{
-	  *res = *n1;
+	  res->string_value = n1->string_value;
+	  res->size = n1->size;
 	  bm_free_token(n2);
 	  return (OK);
 	}
@@ -47,9 +48,11 @@ t_rcode		action_div(t_base *base,
     return (ret);
   if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
     return (ret);
+  my_memset(res->string_value, base->string[0], n1->size);
   res_tmp.string_value = &base->string[0];
   res_tmp.dynamic = FALSE;
   res_tmp.size = 1;
+  res_tmp.sign = POSITIVE;
   one.string_value = &base->string[1];
   one.size = 1;
   one.dynamic = FALSE;
@@ -58,6 +61,7 @@ t_rcode		action_div(t_base *base,
       *res = res_tmp;
       return (OK);
     }
+  n1->dynamic = FALSE;
   while (n1->sign == POSITIVE && n1->string_value[0] != base->string[0])
     {
       action_sub_compute(base, n1, n2, previous);
@@ -77,6 +81,8 @@ t_rcode		action_div(t_base *base,
       res->string_value = res_tmp.string_value;
       res->size = res_tmp.size;
     }
+  if (res->size == 1 && res->string_value[0] == base->string[0])
+    res->sign = POSITIVE;
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);

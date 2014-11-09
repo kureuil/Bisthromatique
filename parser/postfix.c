@@ -13,6 +13,7 @@
 #include "bm_base.h"
 #include "tokens.h"
 #include "bm_lexicon_utils.h"
+#include "my.h"
 
 t_rcode		unary_op(t_token *token,
 			 t_stack **stack,
