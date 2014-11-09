@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Tue Oct 28 08:46:28 2014 brendan rius
-** Last update Thu Oct 30 13:32:58 2014 brendan rius
+** Last update Sun Nov  9 20:34:57 2014 Louis Person
 */
 
 #ifndef BM_ERRNO_H_
@@ -34,7 +34,8 @@ typedef enum	e_rcode
     EMPTY_OPERATORS,
     WRONG_OPS_LEN,
     DIVISION_BY_ZERO,
-    MODULO_BY_ZERO
+    MODULO_BY_ZERO,
+    DIVISION_BY_ITSELF
   }		t_rcode;
 
 char	*bm_get_error(t_rcode code);
