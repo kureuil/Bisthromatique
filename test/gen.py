@@ -12,7 +12,7 @@ if len(sys.argv) < 2:
 else:
     size = int(sys.argv[1])
 
-ops = ["*", "+"]
+ops = ["*", "+", "-", "/"]
 rops = ["(", ")", "+", "-", "*", "/", "%"]
 complexity = 20
 bcomplexity = 5
@@ -22,9 +22,9 @@ for i in range (0, size):
     fcmd = open(os.path.dirname(os.path.realpath(__file__)) + "/testscases/" + name + ".cmd", "w")
     fres = open(os.path.dirname(os.path.realpath(__file__)) + "/testscases/" + name + ".res", "w")
     s = ""
-    l = random.randint(1, 100)
+    l = random.randint(1, 10)
     for i in range(0, l):
-        s += str(random.randint(-10 * complexity, 10 * complexity)) + random.sample(ops, 1)[0]
+        s += str(random.randint(1, 10 * complexity)) + random.sample(ops, 1)[0]
         if random.randint(0, 10) >= bcomplexity:
             s += rops[0]
             brackets_count += 1

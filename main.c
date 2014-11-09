@@ -40,7 +40,7 @@ int	bm_exit(char *s)
 int	display_res(t_token *res, t_base *base)
 {
   if (res->sign == NEGATIVE &&
-      !(res->size == 1 && res->string_value[0] == base->string[0]))
+      (res->size == 1 && res->string_value[0] != base->string[0]))
     my_putchar('-');
   if (write(STDOUT, res->string_value, res->size) == -1)
     bm_exit(bm_get_error(WRITE_FAILED));

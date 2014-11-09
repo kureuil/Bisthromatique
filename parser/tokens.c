@@ -53,6 +53,8 @@ void	bm_print_token(t_token *token)
   my_putstr("size:\t");
   my_put_nbr(token->size);
   my_putstr("\nvalue:\t");
+  if (token->sign == NEGATIVE)
+    my_putchar('-');
   write(1, token->string_value, token->size);
   my_putstr("\n------ END -------\n");
 }
