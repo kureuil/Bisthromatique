@@ -15,6 +15,8 @@ else:
 ops = ["*", "+"]
 rops = ["(", ")", "+", "-", "*", "/", "%"]
 complexity = 20
+bcomplexity = 5
+brackets_count = 0
 for i in range (0, size):
     name = str(uuid.uuid4())
     fcmd = open(os.path.dirname(os.path.realpath(__file__)) + "/testscases/" + name + ".cmd", "w")
@@ -23,7 +25,16 @@ for i in range (0, size):
     l = random.randint(1, 100)
     for i in range(0, l):
         s += str(random.randint(-10 * complexity, 10 * complexity)) + random.sample(ops, 1)[0]
+        if random.randint(0, 10) >= bcomplexity:
+            s += rops[0]
+            brackets_count += 1
+        if random.randint(0, 10) >= bcomplexity and brackets_count > 0 and s[-1] not in rops:
+            s += rops[1]
+            brackets_count -= 1
     s += str(random.randint(1, 10 * complexity))
+    while brackets_count > 0:
+        s += rops[1]
+        brackets_count -= 1
     res_bc = check_output("echo \"{0}\" | bc | tr -d '\n' | tr -d '\\\\'".format(s), shell = True)
     fcmd.write("0123456789" + '\n')
     fcmd.write(str(len(s)) + '\n')
