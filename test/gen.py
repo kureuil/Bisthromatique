@@ -12,7 +12,7 @@ if len(sys.argv) < 2:
 else:
     size = int(sys.argv[1])
 
-ops = ["/", "+", "-", "*"]
+ops = ["/", "+", "-", "*", "%"]
 rops = ["(", ")", "+", "-", "*", "/", "%"]
 complexity = 20
 bcomplexity = 5
@@ -24,7 +24,7 @@ for i in range (0, size):
     s = ""
     l = random.randint(1, 20)
     for i in range(0, l):
-        s += str(random.randint(-10 * complexity, 10 * complexity)) + random.sample(ops, 1)[0]
+        s += str(random.randint(1, 10 * complexity)) + random.sample(ops, 1)[0]
         if random.randint(0, 10) >= bcomplexity:
             s += rops[0]
             brackets_count += 1
@@ -35,7 +35,7 @@ for i in range (0, size):
     while brackets_count > 0:
         s += rops[1]
         brackets_count -= 1
-    res_bc = check_output("echo \"{0}\" | bc 2> /dev/null | tr -d '\n' | tr -d '\\\\'".format(s), shell = True)
+    res_bc = check_output("echo \"{0}\" | bc | tr -d '\n' | tr -d '\\\\'".format(s), shell = True)
     fcmd.write("0123456789" + '\n')
     fcmd.write(str(len(s)) + '\n')
     fcmd.write(''.join(rops) + '\n')

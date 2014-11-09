@@ -89,8 +89,6 @@ t_rcode		action_div(t_base *base,
     }
   if (res->size == 1 && res->string_value[0] == base->string[0])
     res->sign = POSITIVE;
-  bm_free_token(n1);
-  bm_free_token(n2);
   return (OK);
 }
 
