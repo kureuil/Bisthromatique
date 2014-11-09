@@ -12,7 +12,7 @@ if len(sys.argv) < 2:
 else:
     size = int(sys.argv[1])
 
-ops = ["/", "+", "-", "*", "%"]
+ops = ["+", "-", "*", "/", "%"]
 rops = ["(", ")", "+", "-", "*", "/", "%"]
 complexity = 20
 bcomplexity = 5

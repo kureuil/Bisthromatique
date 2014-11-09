@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:03 2014 brendan rius
-** Last update Fri Nov  7 17:08:14 2014 Louis Person
+** Last update Sun Nov  9 23:08:46 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -17,7 +17,16 @@
 #include "my.h"
 #include "boolean.h"
 #include "karatsuba_utils.h"
+#include "karatsuba_split.h"
 #include "operators.h"
+
+void	action_mul_get_one(t_base *base, t_token *token)
+{
+  token->string_value = &base->string[0];
+  token->dynamic = FALSE;
+  token->size = 1;
+  token->sign = POSITIVE;
+}
 
 t_rcode		simple_mul(t_base *base,
 			   t_token *n1,
@@ -27,125 +36,27 @@ t_rcode		simple_mul(t_base *base,
   int		carry;
   int		cursor;
   int		tmp;
-  t_rcode	ret;
 
   if (n2->size > n1->size)
     reorder_tokens(&n1, &n2);
   if (n2->size == 1 && n2->string_value[0] == base->string[0])
     {
-      res->string_value = &base->string[0];
-      res->dynamic = FALSE;
-      res->size = 1;
-      res->sign = POSITIVE;
+      action_mul_get_one(base, res);
       return (OK);
     }
-  if ((ret = malloc_token_dynamically(res, n1->size + 1)) != OK)
-    return (ret);
+  if ((malloc_token_dynamically(res, n1->size + 1)) != OK)
+    return (COULD_NOT_MALLOC);
   res->string_value[0] = base->string[0];
   carry = 0;
   cursor = n1->size - 1;
   while (cursor >= 0 || carry)
     {
       tmp = (get_value_at_index(base, n1->string_value, cursor) *
-	     get_value_at_index(base, n2->string_value, 0) +
-	     carry);
+	     get_value_at_index(base, n2->string_value, 0) + carry);
       carry = tmp / base->size;
-      res->string_value[cursor + 1] = base->string[tmp % base->size];
-      cursor--;
+      res->string_value[cursor-- + 1] = base->string[tmp % base->size];
     }
   clean_number_str(base, res);
-  return (OK);
-}
-
-t_rcode		split_tokens(t_token *n1,
-			     t_token *n2,
-			     t_delimiters *delimiters,
-			     t_base *base)
-{
-  t_token	*a;
-  t_token	*b;
-  t_token	*c;
-  t_token	*d;
-  t_rcode	ret;
-
-  if ((ret = bm_new_token(&a)) != OK ||
-      (ret = bm_new_token(&b)) != OK ||
-      (ret = bm_new_token(&c)) != OK ||
-      (ret = bm_new_token(&d)) != OK)
-    return (ret);
-  delimiters->a = a;
-  delimiters->b = b;
-  delimiters->c = c;
-  delimiters->d = d;
-  if ((ret = split_token(n1, n2, delimiters, base)) != OK)
-    return (ret);
-  clean_number_str(base, delimiters->a);
-  clean_number_str(base, delimiters->b);
-  clean_number_str(base, delimiters->c);
-  clean_number_str(base, delimiters->d);
-  return (OK);
-}
-
-t_rcode		compute_z0(t_base *base,
-			   t_delimiters *delimiters,
-			   int m2,
-			   t_karat_coeff *coefficients)
-{
-  t_rcode	ret;
-  t_token	*z0;
-  if ((ret = bm_new_token(&coefficients->z0)) != OK ||
-      (ret = bm_new_token(&z0)) != OK)
-    return (ret);
-  if ((ret = action_mul(base, delimiters->a, delimiters->c, z0)) != OK)
-    return (ret);
-  if ((ret = pad(z0, base, m2 * 2, coefficients->z0)) != OK)
-    return (ret);
-  clean_number_str(base, coefficients->z0);
-  return (OK);
-}
-
-t_rcode		compute_z1(t_base *base,
-			   t_delimiters *delimiters,
-			   t_karat_coeff *coefficients)
-{
-  t_rcode	ret;
-
-  if ((ret = bm_new_token(&coefficients->z1)) != OK)
-    return (ret);
-  return (action_mul(base, delimiters->b, delimiters->d, coefficients->z1));
-}
-
-t_rcode		compute_z2(t_base *base,
-			   t_delimiters *delimiters,
-			   int m2,
-			   t_karat_coeff *coefficients)
-{
-  t_rcode	ret;
-  t_token	*apb;
-  t_token	*cpd;
-  t_token	*z2_tmp;
-  t_token	*z2_tmp2;
-  t_token	*z2;
-
-  if ((ret = bm_new_token(&coefficients->z2)) != OK ||
-      (ret = bm_new_token(&z2)) != OK ||
-      (ret = bm_new_token(&apb)) != OK ||
-      (ret = bm_new_token(&cpd)) != OK ||
-      (ret = bm_new_token(&z2_tmp)) != OK ||
-      (ret = bm_new_token(&z2_tmp2)) != OK)
-    return (ret);
-  action_add(base, delimiters->a, delimiters->b, apb);
-  action_add(base, delimiters->c, delimiters->d, cpd);
-  action_mul(base, apb, cpd, z2_tmp);
-  action_sub_compute(base, z2_tmp, coefficients->z0, z2_tmp2);
-  clean_number_str(base, z2_tmp2);
-  action_sub_compute(base, z2_tmp2, coefficients->z1, z2);
-  clean_number_str(base, z2);
-  pad(z2, base, m2, coefficients->z2);
-  clean_number_str(base, coefficients->z2);
-  bm_free_token(z2_tmp);
-  bm_free_token(z2_tmp2);
-  bm_free_token(z2);
   return (OK);
 }
 

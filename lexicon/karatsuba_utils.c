@@ -5,53 +5,14 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Thu Nov  6 15:06:35 2014 Brendan Rius
-** Last update Thu Nov  6 15:17:34 2014 Louis Person
+** Last update Sun Nov  9 23:18:37 2014 Louis Person
 */
 
-#include <stdlib.h>
 #include "bm_errno.h"
 #include "tokens.h"
-#include "boolean.h"
 #include "bm_lexicon_utils.h"
 #include "bm_base.h"
 #include "karatsuba_utils.h"
-
-t_rcode	split_token(t_token *n1,
-		    t_token *n2,
-		    t_delimiters *delimiters,
-		    t_base *base)
-{
-  int	size;
-
-  if (n2->size > n1->size)
-    reorder_tokens(&n1, &n2);
-  size = (n1->size + 1) / 2;
-  delimiters->a->string_value = n1->string_value;
-  delimiters->a->size = size;
-  delimiters->b->string_value = n1->string_value + size;
-  delimiters->b->size = n1->size - size;
-  if (size >= n2->size / 2)
-    {
-      delimiters->c->string_value = &base->string[0];
-      delimiters->c->sign = POSITIVE;
-      delimiters->c->size = 1;
-      delimiters->d->string_value = n2->string_value;
-      delimiters->d->size = n2->size;
-    }
-  else
-    {
-      delimiters->c->string_value = n2->string_value;
-      delimiters->c->size = size;
-      delimiters->d->string_value = n2->string_value + size;
-      delimiters->d->size = n2->size - size;
-    }
-
-  delimiters->a->dynamic = FALSE;
-  delimiters->b->dynamic = FALSE;
-  delimiters->c->dynamic = FALSE;
-  delimiters->d->dynamic = FALSE;
-  return (OK);
-}
 
 t_rcode		pad(t_token *t, t_base *base, int nb, t_token *res)
 {
@@ -70,5 +31,67 @@ t_rcode		pad(t_token *t, t_base *base, int nb, t_token *res)
 	res->string_value[i] = base->string[0];
       ++i;
     }
+  return (OK);
+}
+
+t_rcode		compute_z0(t_base *base,
+			   t_delimiters *delimiters,
+			   int m2,
+			   t_karat_coeff *coefficients)
+{
+  t_rcode	ret;
+  t_token	*z0;
+  
+  if ((ret = bm_new_token(&coefficients->z0)) != OK ||
+      (ret = bm_new_token(&z0)) != OK)
+    return (ret);
+  if ((ret = action_mul(base, delimiters->a, delimiters->c, z0)) != OK)
+    return (ret);
+  if ((ret = pad(z0, base, m2 * 2, coefficients->z0)) != OK)
+    return (ret);
+  clean_number_str(base, coefficients->z0);
+  return (OK);
+}
+
+t_rcode		compute_z1(t_base *base,
+			   t_delimiters *delimiters,
+			   t_karat_coeff *coefficients)
+{
+  t_rcode	ret;
+
+  if ((ret = bm_new_token(&coefficients->z1)) != OK)
+    return (ret);
+  return (action_mul(base, delimiters->b, delimiters->d, coefficients->z1));
+}
+
+t_rcode		compute_z2(t_base *base,
+			   t_delimiters *delimiters,
+			   int m2,
+			   t_karat_coeff *coefficients)
+{
+  t_rcode	ret;
+  t_token	*apb;
+  t_token	*cpd;
+  t_token	*z2_tmp;
+  t_token	*z2_tmp2;
+  t_token	*z2;
+
+  if ((ret = bm_new_token(&coefficients->z2)) != OK ||
+      (ret = bm_new_token(&z2)) != OK ||
+      (ret = bm_new_token(&apb)) != OK ||
+      (ret = bm_new_token(&cpd)) != OK ||
+      (ret = bm_new_token(&z2_tmp)) != OK ||
+      (ret = bm_new_token(&z2_tmp2)) != OK)
+    return (ret);
+  action_add(base, delimiters->a, delimiters->b, apb);
+  action_add(base, delimiters->c, delimiters->d, cpd);
+  action_mul(base, apb, cpd, z2_tmp);
+  action_sub_compute(base, z2_tmp, coefficients->z0, z2_tmp2);
+  action_sub_compute(base, z2_tmp2, coefficients->z1, z2);
+  pad(z2, base, m2, coefficients->z2);
+  clean_number_str(base, coefficients->z2);
+  bm_free_token(z2_tmp);
+  bm_free_token(z2_tmp2);
+  bm_free_token(z2);
   return (OK);
 }

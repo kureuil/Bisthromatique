@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Thu Nov  6 15:28:43 2014 Brendan Rius
-** Last update Thu Nov  6 15:28:43 2014 Brendan Rius
+** Last update Sun Nov  9 23:15:28 2014 Louis Person
 */
 
 #ifndef KARATSUBA_UTILS_H_
@@ -37,8 +37,10 @@ t_rcode	pad(struct s_token *t,
 	    int nb,
 	    struct s_token *res);
 
-t_rcode	split_token(struct s_token *n1,
-		    struct s_token *n2,
-		    t_delimiters *delimiters,
-		    struct s_base *base);
+t_rcode	compute_z0(struct s_base *, t_delimiters *, int, t_karat_coeff *);
+
+t_rcode compute_z1(struct s_base *, t_delimiters *, t_karat_coeff *);
+
+t_rcode compute_z2(struct s_base *, t_delimiters *, int, t_karat_coeff *);
+
 #endif /* !KARATSUBA_UTILS_H_ */

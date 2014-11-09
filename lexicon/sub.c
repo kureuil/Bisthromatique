@@ -5,7 +5,7 @@
 ** Login   <rius_b@epitech.net>
 ** 
 ** Started on  Mon Oct 27 15:56:36 2014 brendan rius
-** Last update Wed Nov  5 18:22:56 2014 Louis Person
+** Last update Sun Nov  9 22:03:20 2014 Louis Person
 */
 
 #include <stdlib.h>
@@ -15,6 +15,18 @@
 #include "bm_lexicon_utils.h"
 #include "operators.h"
 #include "my.h"
+
+void	action_sub_reorder_tokens(t_base *base,
+				  t_token **n1,
+				  t_token **n2,
+				  t_token *res)
+{
+  if (my_strcmp_base(*n1, *n2, base) < 0)
+    {
+      reorder_tokens(n1, n2);
+      res->sign = NEGATIVE;
+    }
+}
 
 t_rcode		action_sub_compute(t_base *base,
 				   t_token *n1,
@@ -27,11 +39,7 @@ t_rcode		action_sub_compute(t_base *base,
   int           shift;
   t_rcode	ret;
 
-  if (my_strcmp_base(n1, n2, base) < 0)
-    {
-        reorder_tokens(&n1, &n2);
-        res->sign = NEGATIVE;
-    }
+  action_sub_reorder_tokens(base, &n1, &n2, res);
   if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
     return (ret);
   res->string_value[0] = base->array[0];
@@ -46,6 +54,7 @@ t_rcode		action_sub_compute(t_base *base,
     tmp = tmp < 0 ? base->size + tmp : tmp;
     res->string_value[cursor--] = base->string[tmp % base->size];
   }
+  clean_number_str(base, res);
   return (OK);
 }
 
@@ -74,15 +83,11 @@ t_rcode		action_sub(t_base *base,
     }
   if ((ret = action_sub_compute(base, n1, n2, res)) != OK)
     return (ret);
-  clean_number_str(base, res);
   bm_free_token(n1);
   bm_free_token(n2);
   return (OK);
 }
 
-/*
-** We could speed this up by avoiding copying n into res
-*/
 t_rcode	action_negate(t_base *base,
 		      t_token *n,
 		      t_token *res)

@@ -5,7 +5,7 @@
 ## Login   <rius_b@epitech.net>
 ## 
 ## Started on  Mon Oct 27 15:58:06 2014 brendan rius
-## Last update Thu Oct 30 14:03:16 2014 brendan rius
+## Last update Sun Nov  9 22:58:02 2014 Louis Person
 ##
 
 CC	= gcc
@@ -25,7 +25,8 @@ OP_SRCS	= lexicon/add.c \
 	lexicon/parenthesis.c \
 	lexicon/number.c \
 	lexicon/utils.c \
-	lexicon/karatsuba_utils.c
+	lexicon/karatsuba_utils.c \
+	lexicon/karatsuba_split.c
 
 # [MODULE] Sources needed to use lexicon
 SRCS_LEXICON	= lexicon/lexicon.c
