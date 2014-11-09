@@ -24,7 +24,7 @@ for i in range (0, size):
     s = ""
     l = random.randint(1, 20)
     for i in range(0, l):
-        s += str(random.randint(-10 * complexity, 10 * complexity)) + random.sample(ops, 1)[0]
+        s += str(random.randint(1, 10 * complexity)) + random.sample(ops, 1)[0]
         if random.randint(0, 10) >= bcomplexity:
             s += rops[0]
             brackets_count += 1
