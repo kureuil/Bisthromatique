@@ -25,7 +25,7 @@ for i in `ls $2/*.cmd`; do
     calc=$(sed -n '4,$ p' $i)
     tmp=$(mktemp --suffix '_bistro')
     echo "Launching test $res"
-    echo $calc | $1 $base $ops $size > $tmp
+    echo $calc | $1 $base $ops $size 2> /dev/null > $tmp
     diff=$(diff -y $res $tmp)
     if [ $? -ne 0 ]
     then
