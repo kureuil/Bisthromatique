@@ -14,7 +14,6 @@ char	*bm_get_error(t_rcode code)
 {
   char	*errors[NB_ERRORS];
 
-  errors[OK] = "internal error\n";
   errors[MISMATCHED_P] = "mismatched parenthesis\n";
   errors[NOT_ENOUGH_VALUES] = "not enough values\n";
   errors[TOO_MUCH_VALUES] = "too much values\n";

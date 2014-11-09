@@ -17,6 +17,13 @@ struct s_base;
 
 struct s_token;
 
+typedef struct		s_karat_coeff
+{
+  struct s_token	*z0;
+  struct s_token	*z1;
+  struct s_token	*z2;
+}			t_karat_coeff;
+
 typedef struct		s_delimiters
 {
   struct s_token	*a;

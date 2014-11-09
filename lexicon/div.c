@@ -77,7 +77,6 @@ t_rcode		action_div_compute(t_base *base,
     }
   bm_free_token(min);
   bm_free_token(max);
-  bm_free_token(tmp);
   bm_free_token(cursor);
   return (OK);
 }
