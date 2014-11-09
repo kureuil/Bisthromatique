@@ -72,7 +72,7 @@ int		main(int argc, char **argv)
   t_base	base;
   t_rcode	ret;
 
-  if (argc < 4)
+  if (argc != 4)
     return (usage(argv[0]));
   if ((ret = new_base(argv[1], &base)) != OK)
     return (bm_exit(ret));
