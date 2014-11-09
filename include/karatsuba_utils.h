@@ -17,6 +17,13 @@ struct s_base;
 
 struct s_token;
 
+typedef struct		s_karat_coeff
+{
+  struct s_token	*z0;
+  struct s_token	*z1;
+  struct s_token	*z2;
+}			t_karat_coeff;
+
 typedef struct		s_delimiters
 {
   struct s_token	*a;
@@ -32,5 +39,6 @@ t_rcode	pad(struct s_token *t,
 
 t_rcode	split_token(struct s_token *n1,
 		    struct s_token *n2,
-		    t_delimiters *delimiters);
+		    t_delimiters *delimiters,
+		    struct s_base *base);
 #endif /* !KARATSUBA_UTILS_H_ */

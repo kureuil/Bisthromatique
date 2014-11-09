@@ -69,7 +69,7 @@ t_rcode		split_tokens(t_token *n1,
   delimiters->b = b;
   delimiters->c = c;
   delimiters->d = d;
-  if ((ret = split_token(n1, n2, delimiters)) != OK)
+  if ((ret = split_token(n1, n2, delimiters, base)) != OK)
     return (ret);
   clean_number_str(base, delimiters->a);
   clean_number_str(base, delimiters->b);
@@ -80,39 +80,47 @@ t_rcode		split_tokens(t_token *n1,
 
 t_rcode		compute_z0(t_base *base,
 			   t_delimiters *delimiters,
-			   t_token **z0)
+			   int m2,
+			   t_karat_coeff *coefficients)
 {
   t_rcode	ret;
-
-  if ((ret = bm_new_token(z0)) != OK)
+  t_token	*z0;
+  if ((ret = bm_new_token(&coefficients->z0)) != OK ||
+      (ret = bm_new_token(&z0)) != OK)
     return (ret);
-  return (action_mul(base, delimiters->a, delimiters->c, *z0));
+  if ((ret = action_mul(base, delimiters->a, delimiters->c, z0)) != OK)
+    return (ret);
+  if ((ret = pad(z0, base, m2 * 2, coefficients->z0)) != OK)
+    return (ret);
+  clean_number_str(base, coefficients->z0);
+  return (OK);
 }
 
 t_rcode		compute_z1(t_base *base,
 			   t_delimiters *delimiters,
-			   t_token **z1)
+			   t_karat_coeff *coefficients)
 {
   t_rcode	ret;
 
-  if ((ret = bm_new_token(z1)) != OK)
+  if ((ret = bm_new_token(&coefficients->z1)) != OK)
     return (ret);
-  return (action_mul(base, delimiters->b, delimiters->d, *z1));
+  return (action_mul(base, delimiters->b, delimiters->d, coefficients->z1));
 }
 
 t_rcode		compute_z2(t_base *base,
 			   t_delimiters *delimiters,
-			   t_token *z0,
-			   t_token *z1,
-			   t_token **z2)
+			   int m2,
+			   t_karat_coeff *coefficients)
 {
   t_rcode	ret;
   t_token	*apb;
   t_token	*cpd;
   t_token	*z2_tmp;
   t_token	*z2_tmp2;
+  t_token	*z2;
 
-  if ((ret = bm_new_token(z2)) != OK ||
+  if ((ret = bm_new_token(&coefficients->z2)) != OK ||
+      (ret = bm_new_token(&z2)) != OK ||
       (ret = bm_new_token(&apb)) != OK ||
       (ret = bm_new_token(&cpd)) != OK ||
       (ret = bm_new_token(&z2_tmp)) != OK ||
@@ -121,12 +129,15 @@ t_rcode		compute_z2(t_base *base,
   action_add(base, delimiters->a, delimiters->b, apb);
   action_add(base, delimiters->c, delimiters->d, cpd);
   action_mul(base, apb, cpd, z2_tmp);
-  action_sub_compute(base, z2_tmp, z0, z2_tmp2);
+  action_sub_compute(base, z2_tmp, coefficients->z0, z2_tmp2);
   clean_number_str(base, z2_tmp2);
-  action_sub_compute(base, z2_tmp2, z1, *z2);
-  clean_number_str(base, *z2);
+  action_sub_compute(base, z2_tmp2, coefficients->z1, z2);
+  clean_number_str(base, z2);
+  pad(z2, base, m2, coefficients->z2);
+  clean_number_str(base, coefficients->z2);
   bm_free_token(z2_tmp);
   bm_free_token(z2_tmp2);
+  bm_free_token(z2);
   return (OK);
 }
 
@@ -136,13 +147,8 @@ t_rcode		action_mul(t_base *base,
 			   t_token *res)
 {
   t_rcode	ret;
-  int		m;
   int		m2;
-  t_token	*z0;
-  t_token	*z1;
-  t_token	*z2;
-  t_token	*z0_padded;
-  t_token	*z2_padded;
+  t_karat_coeff	coefficients;
   t_token	*tmp;
   t_delimiters	delimiters;
 
@@ -153,21 +159,14 @@ t_rcode		action_mul(t_base *base,
   if ((ret = malloc_token_dynamically(res, n1->size + n2->size)) != OK)
     return (ret);
   my_memset(res->string_value, base->string[0], res->size);
-  m = my_max(n1->size, n2->size);
-  m2 = m / 2;
+  m2 = my_max(n1->size, n2->size) / 2;
   split_tokens(n1, n2, &delimiters, base);
-  compute_z0(base, &delimiters, &z0);
-  compute_z1(base, &delimiters, &z1);
-  compute_z2(base, &delimiters, z0, z1, &z2);
-  bm_new_token(&z0_padded);
-  bm_new_token(&z2_padded);
-  pad(z0, base, m2 * 2, z0_padded);
-  clean_number_str(base, z0_padded);
-  pad(z2, base, m2, z2_padded);
-  clean_number_str(base, z2_padded);
+  compute_z0(base, &delimiters, m2, &coefficients);
+  compute_z1(base, &delimiters, &coefficients);
+  compute_z2(base, &delimiters, m2, &coefficients);
   bm_new_token(&tmp);
-  action_add(base, z0_padded, z1, tmp);
-  action_add(base, tmp, z2_padded, res);
+  action_add(base, coefficients.z0, coefficients.z1, tmp);
+  action_add(base, tmp, coefficients.z2, res);
   return (OK);
 }
 
