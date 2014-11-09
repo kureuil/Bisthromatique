@@ -12,8 +12,7 @@
 #include "stack.h"
 #include "my.h"
 #include "bm_errno.h"
-
-struct s_token;
+#include "tokens.h"
 
 t_rcode		push(t_stack **top, struct s_token *token)
 {
@@ -43,7 +42,7 @@ void		pop(t_stack **top)
   *top = tmp;
 }
 
-struct s_token	*top(t_stack *top)
+t_token	*top(t_stack *top)
 {
   if (!top)
     return (NULL);

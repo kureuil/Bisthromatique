@@ -13,10 +13,10 @@
 #include "bm_base.h"
 #include "boolean.h"
 
-void			reorder_tokens(t_token **n1,
-				       t_token **n2)
+void		reorder_tokens(t_token **n1,
+			       t_token **n2)
 {
-  struct s_token	*tmp;
+  t_token	*tmp;
 
   tmp = *n1;
   *n1 = *n2;

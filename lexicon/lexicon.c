@@ -14,7 +14,7 @@
 #include "bm_base.h"
 #include "my.h"
 
-t_rcode		get_ordered_extractors(t_extract_fct **array)
+t_rcode	get_ordered_extractors(t_extract_fct **array)
 {
   if ((*array = malloc(sizeof(t_extract_fct) * NB_EXTRACTORS)) == NULL)
     return (COULD_NOT_MALLOC);
