@@ -19,7 +19,7 @@ t_rcode	action_mod(t_base *base,
 		   t_token *res)
 {
   clean_number_str(base, n2);
-  if (n2->size == 1 && get_value_at_index(base, n2->string_value, 0) == 0)
+  if (n2->size == 1 && n2->string_value[0] == base->string[0])
     return (MODULO_BY_ZERO);
   return (OK);
 }

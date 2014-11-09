@@ -25,9 +25,6 @@ t_rcode		action_div(t_base *base,
   t_token	res_tmp;
   t_token	one;
 
-  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
-    res->sign = NEGATIVE;
-  n1->sign = n2->sign = POSITIVE;
   if (n2->size == 1)
     {
       if (n2->string_value[0] == base->string[0])
@@ -40,10 +37,14 @@ t_rcode		action_div(t_base *base,
 	{
 	  res->string_value = n1->string_value;
 	  res->size = n1->size;
+	  res->sign = n1->sign;
 	  bm_free_token(n2);
 	  return (OK);
 	}
     }
+  if ((n1->sign == NEGATIVE) ^ (n2->sign == NEGATIVE))
+    res->sign = NEGATIVE;
+  n1->sign = n2->sign = POSITIVE;
   if ((ret = bm_new_token(&previous)) != OK)
     return (ret);
   if ((ret = malloc_token_dynamically(res, n1->size)) != OK)
@@ -55,6 +56,7 @@ t_rcode		action_div(t_base *base,
   res_tmp.sign = POSITIVE;
   one.string_value = &base->string[1];
   one.size = 1;
+  one.sign = POSITIVE;
   one.dynamic = FALSE;
   if (n2->size > n1->size)
     {
@@ -80,6 +82,7 @@ t_rcode		action_div(t_base *base,
     {
       res->string_value = res_tmp.string_value;
       res->size = res_tmp.size;
+      res->sign = res_tmp.sign;
     }
   if (res->size == 1 && res->string_value[0] == base->string[0])
     res->sign = POSITIVE;
